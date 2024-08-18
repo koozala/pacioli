@@ -133,14 +133,39 @@ namespace Pacioli.Pdf.Invoice
                 doc.Add(new PartyBox("Lieferung durch", descriptor.ShipTo));
             }
 
-            Paragraph numberLine = new Paragraph($"Rechnungsnummer: {descriptor.InvoiceNo}  Kundennr.: {descriptor.Buyer.ID.ID}")
-                .SetTextAlignment(iText.Layout.Properties.TextAlignment.LEFT).SetFontSize(14);
-            doc.Add(numberLine);
+            if (descriptor.Buyer != null)
+            {
+                doc.Add(new PartyBox("Käufer", descriptor.Buyer));
+            }
 
-            doc.Add(new Paragraph($"Bestellnr.: {descriptor.OrderNo}"));
-            if (descriptor.OrderDate.HasValue) doc.Add(new Paragraph($"Bestelldatum: {descriptor.OrderDate}"));
+            StringBuilder reStr = new StringBuilder();
+            if (!string.IsNullOrWhiteSpace(descriptor.InvoiceNo)) reStr.Append($"Rechnungsnummer: {descriptor.InvoiceNo} ");
+            if (!string.IsNullOrWhiteSpace(descriptor.Buyer.ID.ID))
+            {
+                reStr.Append("Kundennr.:");
+                if (descriptor.Buyer.ID.SchemeID != GlobalIDSchemeIdentifiers.Unknown)
+                {
+                    reStr.Append($" {descriptor.Buyer.ID.SchemeID}");
+                }
+                reStr.Append($" {descriptor.Buyer.ID.ID}");
+            }
+            if (reStr.Length > 0)
+            {
+                doc.Add(new Paragraph(reStr.ToString()));
+            }
 
-            if (descriptor.SpecifiedProcuringProject != null)
+            if (!string.IsNullOrWhiteSpace(descriptor.OrderNo))
+            {
+                doc.Add(new Paragraph($"Bestellnr.: {descriptor.OrderNo}"));
+            }
+
+            if (descriptor.OrderDate != null)
+            {
+                if (descriptor.OrderDate.HasValue) doc.Add(new Paragraph($"Bestelldatum: {descriptor.OrderDate}"));
+            }
+
+            if (descriptor.SpecifiedProcuringProject != null &&
+                (!string.IsNullOrWhiteSpace(descriptor.SpecifiedProcuringProject.Name) || (!string.IsNullOrWhiteSpace(descriptor.SpecifiedProcuringProject.ID))))
             {
                 doc.Add(new Paragraph($"Projekt: {descriptor.SpecifiedProcuringProject.Name} {descriptor.SpecifiedProcuringProject.ID}"));
             }
@@ -151,6 +176,10 @@ namespace Pacioli.Pdf.Invoice
             }
 
             doc.Add(new Paragraph($"Alle Beträge in {descriptor.Currency}"));
+
+            /*
+             * Positionen
+             */
 
             Table tab = new Table(7).SetWidth(full);
             tab.AddHeaderCell(new ItemCell("Pos."));
@@ -186,7 +215,7 @@ namespace Pacioli.Pdf.Invoice
                     {
                         s1.AppendLine($"{item.GlobalID.SchemeID} {item.GlobalID.ID}");
                     }
-                    if (item.BillingPeriodStart.HasValue)
+                    if (item.BillingPeriodStart.HasValue && item.BillingPeriodEnd.HasValue)
                     {
                         s1.AppendLine($"Abrechnungszeitraum: {item.BillingPeriodStart.Value.ToString("d")} - {item.BillingPeriodEnd.Value.ToString("d")}");
                     }
@@ -198,6 +227,31 @@ namespace Pacioli.Pdf.Invoice
                     {
                         s1.AppendLine($"{attr.Description}: {attr.Value}");
                     }
+                    foreach (var note in item.AssociatedDocument.Notes)
+                    {
+                        s1.AppendLine($"{note.SubjectCode} {note.ContentCode} {note.Content}");
+                    }
+                    if (item.BuyerOrderReferencedDocument != null)
+                    {
+                        s1.AppendLine($"Referenz Bestelldokument: {item.BuyerOrderReferencedDocument.ID} {item.BuyerOrderReferencedDocument.IssueDateTime.Value.ToString("d")}");
+                    }
+                    if (item.ContractReferencedDocument != null)
+                    {
+                        s1.AppendLine($"Referenz Vertrag: {item.ContractReferencedDocument.ID} {item.ContractReferencedDocument.IssueDateTime.Value.ToString("d")}");
+                    }
+                    if (item.DeliveryNoteReferencedDocument != null)
+                    {
+                        s1.AppendLine($"Referenz Lieferschein: {item.DeliveryNoteReferencedDocument.ID} {item.DeliveryNoteReferencedDocument.IssueDateTime.Value.ToString("d")}");
+                    }
+                    if (!string.IsNullOrWhiteSpace(item.BuyerAssignedID))
+                    {
+                        s1.AppendLine($"Artikelnummer Käufer: {item.BuyerAssignedID}");
+                    }
+                    foreach (var acct in item.ReceivableSpecifiedTradeAccountingAccounts)
+                    {
+                        s1.AppendLine($"Konto: {acct.TradeAccountID} {acct.TradeAccountTypeCode}");
+                    }
+
                     tab.AddCell(new ItemCell(s1.ToString()));
                 }
                 tab.AddCell(new ItemCell($"{item.TaxPercent.ToString("0.00")}% {item.TaxType.ToUnit()} {item.TaxCategoryCode.ToUnit()}"));
@@ -208,19 +262,9 @@ namespace Pacioli.Pdf.Invoice
             }
             doc.Add(tab);
 
-            doc.Add(new Paragraph("Anmerkungen zu den Positionen:"));
-            int countNotes = 0;
+
             foreach (var item in descriptor.TradeLineItems)
             {
-                doc.Add(new Paragraph($"{item.AssociatedDocument.LineID}:"));
-                if (item.AssociatedDocument != null && item.AssociatedDocument.Notes.Any())
-                {
-                    countNotes++;
-                    foreach (var note in item.AssociatedDocument.Notes)
-                    {
-                        doc.Add(new Paragraph($"{note.SubjectCode} {note.ContentCode} {note.Content}"));
-                    }
-                }
                 if (item.AdditionalReferencedDocuments.Count > 0)
                 {
                     foreach (var refdoc in item.AdditionalReferencedDocuments)
@@ -230,28 +274,7 @@ namespace Pacioli.Pdf.Invoice
                         doc.Add(new Paragraph($"Attached document: {refdoc.Name} {refdoc.Filename}"));
                     }
                 }
-                if (item.BuyerOrderReferencedDocument != null)
-                {
-                    doc.Add(new Paragraph($"Referenz Bestelldokument: {item.BuyerOrderReferencedDocument.ID} {item.BuyerOrderReferencedDocument.IssueDateTime.Value.ToString("d")}"));
-                }
-                if (item.ContractReferencedDocument != null)
-                {
-                    doc.Add(new Paragraph($"Referenz Vertrag: {item.ContractReferencedDocument.ID} {item.ContractReferencedDocument.IssueDateTime.Value.ToString("d")}"));
-                }
-                if (item.DeliveryNoteReferencedDocument != null)
-                {
-                    doc.Add(new Paragraph($"Referenz Lieferschein: {item.DeliveryNoteReferencedDocument.ID} {item.DeliveryNoteReferencedDocument.IssueDateTime.Value.ToString("d")}"));
-                }
-                if (!string.IsNullOrWhiteSpace(item.BuyerAssignedID))
-                {
-                    doc.Add(new Paragraph($"Artikelnummer Käufer: {item.BuyerAssignedID}"));
-                }
-                foreach (var acct in item.ReceivableSpecifiedTradeAccountingAccounts)
-                {
-                    doc.Add(new Paragraph($"Konto: {acct.TradeAccountID} {acct.TradeAccountTypeCode}"));
-                }
             }
-            doc.Add(new Paragraph($"{countNotes} Anmerkungen"));
 
 
             doc.Add(new Paragraph("Steuersummen:").SetMarginTop(20.0f));
@@ -313,8 +336,16 @@ namespace Pacioli.Pdf.Invoice
             }
 
             var pm = descriptor.PaymentMeans;
-            var paybox = new PartyBox("Zahlbedingungen", $"{pm.Information}\n{pm.TypeCode}\n{pm.SEPACreditorIdentifier}\n{pm.FinancialCard}\n{pm.SEPAMandateReference}");
-            doc.Add(paybox);
+            StringBuilder pmStr = new StringBuilder();
+            if (!string.IsNullOrWhiteSpace(pm.Information)) pmStr.AppendLine(pm.Information);
+            if (!string.IsNullOrWhiteSpace(pm.SEPACreditorIdentifier)) pmStr.AppendLine(pm.SEPACreditorIdentifier);
+            if (pm.FinancialCard != null) pmStr.AppendLine($"Karte: {pm.FinancialCard.Id} {pm.FinancialCard.CardholderName}");
+            if (!string.IsNullOrWhiteSpace(pm.SEPAMandateReference)) pmStr.AppendLine($"SEPA Mandat: {pm.SEPAMandateReference}");
+            if (pmStr.Length > 0)
+            {
+                var paybox = new PartyBox("Zahlungsbedingungen", pmStr.ToString());
+                doc.Add(paybox);
+            }
 
             foreach (var acct in descriptor.DebitorBankAccounts)
             {
@@ -322,11 +353,11 @@ namespace Pacioli.Pdf.Invoice
                 doc.Add(line);
             }
 
-            Paragraph termsLine = new Paragraph($"{descriptor.PaymentTerms.Description} {descriptor.PaymentTerms.DueDate}").SetMarginTop(20.0f);
-            doc.Add(termsLine);
+            //Paragraph termsLine = new Paragraph($"{descriptor.PaymentTerms.Description} {descriptor.PaymentTerms.DueDate}").SetMarginTop(20.0f);
+            //doc.Add(termsLine);
 
-            Paragraph paymentLine = new Paragraph($"{descriptor.PaymentMeans.Information} {descriptor.PaymentMeans.SEPACreditorIdentifier} {descriptor.PaymentMeans.SEPAMandateReference}");
-            doc.Add(paymentLine);
+            //Paragraph paymentLine = new Paragraph($"{descriptor.PaymentMeans.Information} {descriptor.PaymentMeans.SEPACreditorIdentifier} {descriptor.PaymentMeans.SEPAMandateReference}");
+            //doc.Add(paymentLine);
 
 
             if (descriptor.BuyerElectronicAddress != null)
@@ -339,21 +370,40 @@ namespace Pacioli.Pdf.Invoice
             {
                 StringBuilder sb = new StringBuilder();
                 if (!string.IsNullOrWhiteSpace(pt.Description)) sb.Append(pt.Description);
-                if (pt.DueDate.HasValue) sb.Append($" {pt.DueDate.Value.ToString("d")}");
-                var tbox = new PartyBox("Fälligkeit", sb.ToString());
-                doc.Add(tbox);
+                if (pt.DueDate.HasValue) sb.Append($"\n Fälligkeitsdatum: {pt.DueDate.Value.ToString("d")}");
+                if (sb.Length > 0)
+                {
+                    var tbox = new PartyBox("Fälligkeit", sb.ToString());
+                    doc.Add(tbox);
+                }
             }
 
             if (descriptor.SellerContact != null)
             {
-                var scbox = new PartyBox("Kontaktdaten Verkäufer", $"{descriptor.SellerContact.Name}\n{descriptor.SellerContact.OrgUnit}\n{descriptor.SellerContact.EmailAddress}\n{descriptor.SellerContact.PhoneNo}\n{descriptor.SellerContact.FaxNo}");
-                doc.Add(scbox);
+                StringBuilder scStr = new StringBuilder();
+                if (!string.IsNullOrWhiteSpace(descriptor.SellerContact.Name)) scStr.AppendLine(descriptor.SellerContact.Name);
+                if (!string.IsNullOrWhiteSpace(descriptor.SellerContact.OrgUnit)) scStr.AppendLine(descriptor.SellerContact.OrgUnit);
+                if (!string.IsNullOrWhiteSpace(descriptor.SellerContact.EmailAddress)) scStr.AppendLine(descriptor.SellerContact.EmailAddress);
+                if (!string.IsNullOrWhiteSpace(descriptor.SellerContact.PhoneNo)) scStr.AppendLine($"Telefon: {descriptor.SellerContact.PhoneNo}");
+                if (!string.IsNullOrWhiteSpace(descriptor.SellerContact.FaxNo)) scStr.AppendLine($"Fax: {descriptor.SellerContact.FaxNo}");
+                if (scStr.Length > 0)
+                {
+                    doc.Add(new PartyBox("Kontaktdaten Verkäufer", scStr.ToString()));
+                }
             }
 
             if (descriptor.BuyerContact != null)
             {
-                var bcbox = new PartyBox("Kontaktdaten Käufer", $"{descriptor.BuyerContact.Name}\n{descriptor.BuyerContact.OrgUnit}\n{descriptor.BuyerContact.EmailAddress}\n{descriptor.BuyerContact.PhoneNo}\n{descriptor.BuyerContact.FaxNo}");
-                doc.Add(bcbox);
+                StringBuilder bcStr = new StringBuilder();
+                if (!string.IsNullOrWhiteSpace(descriptor.BuyerContact.Name)) bcStr.AppendLine(descriptor.BuyerContact.Name);
+                if (!string.IsNullOrWhiteSpace(descriptor.BuyerContact.OrgUnit)) bcStr.AppendLine(descriptor.BuyerContact.OrgUnit);
+                if (!string.IsNullOrWhiteSpace(descriptor.BuyerContact.EmailAddress)) bcStr.AppendLine(descriptor.BuyerContact.EmailAddress);
+                if (!string.IsNullOrWhiteSpace(descriptor.BuyerContact.PhoneNo)) bcStr.AppendLine($"Telefon: {descriptor.BuyerContact.PhoneNo}");
+                if (!string.IsNullOrWhiteSpace(descriptor.BuyerContact.FaxNo)) bcStr.AppendLine($"Fax: {descriptor.BuyerContact.FaxNo}");
+                if (bcStr.Length > 0)
+                {
+                    doc.Add(new PartyBox("Kontaktdaten Käufer", bcStr.ToString()));
+                }
             }
 
 

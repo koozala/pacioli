@@ -34,6 +34,8 @@
             öffnenToolStripMenuItem = new ToolStripMenuItem();
             speichernToolStripMenuItem = new ToolStripMenuItem();
             beendenToolStripMenuItem = new ToolStripMenuItem();
+            aboutToolStripMenuItem = new ToolStripMenuItem();
+            überPacioliToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutPanel1 = new TableLayoutPanel();
             pictureBox = new PictureBox();
             fileNameTb = new TextBox();
@@ -45,8 +47,7 @@
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
             printDialog1 = new PrintDialog();
-            aboutToolStripMenuItem = new ToolStripMenuItem();
-            überPacioliToolStripMenuItem = new ToolStripMenuItem();
+            einstellungenToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
@@ -67,7 +68,7 @@
             // 
             // dateiToolStripMenuItem
             // 
-            dateiToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { öffnenToolStripMenuItem, speichernToolStripMenuItem, beendenToolStripMenuItem });
+            dateiToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { öffnenToolStripMenuItem, speichernToolStripMenuItem, einstellungenToolStripMenuItem, beendenToolStripMenuItem });
             dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
             dateiToolStripMenuItem.Size = new Size(69, 29);
             dateiToolStripMenuItem.Text = "Datei";
@@ -92,6 +93,20 @@
             beendenToolStripMenuItem.Size = new Size(270, 34);
             beendenToolStripMenuItem.Text = "Beenden";
             beendenToolStripMenuItem.Click += beendenToolStripMenuItem_Click;
+            // 
+            // aboutToolStripMenuItem
+            // 
+            aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { überPacioliToolStripMenuItem });
+            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            aboutToolStripMenuItem.Size = new Size(122, 29);
+            aboutToolStripMenuItem.Text = "Information";
+            // 
+            // überPacioliToolStripMenuItem
+            // 
+            überPacioliToolStripMenuItem.Name = "überPacioliToolStripMenuItem";
+            überPacioliToolStripMenuItem.Size = new Size(206, 34);
+            überPacioliToolStripMenuItem.Text = "Über Pacioli";
+            überPacioliToolStripMenuItem.Click += überPacioliToolStripMenuItem_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -205,19 +220,12 @@
             // 
             printDialog1.UseEXDialog = true;
             // 
-            // aboutToolStripMenuItem
+            // einstellungenToolStripMenuItem
             // 
-            aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { überPacioliToolStripMenuItem });
-            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(122, 29);
-            aboutToolStripMenuItem.Text = "Information";
-            // 
-            // überPacioliToolStripMenuItem
-            // 
-            überPacioliToolStripMenuItem.Name = "überPacioliToolStripMenuItem";
-            überPacioliToolStripMenuItem.Size = new Size(270, 34);
-            überPacioliToolStripMenuItem.Text = "Über Pacioli";
-            überPacioliToolStripMenuItem.Click += überPacioliToolStripMenuItem_Click;
+            einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
+            einstellungenToolStripMenuItem.Size = new Size(270, 34);
+            einstellungenToolStripMenuItem.Text = "Einstellungen";
+            einstellungenToolStripMenuItem.Click += einstellungenToolStripMenuItem_Click;
             // 
             // MainForm
             // 
@@ -264,6 +272,7 @@
         private FlowLayoutPanel flowLayoutPanel1;
         private ToolStripMenuItem aboutToolStripMenuItem;
         private ToolStripMenuItem überPacioliToolStripMenuItem;
+        private ToolStripMenuItem einstellungenToolStripMenuItem;
     }
 }
 

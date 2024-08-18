@@ -11,6 +11,17 @@ namespace Pacioli.WindowsApp.NET8.Config
     {
         string connectionString = "Data Source=pacioli.db";
 
+        public ConfigDb()
+        {
+            try
+            {
+                var pref = ReadPreferences();
+            }
+            catch
+            {
+                DropTable();
+            }
+        }
 
         internal UserPreferences ReadPreferences()
         {
@@ -22,7 +33,7 @@ namespace Pacioli.WindowsApp.NET8.Config
                 var command = connection.CreateCommand();
                 command.CommandText =
                     @"
-SELECT User, Folder
+SELECT User, Folder, AttachmentFolder
 FROM UserPreferences
 WHERE User = $user
 ";
@@ -32,6 +43,7 @@ WHERE User = $user
                     if (reader.Read())
                     {
                         preferences.DefaultFolder = (string)reader["Folder"];
+                        preferences.AttachmentOutputFolder = (string)reader["AttachmentFolder"];
                     }
                 }
                 return preferences;
@@ -48,11 +60,12 @@ WHERE User = $user
                 command.CommandText =
                     @"
 UPDATE UserPreferences
-SET Folder = $folder
+SET Folder = $folder, AttachmentFolder = $attachFlr
 WHERE User = $user
 ";
                 command.Parameters.AddWithValue("$user", pref.UserName);
                 command.Parameters.AddWithValue("$folder", pref.DefaultFolder);
+                command.Parameters.AddWithValue("$attachFlr", pref.AttachmentOutputFolder);
                 var r = command.ExecuteNonQuery();
                 if (r == 0)
                 {
@@ -60,10 +73,11 @@ WHERE User = $user
                     command2.CommandText =
                         @"
 INSERT INTO UserPreferences
-VALUES ($user, $folder)
+VALUES ($user, $folder, $attachFlr)
 ";
                     command2.Parameters.AddWithValue("$user", pref.UserName);
                     command2.Parameters.AddWithValue("$folder", pref.DefaultFolder);
+                    command2.Parameters.AddWithValue("$attachFlr", pref.AttachmentOutputFolder);
                     command2.ExecuteNonQuery();
                 }
             }
@@ -77,7 +91,21 @@ VALUES ($user, $folder)
                 var command = connection.CreateCommand();
                 command.CommandText =
                     @"
-CREATE TABLE IF NOT EXISTS UserPreferences (User varchar(100), Folder varchar(500))
+CREATE TABLE IF NOT EXISTS UserPreferences (User varchar(100), Folder varchar(500), AttachmentFolder varchar(500))
+";
+                command.ExecuteNonQuery();
+            }
+        }
+
+        void DropTable()
+        {
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText =
+                    @"
+DROP TABLE UserPreferences 
 ";
                 command.ExecuteNonQuery();
             }

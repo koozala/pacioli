@@ -117,5 +117,11 @@ namespace Pacioli.WindowsApp.NET8
         {
             MessageBox.Show("Pacioli verarbeitet elektronische Rechnungen und transformiert sie in PDF-Dateien.\n\nMehr Informationen im Internet: https://github.com/koozala/pacioli", "Pacioli");
         }
+
+        private void einstellungenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var settingsForm = new AppSettingsForm();
+            settingsForm.ShowDialog();
+        }
     }
 }

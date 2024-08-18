@@ -12,6 +12,13 @@ namespace Pacioli.Pdf.Invoice
             this.SetFontSize(10);
             this.SetPaddings(pad, pad, pad, pad);
         }
+
+        public ItemCell(string text, int rowspan, int colspan) : base(rowspan, colspan) 
+        {
+            this.Add(new Paragraph(text));
+            this.SetFontSize(10);
+            this.SetPaddings(pad, pad, pad, pad);
+        }
     }
 
     internal class ItemCellRight : Cell
