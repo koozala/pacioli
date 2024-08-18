@@ -1,5 +1,6 @@
 ﻿using Pacioli.Pdf.Invoice;
 using Pacioli.Preview.ImageGeneration;
+using Pacioli.WindowsApp.NET8.Config;
 using Pacioli.WindowsApp.NET8.Util;
 
 namespace Pacioli.WindowsApp.NET8
@@ -20,8 +21,11 @@ namespace Pacioli.WindowsApp.NET8
 
         private void öffnenToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ConfigDb cdb = new ConfigDb();
+            UserPreferences preferences = cdb.ReadPreferences();
+
             openFileDialog1.FileName = string.Empty;
-            openFileDialog1.InitialDirectory = @"C:\wrk\repos\Rechnungsdruck_AS400_PDF\3rd party\ZUGFeRD-csharp\demodata\zugferd21";
+            openFileDialog1.InitialDirectory = preferences.DefaultFolder;
             DialogResult dr = openFileDialog1.ShowDialog();
 
             if (dr == DialogResult.OK)
@@ -29,6 +33,8 @@ namespace Pacioli.WindowsApp.NET8
                 pdfPath = Path.GetTempFileName();
                 string imgPath = Path.GetTempFileName();
                 fileNameTb.Text = openFileDialog1.FileName;
+                preferences.DefaultFolder = Path.GetDirectoryName(openFileDialog1.FileName)!;
+                cdb.SavePreferences(preferences);
                 try
                 {
                     Writer.Write(openFileDialog1.FileName, pdfPath);
