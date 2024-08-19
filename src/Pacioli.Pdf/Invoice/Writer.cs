@@ -3,9 +3,9 @@ namespace Pacioli.Pdf.Invoice
 {
     public class Writer
     {
-        public static void Write(string inputFile, string outputFile)
+        public static void Write(string inputFile, string outputFile, string attachmentsTargetPath)
         {
-            new InvoiceWriter(inputFile).Write(outputFile); 
+            new InvoiceWriter(inputFile, attachmentsTargetPath).Write(outputFile); 
         }
     }
 }

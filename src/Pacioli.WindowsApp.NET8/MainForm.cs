@@ -37,9 +37,9 @@ namespace Pacioli.WindowsApp.NET8
                 cdb.SavePreferences(preferences);
                 try
                 {
-                    Writer.Write(openFileDialog1.FileName, pdfPath);
+                    Writer.Write(openFileDialog1.FileName, pdfPath, preferences.AttachmentOutputFolder);
                 }
-                catch (Exception ex)
+                catch 
                 {
                     MessageBox.Show("Fehler beim Lesen der Datei");
                     return;
@@ -47,12 +47,6 @@ namespace Pacioli.WindowsApp.NET8
                 pageNumber = 0;
                 converter = new Converter(pdfPath);
                 UpdateImage();
-
-
-                //converter.Convert(pdfPath, imgPath);
-                //loadedImage = Image.FromFile(imgPath);
-                //var resized = ImageResize.ResizeImage(loadedImage, pictureBox.Width, pictureBox.Height);
-                //pictureBox.Image = resized;
             }
         }
 

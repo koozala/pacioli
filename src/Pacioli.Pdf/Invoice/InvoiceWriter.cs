@@ -47,15 +47,18 @@ namespace Pacioli.Pdf.Invoice
         InvoiceDescriptor descriptor;
         UnitValue full = UnitValue.CreatePercentValue(100.0f);
         PdfFont bold = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
+        string attachmentsTargetPath;
 
-        public InvoiceWriter(InvoiceDescriptor _descriptor)
+        public InvoiceWriter(InvoiceDescriptor _descriptor, string _attachmentsTargetPath)
         {
             descriptor = _descriptor;
+            attachmentsTargetPath = _attachmentsTargetPath;
         }
 
-        public InvoiceWriter(string fileName)
+        public InvoiceWriter(string fileName, string _attachmentsTargetPath)
         {
             descriptor = InvoiceDescriptor.Load(fileName);
+            attachmentsTargetPath = _attachmentsTargetPath;
         }
 
         public void Write(string outputFileName)
@@ -269,8 +272,7 @@ namespace Pacioli.Pdf.Invoice
                 {
                     foreach (var refdoc in item.AdditionalReferencedDocuments)
                     {
-                        string targetPath = @"c:\tmp";
-                        File.WriteAllBytes(System.IO.Path.Combine(targetPath, refdoc.Filename), refdoc.AttachmentBinaryObject);
+                        File.WriteAllBytes(System.IO.Path.Combine(attachmentsTargetPath, refdoc.Filename), refdoc.AttachmentBinaryObject);
                         doc.Add(new Paragraph($"Attached document: {refdoc.Name} {refdoc.Filename}"));
                     }
                 }
