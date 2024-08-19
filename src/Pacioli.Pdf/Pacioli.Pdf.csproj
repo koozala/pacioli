@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="itext" Version="8.0.5" />
     <PackageReference Include="itext.bouncy-castle-adapter" Version="8.0.5" />
-    <PackageReference Include="ZUGFeRD-csharp" Version="14.0.0" />
+    <PackageReference Include="ZUGFeRD-csharp" Version="14.1.0" />
   </ItemGroup>
 
 </Project>
