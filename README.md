@@ -14,7 +14,10 @@ This program is intended for use on Windows. It's based on .NET 8 and the GUI is
 * [iText](https://itextpdf.com/) is used for generating PDF files
 * The preview function is supported by [PDFtoimage](https://github.com/sungaila/PDFtoImage) 
 
+# Multi-language support
+
+The goal is to support many languages for document creation, and possibly the UI. The foundation for multi-language support has been added. Currently German and English are supported for document creation.
+
 # Status
 Pacioli can read XML files representing electronic invoices, show a preview, and save a PDF version of the invoice.
 
-There is no multi-language support yet. The UI and PDF generation is currently all in German.
