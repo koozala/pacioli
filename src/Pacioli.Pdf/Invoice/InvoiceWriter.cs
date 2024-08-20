@@ -9,6 +9,7 @@ using iText.Layout;
 using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
+using Pacioli.Language.Resources;
 using s2industries.ZUGFeRD;
 using System.IO;
 using System.Linq;
@@ -49,12 +50,6 @@ namespace Pacioli.Pdf.Invoice
         PdfFont bold = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
         string attachmentsTargetPath;
 
-        public InvoiceWriter(InvoiceDescriptor _descriptor, string _attachmentsTargetPath)
-        {
-            descriptor = _descriptor;
-            attachmentsTargetPath = _attachmentsTargetPath;
-        }
-
         public InvoiceWriter(string fileName, string _attachmentsTargetPath)
         {
             descriptor = InvoiceDescriptor.Load(fileName);
@@ -86,17 +81,17 @@ namespace Pacioli.Pdf.Invoice
             PdfPage page1 = document.AddNewPage();
 
             Paragraph header = new Paragraph().SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetFontSize(16);
-            header.Add("Rechnung");
+            header.Add(Resources.invoice);
             doc.Add(header);
 
             if (descriptor.InvoiceDate != null)
             {
                 string f1 = descriptor.InvoiceDate.Value.ToString("d");
-                Paragraph dateLine = new Paragraph($"Datum: {f1}").SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT).SetFontSize(14);
+                Paragraph dateLine = new Paragraph($"{Resources.docDate}: {f1}").SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT).SetFontSize(14);
                 doc.Add(dateLine);
             }
 
-            var p1 = new PartyBox("Verkäufer", descriptor.Seller);
+            var p1 = new PartyBox($"{Resources.seller}", descriptor.Seller);
             doc.Add(p1);
 
             //var bold = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
@@ -110,7 +105,7 @@ namespace Pacioli.Pdf.Invoice
 
             if (descriptor.Invoicee != null)
             {
-                var p2 = new PartyBox("Rechnungsempfänger", descriptor.Invoicee);
+                var p2 = new PartyBox(Resources.invoicee, descriptor.Invoicee);
                 doc.Add(p2);
             }
 
@@ -122,30 +117,30 @@ namespace Pacioli.Pdf.Invoice
 
             if (descriptor.Payee != null)
             {
-                var p3 = new PartyBox("Zahlung durch", descriptor.Buyer);
+                var p3 = new PartyBox(Resources.payee, descriptor.Buyer);
                 doc.Add(p3);
             }
 
             if (descriptor.ShipFrom != null)
             {
-                doc.Add(new PartyBox("Warenempfänger", descriptor.ShipTo));
+                doc.Add(new PartyBox(Resources.shipFrom, descriptor.ShipTo));
             }
 
             if (descriptor.ShipTo != null)
             {
-                doc.Add(new PartyBox("Lieferung durch", descriptor.ShipTo));
+                doc.Add(new PartyBox(Resources.shipTo, descriptor.ShipTo));
             }
 
             if (descriptor.Buyer != null)
             {
-                doc.Add(new PartyBox("Käufer", descriptor.Buyer));
+                doc.Add(new PartyBox(Resources.buyer, descriptor.Buyer));
             }
 
             StringBuilder reStr = new StringBuilder();
-            if (!string.IsNullOrWhiteSpace(descriptor.InvoiceNo)) reStr.Append($"Rechnungsnummer: {descriptor.InvoiceNo} ");
+            if (!string.IsNullOrWhiteSpace(descriptor.InvoiceNo)) reStr.Append($"{Resources.invoiceNo}: {descriptor.InvoiceNo} ");
             if (!string.IsNullOrWhiteSpace(descriptor.Buyer.ID.ID))
             {
-                reStr.Append("Kundennr.:");
+                reStr.Append($"{Resources.customerNo}: ");
                 if (descriptor.Buyer.ID.SchemeID != GlobalIDSchemeIdentifiers.Unknown)
                 {
                     reStr.Append($" {descriptor.Buyer.ID.SchemeID}");
@@ -159,39 +154,39 @@ namespace Pacioli.Pdf.Invoice
 
             if (!string.IsNullOrWhiteSpace(descriptor.OrderNo))
             {
-                doc.Add(new Paragraph($"Bestellnr.: {descriptor.OrderNo}"));
+                doc.Add(new Paragraph($"{Resources.orderNo}: {descriptor.OrderNo}"));
             }
 
             if (descriptor.OrderDate != null)
             {
-                if (descriptor.OrderDate.HasValue) doc.Add(new Paragraph($"Bestelldatum: {descriptor.OrderDate}"));
+                if (descriptor.OrderDate.HasValue) doc.Add(new Paragraph($"{Resources.orderDate}: {descriptor.OrderDate}"));
             }
 
             if (descriptor.SpecifiedProcuringProject != null &&
                 (!string.IsNullOrWhiteSpace(descriptor.SpecifiedProcuringProject.Name) || (!string.IsNullOrWhiteSpace(descriptor.SpecifiedProcuringProject.ID))))
             {
-                doc.Add(new Paragraph($"Projekt: {descriptor.SpecifiedProcuringProject.Name} {descriptor.SpecifiedProcuringProject.ID}"));
+                doc.Add(new Paragraph($"{Resources.projectNo}: {descriptor.SpecifiedProcuringProject.Name} {descriptor.SpecifiedProcuringProject.ID}"));
             }
 
             if (descriptor.ActualDeliveryDate.HasValue)
             {
-                doc.Add(new Paragraph($"Lieferdatum: {descriptor.ActualDeliveryDate.Value.ToString("d")}"));
+                doc.Add(new Paragraph($"{Resources.deliveryDate}: {descriptor.ActualDeliveryDate.Value.ToString("d")}"));
             }
 
-            doc.Add(new Paragraph($"Alle Beträge in {descriptor.Currency}"));
+            doc.Add(new Paragraph($"{Resources.currencyNote} {descriptor.Currency}"));
 
             /*
              * Positionen
              */
 
             Table tab = new Table(7).SetWidth(full);
-            tab.AddHeaderCell(new ItemCell("Pos."));
-            tab.AddHeaderCell(new ItemCell("Beschreibung"));
-            tab.AddHeaderCell(new ItemCell("Steuersatz"));
-            tab.AddHeaderCell(new ItemCell("Menge"));
-            tab.AddHeaderCell(new ItemCell("Einzelpreis"));
-            tab.AddHeaderCell(new ItemCell("Brutto-Einzelpreis"));
-            tab.AddHeaderCell(new ItemCell("Summe"));
+            tab.AddHeaderCell(new ItemCell($"{Resources.pos}"));
+            tab.AddHeaderCell(new ItemCell($"{Resources.description}"));
+            tab.AddHeaderCell(new ItemCell($"{Resources.tax}"));
+            tab.AddHeaderCell(new ItemCell($"{Resources.amount}"));
+            tab.AddHeaderCell(new ItemCell($"{Resources.netUnitPrice}"));
+            tab.AddHeaderCell(new ItemCell($"{Resources.grossUnitPrice}"));
+            tab.AddHeaderCell(new ItemCell($"{Resources.sum}"));
 
             int lineCount = 0;
             foreach (var item in descriptor.TradeLineItems)
@@ -207,11 +202,11 @@ namespace Pacioli.Pdf.Invoice
                     }
                     if (item.ActualDeliveryDate.HasValue)
                     {
-                        s1.AppendLine($"Lieferung: {item.ActualDeliveryDate.Value.ToString("d")}");
+                        s1.AppendLine($"{Resources.deliveryDate}: {item.ActualDeliveryDate.Value.ToString("d")}");
                     }
                     if (!string.IsNullOrWhiteSpace(item.SellerAssignedID))
                     {
-                        s1.AppendLine($"Artikelnummer: {item.SellerAssignedID}");
+                        s1.AppendLine($"{Resources.sellerAssignedId}: {item.SellerAssignedID}");
                     }
 
                     if (item.GlobalID != null)
@@ -220,11 +215,11 @@ namespace Pacioli.Pdf.Invoice
                     }
                     if (item.BillingPeriodStart.HasValue && item.BillingPeriodEnd.HasValue)
                     {
-                        s1.AppendLine($"Abrechnungszeitraum: {item.BillingPeriodStart.Value.ToString("d")} - {item.BillingPeriodEnd.Value.ToString("d")}");
+                        s1.AppendLine($"{Resources.billingPeriod}: {item.BillingPeriodStart.Value.ToString("d")} - {item.BillingPeriodEnd.Value.ToString("d")}");
                     }
                     if (item.UnitQuantity.HasValue && item.UnitQuantity.Value != 1m)
                     {
-                        s1.AppendLine($"Einheit: {item.UnitQuantity.Value.ToString(DecimalExtensions.PrecFmt(item.UnitQuantity.Value))}");
+                        s1.AppendLine($"{Resources.unitQuantity}: {item.UnitQuantity.Value.ToString(DecimalExtensions.PrecFmt(item.UnitQuantity.Value))}");
                     }
                     foreach (var attr in item.ApplicableProductCharacteristics)
                     {
@@ -236,23 +231,23 @@ namespace Pacioli.Pdf.Invoice
                     }
                     if (item.BuyerOrderReferencedDocument != null)
                     {
-                        s1.AppendLine($"Referenz Bestelldokument: {item.BuyerOrderReferencedDocument.ID} {item.BuyerOrderReferencedDocument.IssueDateTime.Value.ToString("d")}");
+                        s1.AppendLine($"{Resources.refOrderDocument}: {item.BuyerOrderReferencedDocument.ID} {item.BuyerOrderReferencedDocument.IssueDateTime.Value.ToString("d")}");
                     }
                     if (item.ContractReferencedDocument != null)
                     {
-                        s1.AppendLine($"Referenz Vertrag: {item.ContractReferencedDocument.ID} {item.ContractReferencedDocument.IssueDateTime.Value.ToString("d")}");
+                        s1.AppendLine($"{Resources.refContractdocument}: {item.ContractReferencedDocument.ID} {item.ContractReferencedDocument.IssueDateTime.Value.ToString("d")}");
                     }
                     if (item.DeliveryNoteReferencedDocument != null)
                     {
-                        s1.AppendLine($"Referenz Lieferschein: {item.DeliveryNoteReferencedDocument.ID} {item.DeliveryNoteReferencedDocument.IssueDateTime.Value.ToString("d")}");
+                        s1.AppendLine($"{Resources.refDeliveryNote}: {item.DeliveryNoteReferencedDocument.ID} {item.DeliveryNoteReferencedDocument.IssueDateTime.Value.ToString("d")}");
                     }
                     if (!string.IsNullOrWhiteSpace(item.BuyerAssignedID))
                     {
-                        s1.AppendLine($"Artikelnummer Käufer: {item.BuyerAssignedID}");
+                        s1.AppendLine($"{Resources.buyerAssignedId}: {item.BuyerAssignedID}");
                     }
                     foreach (var acct in item.ReceivableSpecifiedTradeAccountingAccounts)
                     {
-                        s1.AppendLine($"Konto: {acct.TradeAccountID} {acct.TradeAccountTypeCode}");
+                        s1.AppendLine($"{Resources.account}: {acct.TradeAccountID} {acct.TradeAccountTypeCode}");
                     }
 
                     tab.AddCell(new ItemCell(s1.ToString()));
@@ -279,14 +274,14 @@ namespace Pacioli.Pdf.Invoice
             }
 
 
-            doc.Add(new Paragraph("Steuersummen:").SetMarginTop(20.0f));
+            doc.Add(new Paragraph($"{Resources.taxSums}:").SetMarginTop(20.0f));
             Table taxTab = new Table(6).SetFontSize(12).SetWidth(full);
-            taxTab.AddHeaderCell("Steuersatz");
-            taxTab.AddHeaderCell("Kategorie");
-            taxTab.AddHeaderCell("Basis");
-            taxTab.AddHeaderCell("Betrag");
-            taxTab.AddHeaderCell("Ausnahme");
-            taxTab.AddHeaderCell("AllwChgBasis");
+            taxTab.AddHeaderCell($"{Resources.tax}");
+            taxTab.AddHeaderCell($"{Resources.taxCategory}");
+            taxTab.AddHeaderCell($"{Resources.taxBasis}");
+            taxTab.AddHeaderCell($"{Resources.taxAmount}");
+            taxTab.AddHeaderCell($"{Resources.exception}");
+            taxTab.AddHeaderCell($"{Resources.allowanceChargeBasis}");
             foreach (var tax in descriptor.Taxes)
             {
                 taxTab.AddCell(new ItemCellRight($"{tax.Percent.ToString("0.00")}"));
@@ -305,21 +300,21 @@ namespace Pacioli.Pdf.Invoice
 
             doc.Add(new Paragraph("Summenübersicht:").SetMarginTop(20.0f));
             Table sumTab = new Table(2).SetFontSize(12).SetWidth(full).SetBorder(Border.NO_BORDER);
-            sumTab.AddCell(new ItemCell("Vorauszahlung"));
+            sumTab.AddCell(new ItemCell($"{Resources.prepaid}"));
             sumTab.AddCell(new ItemCellRight($"{Fmt.ToString(descriptor.TotalPrepaidAmount, "#,0.00")}"));
-            sumTab.AddCell(new ItemCell("Abzüge"));
+            sumTab.AddCell(new ItemCell($"{Resources.allowance}"));
             sumTab.AddCell(new ItemCellRight($"{Fmt.ToString(descriptor.AllowanceTotalAmount, "#,0.00")}"));
-            sumTab.AddCell(new ItemCell("Zuschläge"));
+            sumTab.AddCell(new ItemCell($"{Resources.charge}"));
             sumTab.AddCell(new ItemCellRight($"{Fmt.ToString(descriptor.ChargeTotalAmount, "#,0.00")}"));
-            sumTab.AddCell(new ItemCell("Steuerbasis"));
+            sumTab.AddCell(new ItemCell($"{Resources.taxBasis}"));
             sumTab.AddCell(new ItemCellRight($"{Fmt.ToString(descriptor.TaxBasisAmount, "#,0.00")}"));
-            sumTab.AddCell(new ItemCell("Steuerbetrag"));
+            sumTab.AddCell(new ItemCell($"{Resources.taxAmount}"));
             sumTab.AddCell(new ItemCellRight($"{Fmt.ToString(descriptor.TaxTotalAmount, "#,0.00")}"));
-            sumTab.AddCell(new ItemCell("Gesamtsumme"));
+            sumTab.AddCell(new ItemCell($"{Resources.totalSum}"));
             sumTab.AddCell(new ItemCellRight($"{Fmt.ToString(descriptor.GrandTotalAmount, "#,0.00")}"));
-            sumTab.AddCell(new ItemCell("Rundungsbetrag"));
+            sumTab.AddCell(new ItemCell($"{Resources.roundingAmount}"));
             sumTab.AddCell(new ItemCellRight($"{Fmt.ToString(descriptor.RoundingAmount, "#,0.00")}"));
-            sumTab.AddCell(new ItemCell("Zu zahlen"));
+            sumTab.AddCell(new ItemCell($"{Resources.payableAmount}"));
             sumTab.AddCell(new ItemCellRight($"{Fmt.ToString(descriptor.DuePayableAmount, "#,0.00")}"));
 
             doc.Add(sumTab);

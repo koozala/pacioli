@@ -1,4 +1,5 @@
-﻿using s2industries.ZUGFeRD;
+﻿using Pacioli.Language.Resources;
+using s2industries.ZUGFeRD;
 
 namespace Pacioli.Pdf.Invoice
 {
@@ -97,7 +98,7 @@ namespace Pacioli.Pdf.Invoice
                 case QuantityCodes.XCT:
                     return "Kt";
                 case QuantityCodes.XPK:
-                    return "Verpackung";
+                    return Resources.packaging;
                 case QuantityCodes.XPP:
                     return "lose";
                 case QuantityCodes.XPX:

@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Pacioli.Language\Pacioli.Language.csproj" />
     <ProjectReference Include="..\Pacioli.Pdf\Pacioli.Pdf.csproj" />
     <ProjectReference Include="..\Pacioli.Preview\Pacioli.Preview.csproj" />
   </ItemGroup>

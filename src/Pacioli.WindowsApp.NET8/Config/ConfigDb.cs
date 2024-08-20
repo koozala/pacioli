@@ -33,7 +33,7 @@ namespace Pacioli.WindowsApp.NET8.Config
                 var command = connection.CreateCommand();
                 command.CommandText =
                     @"
-SELECT User, Folder, AttachmentFolder
+SELECT User, Folder, AttachmentFolder, Language
 FROM UserPreferences
 WHERE User = $user
 ";
@@ -44,6 +44,7 @@ WHERE User = $user
                     {
                         preferences.DefaultFolder = (string)reader["Folder"];
                         preferences.AttachmentOutputFolder = (string)reader["AttachmentFolder"];
+                        preferences.LanguageCode = (string)reader["Language"];
                     }
                 }
                 return preferences;
@@ -60,12 +61,13 @@ WHERE User = $user
                 command.CommandText =
                     @"
 UPDATE UserPreferences
-SET Folder = $folder, AttachmentFolder = $attachFlr
+SET Folder = $folder, AttachmentFolder = $attachFlr, Language = $lang
 WHERE User = $user
 ";
                 command.Parameters.AddWithValue("$user", pref.UserName);
                 command.Parameters.AddWithValue("$folder", pref.DefaultFolder);
                 command.Parameters.AddWithValue("$attachFlr", pref.AttachmentOutputFolder);
+                command.Parameters.AddWithValue("$lang", pref.LanguageCode);
                 var r = command.ExecuteNonQuery();
                 if (r == 0)
                 {
@@ -73,11 +75,12 @@ WHERE User = $user
                     command2.CommandText =
                         @"
 INSERT INTO UserPreferences
-VALUES ($user, $folder, $attachFlr)
+VALUES ($user, $folder, $attachFlr, $lang)
 ";
                     command2.Parameters.AddWithValue("$user", pref.UserName);
                     command2.Parameters.AddWithValue("$folder", pref.DefaultFolder);
                     command2.Parameters.AddWithValue("$attachFlr", pref.AttachmentOutputFolder);
+                    command2.Parameters.AddWithValue("$lang", pref.LanguageCode);
                     command2.ExecuteNonQuery();
                 }
             }
@@ -91,7 +94,7 @@ VALUES ($user, $folder, $attachFlr)
                 var command = connection.CreateCommand();
                 command.CommandText =
                     @"
-CREATE TABLE IF NOT EXISTS UserPreferences (User varchar(100), Folder varchar(500), AttachmentFolder varchar(500))
+CREATE TABLE IF NOT EXISTS UserPreferences (User varchar(100), Folder varchar(500), AttachmentFolder varchar(500), Language varchar(16))
 ";
                 command.ExecuteNonQuery();
             }

@@ -34,6 +34,8 @@
             selectFolderBtn = new Button();
             saveBtn = new Button();
             folderBrowserDialog1 = new FolderBrowserDialog();
+            languageLbl = new Label();
+            languageCombo = new ComboBox();
             SuspendLayout();
             // 
             // label1
@@ -72,11 +74,30 @@
             saveBtn.UseVisualStyleBackColor = true;
             saveBtn.Click += saveBtn_Click;
             // 
+            // languageLbl
+            // 
+            languageLbl.AutoSize = true;
+            languageLbl.Location = new Point(30, 99);
+            languageLbl.Name = "languageLbl";
+            languageLbl.Size = new Size(75, 25);
+            languageLbl.TabIndex = 4;
+            languageLbl.Text = "Sprache";
+            // 
+            // languageCombo
+            // 
+            languageCombo.FormattingEnabled = true;
+            languageCombo.Location = new Point(323, 95);
+            languageCombo.Name = "languageCombo";
+            languageCombo.Size = new Size(387, 33);
+            languageCombo.TabIndex = 5;
+            // 
             // AppSettingsForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(803, 269);
+            Controls.Add(languageCombo);
+            Controls.Add(languageLbl);
             Controls.Add(saveBtn);
             Controls.Add(selectFolderBtn);
             Controls.Add(attDestTb);
@@ -95,5 +116,7 @@
         private Button selectFolderBtn;
         private Button saveBtn;
         private FolderBrowserDialog folderBrowserDialog1;
+        private Label languageLbl;
+        private ComboBox languageCombo;
     }
 }

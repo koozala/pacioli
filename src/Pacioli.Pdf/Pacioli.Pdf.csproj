@@ -11,4 +11,8 @@
     <PackageReference Include="ZUGFeRD-csharp" Version="14.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Pacioli.Language\Pacioli.Language.csproj" />
+  </ItemGroup>
+
 </Project>

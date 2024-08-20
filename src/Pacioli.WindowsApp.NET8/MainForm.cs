@@ -2,6 +2,7 @@
 using Pacioli.Preview.ImageGeneration;
 using Pacioli.WindowsApp.NET8.Config;
 using Pacioli.WindowsApp.NET8.Util;
+using System.Globalization;
 
 namespace Pacioli.WindowsApp.NET8
 {
@@ -17,6 +18,10 @@ namespace Pacioli.WindowsApp.NET8
             InitializeComponent();
             button1.Text = "\u25C0";
             button2.Text = "\u25B6";
+
+            ConfigDb cdb = new ConfigDb();
+            UserPreferences preferences = cdb.ReadPreferences();
+            CultureInfo.CurrentCulture = new CultureInfo(preferences.LanguageCode);
         }
 
         private void öffnenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -39,9 +44,9 @@ namespace Pacioli.WindowsApp.NET8
                 {
                     Writer.Write(openFileDialog1.FileName, pdfPath, preferences.AttachmentOutputFolder);
                 }
-                catch 
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Fehler beim Lesen der Datei");
+                    MessageBox.Show($"Fehler beim Lesen der Datei: {ex.Message}");
                     return;
                 }
                 pageNumber = 0;
