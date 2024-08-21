@@ -3,6 +3,8 @@ A reader and converter for electronic invoices that adhere to the EN16931 standa
 
 Pacioli can read XML files representing electronic invoices, show a preview, and save a PDF version of the invoice.
 
+You can download the latest release [here](https://github.com/koozala/pacioli/releases/latest).
+
 <img src="https://github.com/koozala/pacioli/blob/main/doc/Pacioli_Screenshot_1.png" width="450">
 
 
