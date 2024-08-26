@@ -97,6 +97,24 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keine Anhänge.
+        /// </summary>
+        public static string attachmentsNone {
+            get {
+                return ResourceManager.GetString("attachmentsNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Anhänge.
+        /// </summary>
+        public static string attachmentsTxt {
+            get {
+                return ResourceManager.GetString("attachmentsTxt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Basis.
         /// </summary>
         public static string basis {

@@ -33,6 +33,7 @@
             dateiToolStripMenuItem = new ToolStripMenuItem();
             öffnenToolStripMenuItem = new ToolStripMenuItem();
             speichernToolStripMenuItem = new ToolStripMenuItem();
+            einstellungenToolStripMenuItem = new ToolStripMenuItem();
             beendenToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             überPacioliToolStripMenuItem = new ToolStripMenuItem();
@@ -44,15 +45,17 @@
             button1 = new Button();
             pageNoTb = new TextBox();
             button2 = new Button();
+            flowLayoutPanel2 = new FlowLayoutPanel();
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
             printDialog1 = new PrintDialog();
-            einstellungenToolStripMenuItem = new ToolStripMenuItem();
+            attachmentInfoLbl = new Label();
             menuStrip1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             tableLayoutPanel3.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
+            flowLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -76,21 +79,28 @@
             // öffnenToolStripMenuItem
             // 
             öffnenToolStripMenuItem.Name = "öffnenToolStripMenuItem";
-            öffnenToolStripMenuItem.Size = new Size(270, 34);
+            öffnenToolStripMenuItem.Size = new Size(240, 34);
             öffnenToolStripMenuItem.Text = "Öffnen";
             öffnenToolStripMenuItem.Click += öffnenToolStripMenuItem_Click;
             // 
             // speichernToolStripMenuItem
             // 
             speichernToolStripMenuItem.Name = "speichernToolStripMenuItem";
-            speichernToolStripMenuItem.Size = new Size(270, 34);
+            speichernToolStripMenuItem.Size = new Size(240, 34);
             speichernToolStripMenuItem.Text = "PDF Speichern...";
             speichernToolStripMenuItem.Click += speichernToolStripMenuItem_Click;
+            // 
+            // einstellungenToolStripMenuItem
+            // 
+            einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
+            einstellungenToolStripMenuItem.Size = new Size(240, 34);
+            einstellungenToolStripMenuItem.Text = "Einstellungen";
+            einstellungenToolStripMenuItem.Click += einstellungenToolStripMenuItem_Click;
             // 
             // beendenToolStripMenuItem
             // 
             beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
-            beendenToolStripMenuItem.Size = new Size(270, 34);
+            beendenToolStripMenuItem.Size = new Size(240, 34);
             beendenToolStripMenuItem.Text = "Beenden";
             beendenToolStripMenuItem.Click += beendenToolStripMenuItem_Click;
             // 
@@ -113,11 +123,12 @@
             tableLayoutPanel1.AutoSize = true;
             tableLayoutPanel1.ColumnCount = 3;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 44F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 44F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableLayoutPanel1.Controls.Add(pictureBox, 1, 1);
             tableLayoutPanel1.Controls.Add(fileNameTb, 1, 3);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 1, 2);
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel2, 2, 1);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 33);
             tableLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
@@ -127,7 +138,6 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 80F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 112F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(1258, 1407);
             tableLayoutPanel1.TabIndex = 1;
             // 
@@ -137,7 +147,7 @@
             pictureBox.Location = new Point(47, 54);
             pictureBox.Margin = new Padding(3, 4, 3, 4);
             pictureBox.Name = "pictureBox";
-            pictureBox.Size = new Size(1164, 1157);
+            pictureBox.Size = new Size(965, 1157);
             pictureBox.TabIndex = 0;
             pictureBox.TabStop = false;
             // 
@@ -149,7 +159,7 @@
             fileNameTb.Multiline = true;
             fileNameTb.Name = "fileNameTb";
             fileNameTb.ReadOnly = true;
-            fileNameTb.Size = new Size(1164, 104);
+            fileNameTb.Size = new Size(965, 104);
             fileNameTb.TabIndex = 5;
             // 
             // tableLayoutPanel3
@@ -165,7 +175,7 @@
             tableLayoutPanel3.RowCount = 1;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel3.Size = new Size(1164, 74);
+            tableLayoutPanel3.Size = new Size(965, 74);
             tableLayoutPanel3.TabIndex = 7;
             // 
             // flowLayoutPanel1
@@ -174,7 +184,7 @@
             flowLayoutPanel1.Controls.Add(pageNoTb);
             flowLayoutPanel1.Controls.Add(button2);
             flowLayoutPanel1.Dock = DockStyle.Fill;
-            flowLayoutPanel1.Location = new Point(425, 3);
+            flowLayoutPanel1.Location = new Point(325, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(314, 68);
             flowLayoutPanel1.TabIndex = 0;
@@ -212,6 +222,16 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
+            // flowLayoutPanel2
+            // 
+            flowLayoutPanel2.Controls.Add(attachmentInfoLbl);
+            flowLayoutPanel2.Dock = DockStyle.Fill;
+            flowLayoutPanel2.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanel2.Location = new Point(1018, 53);
+            flowLayoutPanel2.Name = "flowLayoutPanel2";
+            flowLayoutPanel2.Size = new Size(237, 1159);
+            flowLayoutPanel2.TabIndex = 8;
+            // 
             // openFileDialog1
             // 
             openFileDialog1.FileName = "openFileDialog1";
@@ -220,12 +240,15 @@
             // 
             printDialog1.UseEXDialog = true;
             // 
-            // einstellungenToolStripMenuItem
+            // attachmentInfoLbl
             // 
-            einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
-            einstellungenToolStripMenuItem.Size = new Size(270, 34);
-            einstellungenToolStripMenuItem.Text = "Einstellungen";
-            einstellungenToolStripMenuItem.Click += einstellungenToolStripMenuItem_Click;
+            attachmentInfoLbl.AutoSize = true;
+            attachmentInfoLbl.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            attachmentInfoLbl.Location = new Point(3, 0);
+            attachmentInfoLbl.Name = "attachmentInfoLbl";
+            attachmentInfoLbl.Size = new Size(159, 30);
+            attachmentInfoLbl.TabIndex = 0;
+            attachmentInfoLbl.Text = "Keine Anhänge";
             // 
             // MainForm
             // 
@@ -248,6 +271,8 @@
             tableLayoutPanel3.ResumeLayout(false);
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
+            flowLayoutPanel2.ResumeLayout(false);
+            flowLayoutPanel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -273,6 +298,8 @@
         private ToolStripMenuItem aboutToolStripMenuItem;
         private ToolStripMenuItem überPacioliToolStripMenuItem;
         private ToolStripMenuItem einstellungenToolStripMenuItem;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private Label attachmentInfoLbl;
     }
 }
 

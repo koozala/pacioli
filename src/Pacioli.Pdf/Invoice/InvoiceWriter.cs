@@ -56,6 +56,11 @@ namespace Pacioli.Pdf.Invoice
             attachmentsTargetPath = _attachmentsTargetPath;
         }
 
+        public int CountAttachments()
+        {
+            return descriptor.TradeLineItems.Sum(x => x.AdditionalReferencedDocuments.Count);
+        }
+
         public void Write(string outputFileName)
         {
             PdfWriter pdfWriter = new PdfWriter(outputFileName);

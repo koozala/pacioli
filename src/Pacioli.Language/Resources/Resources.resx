@@ -252,4 +252,13 @@
   <data name="taxSums" xml:space="preserve">
     <value>Steuersummen</value>
   </data>
+  <data name="attachmentsNone" xml:space="preserve">
+    <value>Keine Anhänge</value>
+  </data>
+  <data name="attachmentsTxt" xml:space="preserve">
+    <value>{0} Anhänge</value>
+  </data>
+  <data name="test" xml:space="preserve">
+    <value>Test</value>
+  </data>
 </root>

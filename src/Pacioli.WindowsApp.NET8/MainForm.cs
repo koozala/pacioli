@@ -1,4 +1,5 @@
-﻿using Pacioli.Pdf.Invoice;
+﻿using Pacioli.Language.Resources;
+using Pacioli.Pdf.Invoice;
 using Pacioli.Preview.ImageGeneration;
 using Pacioli.WindowsApp.NET8.Config;
 using Pacioli.WindowsApp.NET8.Util;
@@ -42,7 +43,15 @@ namespace Pacioli.WindowsApp.NET8
                 cdb.SavePreferences(preferences);
                 try
                 {
-                    Writer.Write(openFileDialog1.FileName, pdfPath, preferences.AttachmentOutputFolder);
+                    Writer writer = new Writer(openFileDialog1.FileName, preferences.AttachmentOutputFolder);
+                    writer.Write(pdfPath);
+                    int countAttachments = writer.GetAttachmentCount();
+                    string aInfo = Resources.attachmentsNone;
+                    if (countAttachments > 0)
+                    {
+                        aInfo = string.Format(Resources.attachmentsTxt, countAttachments);
+                    }
+                    attachmentInfoLbl.Text = aInfo;
                 }
                 catch (Exception ex)
                 {
@@ -52,6 +61,7 @@ namespace Pacioli.WindowsApp.NET8
                 pageNumber = 0;
                 converter = new Converter(pdfPath);
                 UpdateImage();
+
             }
         }
 
