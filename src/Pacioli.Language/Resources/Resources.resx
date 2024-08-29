@@ -282,4 +282,19 @@
   <data name="remark" xml:space="preserve">
     <value>Anmerkung</value>
   </data>
+  <data name="attachment" xml:space="preserve">
+    <value>Anhang</value>
+  </data>
+  <data name="card" xml:space="preserve">
+    <value>Karte</value>
+  </data>
+  <data name="sepaMandate" xml:space="preserve">
+    <value>SEPA-Mandat</value>
+  </data>
+  <data name="phone" xml:space="preserve">
+    <value>Telefon</value>
+  </data>
+  <data name="fax" xml:space="preserve">
+    <value>Telefax</value>
+  </data>
 </root>

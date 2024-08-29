@@ -97,6 +97,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Anhang.
+        /// </summary>
+        public static string attachment {
+            get {
+                return ResourceManager.GetString("attachment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keine Anhänge.
         /// </summary>
         public static string attachmentsNone {
@@ -147,6 +156,15 @@ namespace Pacioli.Language.Resources {
         public static string buyerAssignedId {
             get {
                 return ResourceManager.GetString("buyerAssignedId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Karte.
+        /// </summary>
+        public static string card {
+            get {
+                return ResourceManager.GetString("card", resourceCulture);
             }
         }
         
@@ -237,6 +255,15 @@ namespace Pacioli.Language.Resources {
         public static string exception {
             get {
                 return ResourceManager.GetString("exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telefax.
+        /// </summary>
+        public static string fax {
+            get {
+                return ResourceManager.GetString("fax", resourceCulture);
             }
         }
         
@@ -349,6 +376,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Telefon.
+        /// </summary>
+        public static string phone {
+            get {
+                return ResourceManager.GetString("phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pos..
         /// </summary>
         public static string pos {
@@ -444,6 +480,15 @@ namespace Pacioli.Language.Resources {
         public static string sellerAssignedId {
             get {
                 return ResourceManager.GetString("sellerAssignedId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SEPA-Mandat.
+        /// </summary>
+        public static string sepaMandate {
+            get {
+                return ResourceManager.GetString("sepaMandate", resourceCulture);
             }
         }
         

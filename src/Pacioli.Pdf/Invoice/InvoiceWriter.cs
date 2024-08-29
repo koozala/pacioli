@@ -273,7 +273,7 @@ namespace Pacioli.Pdf.Invoice
                     foreach (var refdoc in item.AdditionalReferencedDocuments)
                     {
                         File.WriteAllBytes(System.IO.Path.Combine(attachmentsTargetPath, refdoc.Filename), refdoc.AttachmentBinaryObject);
-                        doc.Add(new Paragraph($"Attached document: {refdoc.Name} {refdoc.Filename}"));
+                        doc.Add(new Paragraph($"{Resources.attachment}: {refdoc.Name} {refdoc.Filename}"));
                     }
                 }
             }
@@ -295,8 +295,6 @@ namespace Pacioli.Pdf.Invoice
                 taxTab.AddCell(new ItemCellRight($"{tax.TaxAmount}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.ExemptionReason} {tax.ExemptionReasonCode}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.AllowanceChargeBasisAmount}"));
-                //Paragraph line = new Paragraph($"{tax.BasisAmount} {tax.TaxAmount} {tax.Percent} {tax.CategoryCode} {tax.ExemptionReason} {tax.ExemptionReasonCode} {tax.AllowanceChargeBasisAmount} {tax.CategoryCode}");
-                //doc.Add(line);
             }
             doc.Add(taxTab);
 
@@ -341,11 +339,11 @@ namespace Pacioli.Pdf.Invoice
             StringBuilder pmStr = new StringBuilder();
             if (!string.IsNullOrWhiteSpace(pm.Information)) pmStr.AppendLine(pm.Information);
             if (!string.IsNullOrWhiteSpace(pm.SEPACreditorIdentifier)) pmStr.AppendLine(pm.SEPACreditorIdentifier);
-            if (pm.FinancialCard != null) pmStr.AppendLine($"Karte: {pm.FinancialCard.Id} {pm.FinancialCard.CardholderName}");
-            if (!string.IsNullOrWhiteSpace(pm.SEPAMandateReference)) pmStr.AppendLine($"SEPA Mandat: {pm.SEPAMandateReference}");
+            if (pm.FinancialCard != null) pmStr.AppendLine($"{Resources.card}: {pm.FinancialCard.Id} {pm.FinancialCard.CardholderName}");
+            if (!string.IsNullOrWhiteSpace(pm.SEPAMandateReference)) pmStr.AppendLine($"{Resources.sepaMandate}: {pm.SEPAMandateReference}");
             if (pmStr.Length > 0)
             {
-                var paybox = new PartyBox("Zahlungsbedingungen", pmStr.ToString());
+                var paybox = new PartyBox($"{Resources.paymentTerms}", pmStr.ToString());
                 doc.Add(paybox);
             }
 
@@ -386,8 +384,8 @@ namespace Pacioli.Pdf.Invoice
                 if (!string.IsNullOrWhiteSpace(descriptor.SellerContact.Name)) scStr.AppendLine(descriptor.SellerContact.Name);
                 if (!string.IsNullOrWhiteSpace(descriptor.SellerContact.OrgUnit)) scStr.AppendLine(descriptor.SellerContact.OrgUnit);
                 if (!string.IsNullOrWhiteSpace(descriptor.SellerContact.EmailAddress)) scStr.AppendLine(descriptor.SellerContact.EmailAddress);
-                if (!string.IsNullOrWhiteSpace(descriptor.SellerContact.PhoneNo)) scStr.AppendLine($"Telefon: {descriptor.SellerContact.PhoneNo}");
-                if (!string.IsNullOrWhiteSpace(descriptor.SellerContact.FaxNo)) scStr.AppendLine($"Fax: {descriptor.SellerContact.FaxNo}");
+                if (!string.IsNullOrWhiteSpace(descriptor.SellerContact.PhoneNo)) scStr.AppendLine($"{Resources.phone}: {descriptor.SellerContact.PhoneNo}");
+                if (!string.IsNullOrWhiteSpace(descriptor.SellerContact.FaxNo)) scStr.AppendLine($"{Resources.fax}: {descriptor.SellerContact.FaxNo}");
                 if (scStr.Length > 0)
                 {
                     doc.Add(new PartyBox($"{Resources.contactSeller}", scStr.ToString()));
@@ -400,8 +398,8 @@ namespace Pacioli.Pdf.Invoice
                 if (!string.IsNullOrWhiteSpace(descriptor.BuyerContact.Name)) bcStr.AppendLine(descriptor.BuyerContact.Name);
                 if (!string.IsNullOrWhiteSpace(descriptor.BuyerContact.OrgUnit)) bcStr.AppendLine(descriptor.BuyerContact.OrgUnit);
                 if (!string.IsNullOrWhiteSpace(descriptor.BuyerContact.EmailAddress)) bcStr.AppendLine(descriptor.BuyerContact.EmailAddress);
-                if (!string.IsNullOrWhiteSpace(descriptor.BuyerContact.PhoneNo)) bcStr.AppendLine($"Telefon: {descriptor.BuyerContact.PhoneNo}");
-                if (!string.IsNullOrWhiteSpace(descriptor.BuyerContact.FaxNo)) bcStr.AppendLine($"Fax: {descriptor.BuyerContact.FaxNo}");
+                if (!string.IsNullOrWhiteSpace(descriptor.BuyerContact.PhoneNo)) bcStr.AppendLine($"{Resources.phone}: {descriptor.BuyerContact.PhoneNo}");
+                if (!string.IsNullOrWhiteSpace(descriptor.BuyerContact.FaxNo)) bcStr.AppendLine($"{Resources.fax}: {descriptor.BuyerContact.FaxNo}");
                 if (bcStr.Length > 0)
                 {
                     doc.Add(new PartyBox($"{Resources.contactBuyer}", bcStr.ToString()));
