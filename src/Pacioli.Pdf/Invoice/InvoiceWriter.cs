@@ -290,7 +290,7 @@ namespace Pacioli.Pdf.Invoice
             foreach (var tax in descriptor.Taxes)
             {
                 taxTab.AddCell(new ItemCellRight($"{tax.Percent.ToString("0.00")}"));
-                taxTab.AddCell(new ItemCellRight($"{tax.TypeCode.ToUnit()} {tax.CategoryCode.Value.ToUnit()}"));
+                taxTab.AddCell(new ItemCellRight($"{tax.TypeCode.ToUnit()} {(tax.CategoryCode == null ? string.Empty : tax.CategoryCode.Value.ToUnit())}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.BasisAmount}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.TaxAmount}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.ExemptionReason} {tax.ExemptionReasonCode}"));
@@ -303,7 +303,7 @@ namespace Pacioli.Pdf.Invoice
 
 
 
-            doc.Add(new Paragraph("Summenübersicht:").SetMarginTop(20.0f));
+            doc.Add(new Paragraph($"{Resources.sumOverview}:").SetMarginTop(20.0f));
             Table sumTab = new Table(2).SetFontSize(12).SetWidth(full).SetBorder(Border.NO_BORDER);
             sumTab.AddCell(new ItemCell($"{Resources.prepaid}"));
             sumTab.AddCell(new ItemCellRight($"{Fmt.ToString(descriptor.TotalPrepaidAmount, "#,0.00")}"));
@@ -372,10 +372,10 @@ namespace Pacioli.Pdf.Invoice
             {
                 StringBuilder sb = new StringBuilder();
                 if (!string.IsNullOrWhiteSpace(pt.Description)) sb.Append(pt.Description);
-                if (pt.DueDate.HasValue) sb.Append($"\n Fälligkeitsdatum: {pt.DueDate.Value.ToString("d")}");
+                if (pt.DueDate.HasValue) sb.Append($"\n{Resources.dueDate}: {pt.DueDate.Value.ToString("d")}");
                 if (sb.Length > 0)
                 {
-                    var tbox = new PartyBox("Fälligkeit", sb.ToString());
+                    var tbox = new PartyBox($"{Resources.dueDate}", sb.ToString());
                     doc.Add(tbox);
                 }
             }
@@ -390,7 +390,7 @@ namespace Pacioli.Pdf.Invoice
                 if (!string.IsNullOrWhiteSpace(descriptor.SellerContact.FaxNo)) scStr.AppendLine($"Fax: {descriptor.SellerContact.FaxNo}");
                 if (scStr.Length > 0)
                 {
-                    doc.Add(new PartyBox("Kontaktdaten Verkäufer", scStr.ToString()));
+                    doc.Add(new PartyBox($"{Resources.contactSeller}", scStr.ToString()));
                 }
             }
 
@@ -404,12 +404,12 @@ namespace Pacioli.Pdf.Invoice
                 if (!string.IsNullOrWhiteSpace(descriptor.BuyerContact.FaxNo)) bcStr.AppendLine($"Fax: {descriptor.BuyerContact.FaxNo}");
                 if (bcStr.Length > 0)
                 {
-                    doc.Add(new PartyBox("Kontaktdaten Käufer", bcStr.ToString()));
+                    doc.Add(new PartyBox($"{Resources.contactBuyer}", bcStr.ToString()));
                 }
             }
 
 
-            doc.Add(new Paragraph("Anmerkungen").SetFont(bold).SetFontSize(12.0f).SetMarginTop(20.0f));
+            doc.Add(new Paragraph($"{Resources.remarks}").SetFont(bold).SetFontSize(12.0f).SetMarginTop(20.0f));
 
             foreach (var note in descriptor.Notes.Where(x => x.SubjectCode == SubjectCodes.Unknown))
             {
@@ -420,7 +420,7 @@ namespace Pacioli.Pdf.Invoice
 
             foreach (var note in descriptor.Notes.Where(x => x.SubjectCode != SubjectCodes.Unknown))
             {
-                string code = note.SubjectCode == SubjectCodes.Unknown ? "[Anmerkung]" : note.SubjectCode.ToString();
+                string code = note.SubjectCode == SubjectCodes.Unknown ? $"[{Resources.remark}]" : note.SubjectCode.ToString();
                 Paragraph line = new Paragraph($"{note.Content}");
                 line.SetBackgroundColor(ColorConstants.LIGHT_GRAY);
                 doc.Add(line);

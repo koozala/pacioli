@@ -160,6 +160,24 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kontaktdaten Käufer.
+        /// </summary>
+        public static string contactBuyer {
+            get {
+                return ResourceManager.GetString("contactBuyer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kontaktdaten Verkäufer.
+        /// </summary>
+        public static string contactSeller {
+            get {
+                return ResourceManager.GetString("contactSeller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alle Beträge in.
         /// </summary>
         public static string currencyNote {
@@ -201,6 +219,15 @@ namespace Pacioli.Language.Resources {
         public static string docDate {
             get {
                 return ResourceManager.GetString("docDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fälligkeit.
+        /// </summary>
+        public static string dueDate {
+            get {
+                return ResourceManager.GetString("dueDate", resourceCulture);
             }
         }
         
@@ -313,6 +340,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Zahlungsbedingungen.
+        /// </summary>
+        public static string paymentTerms {
+            get {
+                return ResourceManager.GetString("paymentTerms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pos..
         /// </summary>
         public static string pos {
@@ -363,6 +399,24 @@ namespace Pacioli.Language.Resources {
         public static string refOrderDocument {
             get {
                 return ResourceManager.GetString("refOrderDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anmerkung.
+        /// </summary>
+        public static string remark {
+            get {
+                return ResourceManager.GetString("remark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anmerkungen.
+        /// </summary>
+        public static string remarks {
+            get {
+                return ResourceManager.GetString("remarks", resourceCulture);
             }
         }
         
@@ -421,6 +475,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Summenübersicht.
+        /// </summary>
+        public static string sumOverview {
+            get {
+                return ResourceManager.GetString("sumOverview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Steuersatz.
         /// </summary>
         public static string tax {
@@ -462,6 +525,15 @@ namespace Pacioli.Language.Resources {
         public static string taxSums {
             get {
                 return ResourceManager.GetString("taxSums", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test.
+        /// </summary>
+        public static string test {
+            get {
+                return ResourceManager.GetString("test", resourceCulture);
             }
         }
         

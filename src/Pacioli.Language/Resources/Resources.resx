@@ -261,4 +261,25 @@
   <data name="test" xml:space="preserve">
     <value>Test</value>
   </data>
+  <data name="paymentTerms" xml:space="preserve">
+    <value>Zahlungsbedingungen</value>
+  </data>
+  <data name="dueDate" xml:space="preserve">
+    <value>Fälligkeit</value>
+  </data>
+  <data name="remarks" xml:space="preserve">
+    <value>Anmerkungen</value>
+  </data>
+  <data name="sumOverview" xml:space="preserve">
+    <value>Summenübersicht</value>
+  </data>
+  <data name="contactSeller" xml:space="preserve">
+    <value>Kontaktdaten Verkäufer</value>
+  </data>
+  <data name="contactBuyer" xml:space="preserve">
+    <value>Kontaktdaten Käufer</value>
+  </data>
+  <data name="remark" xml:space="preserve">
+    <value>Anmerkung</value>
+  </data>
 </root>
