@@ -56,6 +56,12 @@ namespace Pacioli.Pdf.Invoice
             attachmentsTargetPath = _attachmentsTargetPath;
         }
 
+        public InvoiceWriter(Stream data, string _attachmentsTargetPath)
+        {
+            descriptor = InvoiceDescriptor.Load(data);
+            attachmentsTargetPath = _attachmentsTargetPath;
+        }
+
         public int CountAttachments()
         {
             return descriptor.TradeLineItems.Sum(x => x.AdditionalReferencedDocuments.Count);
@@ -141,6 +147,11 @@ namespace Pacioli.Pdf.Invoice
                 doc.Add(new PartyBox(Resources.buyer, descriptor.Buyer));
             }
 
+            if (!string.IsNullOrWhiteSpace(descriptor.ReferenceOrderNo))
+            {
+                doc.Add(new Paragraph($"{Resources.refOrder}: {descriptor.ReferenceOrderNo}"));
+            }
+
             StringBuilder reStr = new StringBuilder();
             if (!string.IsNullOrWhiteSpace(descriptor.InvoiceNo)) reStr.Append($"{Resources.invoiceNo}: {descriptor.InvoiceNo} ");
             if (!string.IsNullOrWhiteSpace(descriptor.Buyer.ID.ID))
@@ -214,7 +225,7 @@ namespace Pacioli.Pdf.Invoice
                         s1.AppendLine($"{Resources.sellerAssignedId}: {item.SellerAssignedID}");
                     }
 
-                    if (item.GlobalID != null)
+                    if (item.GlobalID != null && !string.IsNullOrWhiteSpace(item.GlobalID.ID))
                     {
                         s1.AppendLine($"{item.GlobalID.SchemeID} {item.GlobalID.ID}");
                     }
