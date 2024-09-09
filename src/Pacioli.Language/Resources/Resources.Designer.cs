@@ -430,6 +430,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bestellreferenz.
+        /// </summary>
+        public static string refOrder {
+            get {
+                return ResourceManager.GetString("refOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Referenz Bestelldokument.
         /// </summary>
         public static string refOrderDocument {

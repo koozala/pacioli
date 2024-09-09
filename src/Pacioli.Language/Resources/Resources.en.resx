@@ -297,4 +297,7 @@
   <data name="fax" xml:space="preserve">
     <value>Fax</value>
   </data>
+  <data name="refOrder" xml:space="preserve">
+    <value>Order reference</value>
+  </data>
 </root>
