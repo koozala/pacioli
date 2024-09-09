@@ -46,10 +46,10 @@
             pageNoTb = new TextBox();
             button2 = new Button();
             flowLayoutPanel2 = new FlowLayoutPanel();
+            attachmentInfoLbl = new Label();
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
             printDialog1 = new PrintDialog();
-            attachmentInfoLbl = new Label();
             menuStrip1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
@@ -79,28 +79,28 @@
             // öffnenToolStripMenuItem
             // 
             öffnenToolStripMenuItem.Name = "öffnenToolStripMenuItem";
-            öffnenToolStripMenuItem.Size = new Size(240, 34);
+            öffnenToolStripMenuItem.Size = new Size(270, 34);
             öffnenToolStripMenuItem.Text = "Öffnen";
             öffnenToolStripMenuItem.Click += öffnenToolStripMenuItem_Click;
             // 
             // speichernToolStripMenuItem
             // 
             speichernToolStripMenuItem.Name = "speichernToolStripMenuItem";
-            speichernToolStripMenuItem.Size = new Size(240, 34);
+            speichernToolStripMenuItem.Size = new Size(270, 34);
             speichernToolStripMenuItem.Text = "PDF Speichern...";
             speichernToolStripMenuItem.Click += speichernToolStripMenuItem_Click;
             // 
             // einstellungenToolStripMenuItem
             // 
             einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
-            einstellungenToolStripMenuItem.Size = new Size(240, 34);
+            einstellungenToolStripMenuItem.Size = new Size(270, 34);
             einstellungenToolStripMenuItem.Text = "Einstellungen";
             einstellungenToolStripMenuItem.Click += einstellungenToolStripMenuItem_Click;
             // 
             // beendenToolStripMenuItem
             // 
             beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
-            beendenToolStripMenuItem.Size = new Size(240, 34);
+            beendenToolStripMenuItem.Size = new Size(270, 34);
             beendenToolStripMenuItem.Text = "Beenden";
             beendenToolStripMenuItem.Click += beendenToolStripMenuItem_Click;
             // 
@@ -232,14 +232,6 @@
             flowLayoutPanel2.Size = new Size(237, 1159);
             flowLayoutPanel2.TabIndex = 8;
             // 
-            // openFileDialog1
-            // 
-            openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // printDialog1
-            // 
-            printDialog1.UseEXDialog = true;
-            // 
             // attachmentInfoLbl
             // 
             attachmentInfoLbl.AutoSize = true;
@@ -249,6 +241,14 @@
             attachmentInfoLbl.Size = new Size(159, 30);
             attachmentInfoLbl.TabIndex = 0;
             attachmentInfoLbl.Text = "Keine Anhänge";
+            // 
+            // openFileDialog1
+            // 
+            openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // printDialog1
+            // 
+            printDialog1.UseEXDialog = true;
             // 
             // MainForm
             // 
@@ -262,7 +262,6 @@
             Margin = new Padding(3, 4, 3, 4);
             Name = "MainForm";
             Text = "Pacioli - ERechnung zu PDF";
-            SizeChanged += MainForm_SizeChanged;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);

@@ -4,6 +4,7 @@ using Pacioli.Preview.ImageGeneration;
 using Pacioli.WindowsApp.NET8.Config;
 using Pacioli.WindowsApp.NET8.Util;
 using System.Globalization;
+using System.Windows.Forms;
 
 namespace Pacioli.WindowsApp.NET8
 {
@@ -43,6 +44,7 @@ namespace Pacioli.WindowsApp.NET8
                 cdb.SavePreferences(preferences);
                 try
                 {
+                    /* Convert to PDF and write to temp file */
                     Writer writer = new Writer(openFileDialog1.FileName, preferences.AttachmentOutputFolder);
                     writer.Write(pdfPath);
                     int countAttachments = writer.GetAttachmentCount();
@@ -52,6 +54,12 @@ namespace Pacioli.WindowsApp.NET8
                         aInfo = string.Format(Resources.attachmentsTxt, countAttachments);
                     }
                     attachmentInfoLbl.Text = aInfo;
+
+                    if (writer.IsZugferd)
+                    {
+                        DocViewerForm dcf = new DocViewerForm(openFileDialog1.FileName);
+                        dcf.Show();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -61,7 +69,6 @@ namespace Pacioli.WindowsApp.NET8
                 pageNumber = 0;
                 converter = new Converter(pdfPath);
                 UpdateImage();
-
             }
         }
 
@@ -86,19 +93,19 @@ namespace Pacioli.WindowsApp.NET8
         {
             if (converter != null)
             {
-                string imgPath = Path.GetTempFileName();
-                pageNumber = converter.Convert(pdfPath!, imgPath, pageNumber);
-                loadedImage = Image.FromFile(imgPath);
+                using (var imgStream = converter.ConvertToStream(ref pageNumber))
+                {
+                    loadedImage = Image.FromStream(imgStream);
+                    imgStream.Close();
+                }
 
-                float r = converter.PageSize.Width / converter.PageSize.Height;
-                int width = (int)(r * pictureBox.Height);
+                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                pictureBox.Image = loadedImage;
 
-                var resized = ImageResize.ResizeImage(loadedImage, width, pictureBox.Height);
-                pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
-                pictureBox.Image = resized;
                 pageNoTb.Text = (pageNumber + 1).ToString();
             }
         }
+
 
         private void speichernToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -115,11 +122,6 @@ namespace Pacioli.WindowsApp.NET8
             {
                 File.WriteAllBytes(saveFileDialog1.FileName, converter.PdfData!);
             }
-        }
-
-        private void MainForm_SizeChanged(object sender, EventArgs e)
-        {
-            UpdateImage();
         }
 
         private void überPacioliToolStripMenuItem_Click(object sender, EventArgs e)
