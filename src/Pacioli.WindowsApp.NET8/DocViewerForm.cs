@@ -18,11 +18,15 @@ namespace Pacioli.WindowsApp.NET8
         int pageNumber;
         Image? loadedImage = null;
 
-        public DocViewerForm(string fileName)
+        public DocViewerForm()
         {
             InitializeComponent();
-            Converter = new Converter(fileName);
             pageNumber = 0;
+        }
+
+        public void SetFile(string fileName)
+        {
+            Converter = new Converter(fileName);
             UpdateImage();
         }
 

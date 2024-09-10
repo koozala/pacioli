@@ -14,6 +14,7 @@ namespace Pacioli.WindowsApp.NET8
         string? pdfPath = null;
         int pageNumber = 0;
         Converter? converter = null;
+        DocViewerForm docViewer;
 
         public MainForm()
         {
@@ -57,8 +58,16 @@ namespace Pacioli.WindowsApp.NET8
 
                     if (writer.IsZugferd)
                     {
-                        DocViewerForm dcf = new DocViewerForm(openFileDialog1.FileName);
-                        dcf.Show();
+                        if (docViewer == null || docViewer.IsDisposed)
+                        {
+                            docViewer = new DocViewerForm();
+                        }
+                        docViewer.SetFile(openFileDialog1.FileName);
+                        docViewer.Show();
+                    }
+                    else if (docViewer != null && !docViewer.IsDisposed)
+                    {
+                        docViewer.Close();
                     }
                 }
                 catch (Exception ex)
