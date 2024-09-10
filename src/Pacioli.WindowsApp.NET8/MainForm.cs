@@ -39,7 +39,6 @@ namespace Pacioli.WindowsApp.NET8
             if (dr == DialogResult.OK)
             {
                 pdfPath = Path.GetTempFileName();
-                string imgPath = Path.GetTempFileName();
                 fileNameTb.Text = openFileDialog1.FileName;
                 preferences.DefaultFolder = Path.GetDirectoryName(openFileDialog1.FileName)!;
                 cdb.SavePreferences(preferences);
