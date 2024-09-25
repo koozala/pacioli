@@ -247,15 +247,30 @@ namespace Pacioli.Pdf.Invoice
                     }
                     if (item.BuyerOrderReferencedDocument != null)
                     {
-                        s1.AppendLine($"{Resources.refOrderDocument}: {item.BuyerOrderReferencedDocument.ID} {item.BuyerOrderReferencedDocument.IssueDateTime.Value.ToString("d")}");
+                        string t = $"{Resources.refOrderDocument}: {item.BuyerOrderReferencedDocument.ID}";
+                        if (item.BuyerOrderReferencedDocument.IssueDateTime.HasValue)
+                        {
+                            t += $" {item.BuyerOrderReferencedDocument.IssueDateTime.Value.ToString("d")}";
+                        }
+                        s1.AppendLine(t);
                     }
                     if (item.ContractReferencedDocument != null)
                     {
-                        s1.AppendLine($"{Resources.refContractdocument}: {item.ContractReferencedDocument.ID} {item.ContractReferencedDocument.IssueDateTime.Value.ToString("d")}");
+                        string t = $"{Resources.refContractdocument}: {item.ContractReferencedDocument.ID}";
+                        if (item.ContractReferencedDocument.IssueDateTime.HasValue)
+                        {
+                            t += $" {item.ContractReferencedDocument.IssueDateTime.Value.ToString("d")}";
+                        }
+                        s1.AppendLine(t);
                     }
                     if (item.DeliveryNoteReferencedDocument != null)
                     {
-                        s1.AppendLine($"{Resources.refDeliveryNote}: {item.DeliveryNoteReferencedDocument.ID} {item.DeliveryNoteReferencedDocument.IssueDateTime.Value.ToString("d")}");
+                        string t = $"{Resources.refDeliveryNote}: {item.DeliveryNoteReferencedDocument.ID}";
+                        if (item.DeliveryNoteReferencedDocument.IssueDateTime.HasValue)
+                        {
+                            t += $" {item.DeliveryNoteReferencedDocument.IssueDateTime.Value.ToString("d")}";
+                        }
+                        s1.AppendLine(t);
                     }
                     if (!string.IsNullOrWhiteSpace(item.BuyerAssignedID))
                     {
