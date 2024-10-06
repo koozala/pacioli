@@ -373,12 +373,6 @@ namespace Pacioli.Pdf.Invoice
                 doc.Add(paybox);
             }
 
-            foreach (var acct in descriptor.DebitorBankAccounts)
-            {
-                Paragraph line = new Paragraph($"{acct.Name} {acct.IBAN} {acct.BankName}");
-                doc.Add(line);
-            }
-
             //Paragraph termsLine = new Paragraph($"{descriptor.PaymentTerms.Description} {descriptor.PaymentTerms.DueDate}").SetMarginTop(20.0f);
             //doc.Add(termsLine);
 
