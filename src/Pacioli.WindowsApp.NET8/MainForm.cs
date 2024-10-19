@@ -1,8 +1,12 @@
-﻿using Pacioli.Language.Resources;
+﻿using iText.Commons.Utils;
+using Pacioli.Config.Persistence;
+using Pacioli.Language.Resources;
 using Pacioli.Pdf.Invoice;
 using Pacioli.Preview.ImageGeneration;
-using Pacioli.WindowsApp.NET8.Config;
+using Pacioli.WindowsApp.NET8.Controls;
 using Pacioli.WindowsApp.NET8.Util;
+using System.Diagnostics;
+using System.Drawing.Printing;
 using System.Globalization;
 using System.Windows.Forms;
 
@@ -10,21 +14,34 @@ namespace Pacioli.WindowsApp.NET8
 {
     public partial class MainForm : Form
     {
-        Image? loadedImage = null;
         string? pdfPath = null;
         int pageNumber = 0;
         Converter? converter = null;
+        Converter? original = null;
         DocViewerForm docViewer;
+
+        DocViewPanel docPanelDerived;
+        DocViewPanel docPanelOriginal;
+
+        ConfigDb cdb;
 
         public MainForm()
         {
             InitializeComponent();
-            button1.Text = "\u25C0";
-            button2.Text = "\u25B6";
 
-            ConfigDb cdb = new ConfigDb();
+            docPanelDerived = new DocViewPanel("Konvertiert");
+            docPanelOriginal = new DocViewPanel("Original PDF");
+
+            tableLayoutPanel1.Controls.Add(docPanelDerived);
+            tableLayoutPanel1.SetCellPosition(docPanelDerived, new TableLayoutPanelCellPosition(1, 1));
+            docPanelDerived.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Controls.Add(docPanelOriginal);
+            tableLayoutPanel1.SetCellPosition(docPanelOriginal, new TableLayoutPanelCellPosition(2, 1));
+            docPanelOriginal.Dock = DockStyle.Fill;
+
+            cdb = new ConfigDb();
             UserPreferences preferences = cdb.ReadPreferences();
-            CultureInfo.CurrentCulture = new CultureInfo(preferences.LanguageCode);
+            preferences.SetCulture();
         }
 
         private void öffnenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -42,6 +59,9 @@ namespace Pacioli.WindowsApp.NET8
                 fileNameTb.Text = openFileDialog1.FileName;
                 preferences.DefaultFolder = Path.GetDirectoryName(openFileDialog1.FileName)!;
                 cdb.SavePreferences(preferences);
+
+                original = null;
+
                 try
                 {
                     /* Convert to PDF and write to temp file */
@@ -55,14 +75,23 @@ namespace Pacioli.WindowsApp.NET8
                     }
                     attachmentInfoLbl.Text = aInfo;
 
+                    docPanelDerived.SetDocument(pdfPath);
+
                     if (writer.IsZugferd)
                     {
-                        if (docViewer == null || docViewer.IsDisposed)
-                        {
-                            docViewer = new DocViewerForm();
-                        }
-                        docViewer.SetFile(openFileDialog1.FileName);
-                        docViewer.Show();
+                        //if (docViewer == null || docViewer.IsDisposed)
+                        //{
+                        //    docViewer = new DocViewerForm();
+                        //}
+                        //docViewer.SetFile(openFileDialog1.FileName);
+                        //docViewer.Show();
+                        //docViewer.Top = this.Top;
+                        //docViewer.Left = this.Left + this.Width;
+                        //docViewer.Height = this.Height;
+                        //docViewer.Width = this.Width;
+
+                        original = new Converter(openFileDialog1.FileName);
+                        docPanelOriginal.SetDocument(openFileDialog1.FileName);
                     }
                     else if (docViewer != null && !docViewer.IsDisposed)
                     {
@@ -85,32 +114,23 @@ namespace Pacioli.WindowsApp.NET8
             Application.Exit();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            pageNumber--;
-            UpdateImage();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            pageNumber++;
-            UpdateImage();
-        }
-
         private void UpdateImage()
         {
             if (converter != null)
             {
-                using (var imgStream = converter.ConvertToStream(ref pageNumber))
-                {
-                    loadedImage = Image.FromStream(imgStream);
-                    imgStream.Close();
-                }
+                docPanelDerived.Visible = true;
+                docPanelDerived.FF_Picture.SizeMode = PictureBoxSizeMode.Zoom;
+            }
 
-                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                pictureBox.Image = loadedImage;
-
-                pageNoTb.Text = (pageNumber + 1).ToString();
+            if (original != null)
+            {
+                docPanelOriginal.Visible = true;
+                docPanelOriginal.FF_Picture.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+            else
+            {
+                //pbOriginal.Image = null;
+                docPanelOriginal.Visible = false;
             }
         }
 
@@ -123,12 +143,28 @@ namespace Pacioli.WindowsApp.NET8
                 return;
             }
 
-            saveFileDialog1.InitialDirectory = openFileDialog1.InitialDirectory;
+            var pref = cdb.ReadPreferences();
+
+            saveFileDialog1.InitialDirectory = pref.AttachmentOutputFolder;
             saveFileDialog1.FileName = Path.GetFileNameWithoutExtension(fileNameTb.Text) + ".pdf";
             var result = saveFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
+                pref.AttachmentOutputFolder = Path.GetDirectoryName(saveFileDialog1.FileName)!;
+                cdb.SavePreferences(pref);
+
                 File.WriteAllBytes(saveFileDialog1.FileName, converter.PdfData!);
+
+                if (pref.OpenAfterSave)
+                {
+                    ProcessStartInfo info = new ProcessStartInfo
+                    {
+                        FileName = saveFileDialog1.FileName,
+                        UseShellExecute = true
+                    };
+                    Process.Start(info);
+                    //Process.Start(saveFileDialog1.FileName);
+                }
             }
         }
 
@@ -141,6 +177,70 @@ namespace Pacioli.WindowsApp.NET8
         {
             var settingsForm = new AppSettingsForm();
             settingsForm.ShowDialog();
+        }
+
+        private void druckenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PrintPdf(pdfPath!);
+
+            //PrintDialog printDialog = new PrintDialog();
+            //PrintDocument printDocument = new PrintDocument();
+            //printDocument.DocumentName = fileNameTb.Text;
+            //printDialog.Document = printDocument;
+            //printDialog.AllowSelection = true;
+            //printDialog.AllowSomePages = true;
+            //if (printDialog.ShowDialog() == DialogResult.OK)
+            //{
+            //    //PrintPdfFile(printDialog.PrinterSettings.PrinterName, fileNameTb.Text);
+            //    PrintPdf(pdfPath!);
+            //    //printDocument.PrintPage += new PrintPageEventHandler(printDialog_PrintPage);
+            //    //printDocument.Print();
+            //}
+        }
+
+        private void PrintPdfFile(string printerName, string filename)
+        {
+            string pathToGs = @"C:\Program Files\gs\gs10.04.0\bin\gswin64.exe";
+            var procInfo = new ProcessStartInfo
+            {
+                FileName = pathToGs,
+                Arguments = $"-dPrinted -dBATCH -dNOPAUSE -sDEVICE=mswinpr2 -dNoCancel -sPAPERSIZE=a4 -dPDFFitPage -sOutputFile=\"%printer%{printerName}\" \"{filename}\""
+            };
+
+            Process.Start(procInfo);
+        }
+
+        private void PrintPdf(string fileName)
+        {
+            string pathToSumatra = @"C:\sw\SumatraPDF\SumatraPDF-3.5.2-64.exe";
+            var procInfo = new ProcessStartInfo
+            {
+                FileName = pathToSumatra,
+                Arguments = $"-print-dialog -silent \"{fileName}\""
+            };
+            Process.Start(procInfo);
+        }
+
+        private void printDialog_PrintPage(object sender, PrintPageEventArgs ev)
+        {
+            if (converter == null)
+            {
+                return;
+            }
+
+            using (var imgStream = converter.ConvertToStream(ref pageNumber))
+            {
+                var width = ev.MarginBounds.Width * 2;
+                var height = ev.MarginBounds.Height * 2;
+                var img = Image.FromStream(imgStream);
+                var newImg = ImageResize.ResizeImage(img, (int)width, (int)height);
+                ev.Graphics!.DrawImage(newImg, ev.Graphics!.VisibleClipBounds.Location);
+            }
+        }
+
+        private void pictureBox_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

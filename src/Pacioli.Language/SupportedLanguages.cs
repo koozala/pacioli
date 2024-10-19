@@ -12,6 +12,7 @@ namespace Pacioli.Language
 
         public SupportedLanguages() { 
             Languages = new List<LanguageDescriptor>();
+            Languages.Add(new LanguageDescriptor()); // System Default
             Languages.Add(new LanguageDescriptor("de", "Deutsch"));
             Languages.Add(new LanguageDescriptor("en", "English"));
             Languages.Add(new LanguageDescriptor("fr", "Francais")); // TBD

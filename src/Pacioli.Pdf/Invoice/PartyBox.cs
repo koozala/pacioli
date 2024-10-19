@@ -13,53 +13,59 @@ namespace Pacioli.Pdf.Invoice
             var bold = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
             Text t1 = new Text($"{title}\n").SetFont(bold);
             this.Add(t1)
-                .Add(new Text($"{text}"))
                 .SetPadding(5.0f)
                 .SetBorder(new SolidBorder(2.0f));
+            AddText(text);
         }
 
         public PartyBox(string title, Party party)
         {
             var bold = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
-            Text t1 = new Text($"{title}\n").SetFont(bold);
+            Text t1 = new Text($"{title}\n").SetFont(bold).SetFontSize(12.0f);
             this.Add(t1);
 
             if (!string.IsNullOrWhiteSpace(party.Name))
             {
-                this.Add($"{party.Name}\n");
+                AddText($"{party.Name}\n");
             }
 
             if (!string.IsNullOrWhiteSpace(party.ContactName))
             {
-                this.Add($"{party.ContactName}\n");
+                AddText($"{party.ContactName}\n");
             }
 
             if (!string.IsNullOrWhiteSpace(party.AddressLine3))
             {
-                this.Add($"{party.AddressLine3}");
+                AddText($"{party.AddressLine3}");
             }
 
             if (!string.IsNullOrWhiteSpace(party.Street))
             {
-                this.Add($"{party.Street}\n");
+                AddText($"{party.Street}\n");
             }
 
             if (!string.IsNullOrWhiteSpace(party.City))
             {
-                this.Add($"{party.Postcode} {party.City}\n");
+                AddText($"{party.Postcode} {party.City}\n");
             }
 
             if (!string.IsNullOrWhiteSpace(party.Country.ToString()))
             {
-                this.Add($"{party.Country}\n");
+                AddText($"{party.Country}\n");
             }
 
             string t = party.ID.SchemeID != GlobalIDSchemeIdentifiers.Unknown ? party.ID.SchemeID.ToString() : string.Empty;
-            this.Add($"{t} {party.ID.ID}\n");
+            AddText($"{t} {party.ID.ID}\n");
 
             this
                 .SetPadding(5.0f)
                 .SetBorder(new SolidBorder(2.0f));
+        }
+
+        void AddText(string text)
+        {
+            Text t = new Text(text).SetFontSize(10f);
+            this.Add(t);
         }
     }
 }

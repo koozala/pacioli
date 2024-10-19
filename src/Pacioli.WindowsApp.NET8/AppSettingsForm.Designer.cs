@@ -36,6 +36,8 @@
             folderBrowserDialog1 = new FolderBrowserDialog();
             languageLbl = new Label();
             languageCombo = new ComboBox();
+            label2 = new Label();
+            F_OpenAfterSave = new CheckBox();
             SuspendLayout();
             // 
             // label1
@@ -66,7 +68,7 @@
             // 
             // saveBtn
             // 
-            saveBtn.Location = new Point(27, 176);
+            saveBtn.Location = new Point(30, 260);
             saveBtn.Name = "saveBtn";
             saveBtn.Size = new Size(112, 34);
             saveBtn.TabIndex = 3;
@@ -77,7 +79,7 @@
             // languageLbl
             // 
             languageLbl.AutoSize = true;
-            languageLbl.Location = new Point(30, 99);
+            languageLbl.Location = new Point(30, 98);
             languageLbl.Name = "languageLbl";
             languageLbl.Size = new Size(75, 25);
             languageLbl.TabIndex = 4;
@@ -91,11 +93,32 @@
             languageCombo.Size = new Size(387, 33);
             languageCombo.TabIndex = 5;
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(27, 161);
+            label2.Name = "label2";
+            label2.Size = new Size(153, 25);
+            label2.TabIndex = 6;
+            label2.Text = "Als PDF speichern";
+            // 
+            // F_OpenAfterSave
+            // 
+            F_OpenAfterSave.AutoSize = true;
+            F_OpenAfterSave.Location = new Point(323, 160);
+            F_OpenAfterSave.Name = "F_OpenAfterSave";
+            F_OpenAfterSave.Size = new Size(308, 29);
+            F_OpenAfterSave.TabIndex = 7;
+            F_OpenAfterSave.Text = "PDF Viewer nach Speichern öffnen";
+            F_OpenAfterSave.UseVisualStyleBackColor = true;
+            // 
             // AppSettingsForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(803, 269);
+            ClientSize = new Size(803, 327);
+            Controls.Add(F_OpenAfterSave);
+            Controls.Add(label2);
             Controls.Add(languageCombo);
             Controls.Add(languageLbl);
             Controls.Add(saveBtn);
@@ -118,5 +141,7 @@
         private FolderBrowserDialog folderBrowserDialog1;
         private Label languageLbl;
         private ComboBox languageCombo;
+        private Label label2;
+        private CheckBox F_OpenAfterSave;
     }
 }

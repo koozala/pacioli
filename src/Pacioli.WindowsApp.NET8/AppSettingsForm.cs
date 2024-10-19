@@ -1,7 +1,7 @@
-﻿using Pacioli.Language;
+﻿using Pacioli.Config.Persistence;
+using Pacioli.Language;
 using Pacioli.Language.Languages;
 using Pacioli.Language.Resources;
-using Pacioli.WindowsApp.NET8.Config;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,6 +36,7 @@ namespace Pacioli.WindowsApp.NET8
             {
                 languageCombo.SelectedItem = selectedLanguage;
             }
+            F_OpenAfterSave.Checked = pref.OpenAfterSave;
         }
 
         private void selectFolderBtn_Click(object sender, EventArgs e)
@@ -56,13 +57,11 @@ namespace Pacioli.WindowsApp.NET8
             {
                 pref.LanguageCode = ((LanguageDescriptor)languageCombo.SelectedItem).Code;
             }
+            pref.OpenAfterSave = F_OpenAfterSave.Checked;
             cdb.SavePreferences(pref);
             this.Close();
 
-            CultureInfo.CurrentCulture = new CultureInfo(pref.LanguageCode);
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(pref.LanguageCode);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(pref.LanguageCode);
-            Resources.Culture = new CultureInfo(pref.LanguageCode);
+            pref.SetCulture();
         }
     }
 }

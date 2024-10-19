@@ -1,13 +1,14 @@
 ﻿using Microsoft.Data.Sqlite;
+using Pacioli.Config.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pacioli.WindowsApp.NET8.Config
+namespace Pacioli.Config.Persistence
 {
-    internal class ConfigDb
+    public class ConfigDb
     {
         string connectionString = "Data Source=pacioli.db";
 
@@ -23,7 +24,7 @@ namespace Pacioli.WindowsApp.NET8.Config
             }
         }
 
-        internal UserPreferences ReadPreferences()
+        public UserPreferences ReadPreferences()
         {
             CreateTable();
             using (var connection = new SqliteConnection(connectionString))
@@ -33,7 +34,7 @@ namespace Pacioli.WindowsApp.NET8.Config
                 var command = connection.CreateCommand();
                 command.CommandText =
                     @"
-SELECT User, Folder, AttachmentFolder, Language
+SELECT User, Folder, AttachmentFolder, Language, OpenAfterSave
 FROM UserPreferences
 WHERE User = $user
 ";
@@ -45,13 +46,16 @@ WHERE User = $user
                         preferences.DefaultFolder = (string)reader["Folder"];
                         preferences.AttachmentOutputFolder = (string)reader["AttachmentFolder"];
                         preferences.LanguageCode = (string)reader["Language"];
+                        preferences.OpenAfterSave = IntToBool((long)reader["OpenAfterSave"]);
+                        var y = preferences.OpenAfterSave;
+                        var x = reader["OpenAfterSave"];
                     }
                 }
                 return preferences;
             }
         }
 
-        internal void SavePreferences(UserPreferences pref)
+        public void SavePreferences(UserPreferences pref)
         {
             CreateTable();
             using (var connection = new SqliteConnection(connectionString))
@@ -61,13 +65,10 @@ WHERE User = $user
                 command.CommandText =
                     @"
 UPDATE UserPreferences
-SET Folder = $folder, AttachmentFolder = $attachFlr, Language = $lang
+SET Folder = $folder, AttachmentFolder = $attachFlr, Language = $lang, OpenAfterSave = $openAfterSave
 WHERE User = $user
 ";
-                command.Parameters.AddWithValue("$user", pref.UserName);
-                command.Parameters.AddWithValue("$folder", pref.DefaultFolder);
-                command.Parameters.AddWithValue("$attachFlr", pref.AttachmentOutputFolder);
-                command.Parameters.AddWithValue("$lang", pref.LanguageCode);
+                AddParameters(command, pref);
                 var r = command.ExecuteNonQuery();
                 if (r == 0)
                 {
@@ -75,15 +76,26 @@ WHERE User = $user
                     command2.CommandText =
                         @"
 INSERT INTO UserPreferences
-VALUES ($user, $folder, $attachFlr, $lang)
+VALUES ($user, $folder, $attachFlr, $lang, $openAfterSave)
 ";
-                    command2.Parameters.AddWithValue("$user", pref.UserName);
-                    command2.Parameters.AddWithValue("$folder", pref.DefaultFolder);
-                    command2.Parameters.AddWithValue("$attachFlr", pref.AttachmentOutputFolder);
-                    command2.Parameters.AddWithValue("$lang", pref.LanguageCode);
-                    command2.ExecuteNonQuery();
+                    AddParameters(command2, pref);
+                    r = command2.ExecuteNonQuery();
                 }
             }
+        }
+
+        void AddParameters(SqliteCommand command, UserPreferences pref)
+        {
+            command.Parameters.AddWithValue("$user", pref.UserName);
+            command.Parameters.AddWithValue("$folder", pref.DefaultFolder);
+            command.Parameters.AddWithValue("$attachFlr", pref.AttachmentOutputFolder);
+            command.Parameters.AddWithValue("$lang", pref.LanguageCode);
+            command.Parameters.AddWithValue("$openAfterSave", pref.OpenAfterSave);
+        }
+
+        bool IntToBool(long value)
+        {
+            return value != 0 ? true : false;
         }
 
         void CreateTable()
@@ -94,7 +106,7 @@ VALUES ($user, $folder, $attachFlr, $lang)
                 var command = connection.CreateCommand();
                 command.CommandText =
                     @"
-CREATE TABLE IF NOT EXISTS UserPreferences (User varchar(100), Folder varchar(500), AttachmentFolder varchar(500), Language varchar(16))
+CREATE TABLE IF NOT EXISTS UserPreferences (User TEXT, Folder TEXT, AttachmentFolder TEXT, Language TEXT, OpenAfterSave BOOLEAN)
 ";
                 command.ExecuteNonQuery();
             }
