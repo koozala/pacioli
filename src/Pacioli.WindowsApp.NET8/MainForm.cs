@@ -29,7 +29,7 @@ namespace Pacioli.WindowsApp.NET8
         {
             InitializeComponent();
 
-            docPanelDerived = new DocViewPanel("Konvertiert");
+            docPanelDerived = new DocViewPanel("E-Rechnung");
             docPanelOriginal = new DocViewPanel("Original PDF");
 
             tableLayoutPanel1.Controls.Add(docPanelDerived);
