@@ -178,48 +178,6 @@ namespace Pacioli.WindowsApp.NET8
             var settingsForm = new AppSettingsForm();
             settingsForm.ShowDialog();
         }
-
-        private void druckenToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            PrintPdf(pdfPath!);
-
-            //PrintDialog printDialog = new PrintDialog();
-            //PrintDocument printDocument = new PrintDocument();
-            //printDocument.DocumentName = fileNameTb.Text;
-            //printDialog.Document = printDocument;
-            //printDialog.AllowSelection = true;
-            //printDialog.AllowSomePages = true;
-            //if (printDialog.ShowDialog() == DialogResult.OK)
-            //{
-            //    //PrintPdfFile(printDialog.PrinterSettings.PrinterName, fileNameTb.Text);
-            //    PrintPdf(pdfPath!);
-            //    //printDocument.PrintPage += new PrintPageEventHandler(printDialog_PrintPage);
-            //    //printDocument.Print();
-            //}
-        }
-
-        private void PrintPdfFile(string printerName, string filename)
-        {
-            string pathToGs = @"C:\Program Files\gs\gs10.04.0\bin\gswin64.exe";
-            var procInfo = new ProcessStartInfo
-            {
-                FileName = pathToGs,
-                Arguments = $"-dPrinted -dBATCH -dNOPAUSE -sDEVICE=mswinpr2 -dNoCancel -sPAPERSIZE=a4 -dPDFFitPage -sOutputFile=\"%printer%{printerName}\" \"{filename}\""
-            };
-
-            Process.Start(procInfo);
-        }
-
-        private void PrintPdf(string fileName)
-        {
-            string pathToSumatra = @"C:\sw\SumatraPDF\SumatraPDF-3.5.2-64.exe";
-            var procInfo = new ProcessStartInfo
-            {
-                FileName = pathToSumatra,
-                Arguments = $"-print-dialog -silent \"{fileName}\""
-            };
-            Process.Start(procInfo);
-        }
-
+       
     }
 }
