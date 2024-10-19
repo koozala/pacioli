@@ -1,7 +1,7 @@
 # pacioli
 A reader and converter for electronic invoices that adhere to the EN16931 standard.
 
-Pacioli can read XML files representing electronic invoices, show a preview, and save a PDF version of the invoice.
+Pacioli can read XML and ZUGFeRD files representing electronic invoices, show a preview, and save a PDF version of the invoice.
 
 You can download the latest release for Windows [here](https://github.com/koozala/pacioli/releases/latest).
 
