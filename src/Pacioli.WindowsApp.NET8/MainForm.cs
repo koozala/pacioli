@@ -221,22 +221,5 @@ namespace Pacioli.WindowsApp.NET8
             Process.Start(procInfo);
         }
 
-        private void printDialog_PrintPage(object sender, PrintPageEventArgs ev)
-        {
-            if (converter == null)
-            {
-                return;
-            }
-
-            using (var imgStream = converter.ConvertToStream(ref pageNumber))
-            {
-                var width = ev.MarginBounds.Width * 2;
-                var height = ev.MarginBounds.Height * 2;
-                var img = Image.FromStream(imgStream);
-                var newImg = ImageResize.ResizeImage(img, (int)width, (int)height);
-                ev.Graphics!.DrawImage(newImg, ev.Graphics!.VisibleClipBounds.Location);
-            }
-        }
-
     }
 }
