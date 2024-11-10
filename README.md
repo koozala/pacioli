@@ -1,6 +1,8 @@
 # pacioli
 A reader and converter for electronic invoices that adhere to the EN16931 standard.
 
+_Lesen und Anzeigen von E-Rechnungen sowie Konvertierung nach PDF. Die neueste Version findet sich [hier](https://github.com/koozala/pacioli/releases/latest)._
+
 Pacioli can read XML and ZUGFeRD files representing electronic invoices, show a preview, and save a PDF version of the invoice.
 
 You can download the latest release for Windows [here](https://github.com/koozala/pacioli/releases/latest).
