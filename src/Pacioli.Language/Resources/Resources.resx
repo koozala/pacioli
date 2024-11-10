@@ -300,4 +300,7 @@
   <data name="refOrder" xml:space="preserve">
     <value>Bestellreferenz</value>
   </data>
+  <data name="days" xml:space="preserve">
+    <value>Tage</value>
+  </data>
 </root>

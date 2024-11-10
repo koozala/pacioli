@@ -214,6 +214,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tage.
+        /// </summary>
+        public static string days {
+            get {
+                return ResourceManager.GetString("days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lieferdatum.
         /// </summary>
         public static string deliveryDate {

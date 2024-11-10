@@ -5,7 +5,7 @@
 #define MyAppVersion "v0.4-alpha"
 #define MyAppPublisher "koozala"
 #define MyAppURL "https://github.com/koozala/pacioli"
-#define MyAppExeName "Pacioli.WindowsApp.NET8.exe"
+#define MyAppExeName "Pacioli.exe"
 #define MyAppAssocName MyAppName + ""
 #define MyAppAssocExt ".exe"
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
@@ -69,6 +69,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "S:\wrk\Projekte\RechPdf\Pacioli.NET.Selfcontained\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "S:\wrk\Projekte\RechPdf\Pacioli.NET.Selfcontained\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "S:\wrk\Projekte\RechPdf\Pacioli.Commandline\PacioliC.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "S:\wrk\Projekte\RechPdf\Pacioli.Commandline\PacioliC.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]

@@ -64,7 +64,7 @@ namespace Pacioli.Pdf.Invoice
 
         public int CountAttachments()
         {
-            return descriptor.TradeLineItems.Sum(x => x.AdditionalReferencedDocuments.Count);
+            return descriptor.TradeLineItems.Sum(x => x.GetAdditionalReferencedDocuments().Count);
         }
 
         public void Write(string outputFileName)
@@ -294,9 +294,9 @@ namespace Pacioli.Pdf.Invoice
 
             foreach (var item in descriptor.TradeLineItems)
             {
-                if (item.AdditionalReferencedDocuments.Count > 0)
+                if (item.GetAdditionalReferencedDocuments().Count > 0)
                 {
-                    foreach (var refdoc in item.AdditionalReferencedDocuments)
+                    foreach (var refdoc in item.GetAdditionalReferencedDocuments())
                     {
                         if (attachmentsTargetPath != null)
                         {
@@ -388,16 +388,20 @@ namespace Pacioli.Pdf.Invoice
                 doc.Add(new Paragraph($"{descriptor.BuyerElectronicAddress.ElectronicAddressSchemeID} {descriptor.BuyerElectronicAddress.Address}"));
             }
 
-            var pt = descriptor.PaymentTerms;
-            if (pt != null)
+            var pts = descriptor.GetTradePaymentTerms();
+            if (pts != null)
             {
-                StringBuilder sb = new StringBuilder();
-                if (!string.IsNullOrWhiteSpace(pt.Description)) sb.Append(pt.Description);
-                if (pt.DueDate.HasValue) sb.Append($"\n{Resources.dueDate}: {pt.DueDate.Value.ToString("d")}");
-                if (sb.Length > 0)
+                foreach (var pt in pts)
                 {
-                    var tbox = new PartyBox($"{Resources.dueDate}", sb.ToString());
-                    doc.Add(tbox);
+                    StringBuilder sb = new StringBuilder();
+                    if (!string.IsNullOrWhiteSpace(pt.Description)) sb.Append(pt.Description);
+                    if (pt.DueDate.HasValue) sb.Append($"\n{Resources.dueDate}: {pt.DueDate.Value.ToString("d")}");
+                    if (pt.DueDays.HasValue) sb.Append($"\n{Resources.dueDate}: {pt.DueDays.Value} {Resources.days}");
+                    if (sb.Length > 0)
+                    {
+                        var tbox = new PartyBox($"{Resources.dueDate}", sb.ToString());
+                        doc.Add(tbox);
+                    }
                 }
             }
 

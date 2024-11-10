@@ -17,7 +17,7 @@ namespace Pacioli.Config.Persistence.Test
             pref.OpenAfterSave = false;
             configDb.SavePreferences(pref);
             pref = configDb.ReadPreferences();
-            Assert.IsFalse(pref.OpenAfterSave);
+            Assert.That(pref.OpenAfterSave, Is.False);
         }
     }
 }
