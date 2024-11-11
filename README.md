@@ -1,12 +1,17 @@
 # pacioli
 A reader and converter for electronic invoices that adhere to the EN16931 standard.
 
+_Lesen und Anzeigen von E-Rechnungen sowie Konvertierung nach PDF. Die neueste Version findet sich [hier](https://github.com/koozala/pacioli/releases/latest)._
+
 Pacioli can read XML and ZUGFeRD files representing electronic invoices, show a preview, and save a PDF version of the invoice.
 
 You can download the latest release for Windows [here](https://github.com/koozala/pacioli/releases/latest).
 
 <img src="https://github.com/koozala/pacioli/blob/main/doc/Pacioli_Screenshot_1.png" width="450">
 
+## Command Line Utility
+
+The package includes a command line `pacioli-cmd.exe` that can be used to process E-Rechnung/Zugferd files in batch jobs and similar scenarios.
 
 # Platform
 This program is intended for use on Windows. It's based on .NET 8 and the GUI is implemented with Windows Forms.
