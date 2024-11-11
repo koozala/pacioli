@@ -9,6 +9,9 @@ You can download the latest release for Windows [here](https://github.com/koozal
 
 <img src="https://github.com/koozala/pacioli/blob/main/doc/Pacioli_Screenshot_1.png" width="450">
 
+## Command Line Utility
+
+The package includes a command line `pacioli-cmd.exe` that can be used to process E-Rechnung/Zugferd files in batch jobs and similar scenarios.
 
 # Platform
 This program is intended for use on Windows. It's based on .NET 8 and the GUI is implemented with Windows Forms.
