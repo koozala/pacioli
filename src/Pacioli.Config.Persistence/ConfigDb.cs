@@ -10,10 +10,13 @@ namespace Pacioli.Config.Persistence
 {
     public class ConfigDb
     {
-        string connectionString = "Data Source=pacioli.db";
+        string connectionString;
 
         public ConfigDb()
         {
+            string mydoc = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            connectionString = $@"Data Source={mydoc}\pacioli.db";
+
             try
             {
                 var pref = ReadPreferences();

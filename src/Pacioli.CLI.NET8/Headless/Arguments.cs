@@ -8,22 +8,48 @@ namespace Pacioli.CLI.NET8.Headless
 {
     internal class Arguments
     {
+        public bool NoArgs = true;
+        public bool? Help {  get; set; } = null;
         public string? InputFile { get; set; } = null;
-        public string? OutputFile { get; set; } = null;
+        public string? OutputFolder { get; set; } = null;
+        public bool? GenPdf { get; set; } = null;
+        public string? PdfName { get; set; } = null;
+        public string? XmlName { get; set; } = null;
 
         public Arguments(string[] args)
         {
             int i = 0;
             while (i < args.Length)
             {
-                if (args[i] == "-in")
+                NoArgs = false;
+                if (args[i] == "-?")
+                {
+                    Help = true;
+                    i++;
+                }
+                else if (args[i] == "-in")
                 {
                     InputFile = args[i + 1];
                     i += 2;
                 }
-                else if (args[i] == "-out")
+                else if (args[i] == "-output-folder")
                 {
-                    OutputFile = args[i + 1];
+                    OutputFolder = args[i + 1];
+                    i += 2;
+                }
+                else if (args[i] == "-genpdf")
+                {
+                    GenPdf = true;
+                    i++;
+                }
+                else if (args[i] == "-pdfname")
+                {
+                    PdfName = args[i + 1];
+                    i += 2;
+                }
+                else if (args[i] == "-xmlname")
+                {
+                    XmlName = args[i + 1];
                     i += 2;
                 }
                 else

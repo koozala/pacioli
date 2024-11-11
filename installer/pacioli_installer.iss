@@ -30,7 +30,7 @@ LicenseFile=C:\wrk\repos\Rechnungsdruck_AS400_PDF\Pacioli - OSS ERechnung PDF\gi
 PrivilegesRequiredOverridesAllowed=dialog
 OutputDir=S:\wrk\Projekte\RechPdf\Pacioli.Installer
 OutputBaseFilename=paciolisetup
-SetupIconFile=C:\wrk\repos\Rechnungsdruck_AS400_PDF\Graphics\Pacioli_64.ico
+SetupIconFile=C:\wrk\repos\Rechnungsdruck_AS400_PDF\Graphics\Pacioli_64a.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -69,8 +69,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "S:\wrk\Projekte\RechPdf\Pacioli.NET.Selfcontained\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "S:\wrk\Projekte\RechPdf\Pacioli.NET.Selfcontained\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "S:\wrk\Projekte\RechPdf\Pacioli.Commandline\PacioliC.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "S:\wrk\Projekte\RechPdf\Pacioli.Commandline\PacioliC.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "S:\wrk\Projekte\RechPdf\Pacioli.Commandline\pacioli-cmd.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "S:\wrk\Projekte\RechPdf\Pacioli.Commandline\pacioli-cmd.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
