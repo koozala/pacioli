@@ -38,7 +38,7 @@ Liest eine Zugferd-Datei mit dem Namen "zugferdfile.pdf" ein und speichert die d
 
 #### Alle Optionen anzeigen
 
-`
+```
 pacioli-cmd.exe -?
 Usage:
 pacioli-cmd.exe -in <file> [-output-folder <folder>] [-genpdf [-pdfname <file>]] [-xmlname <file>]
@@ -48,5 +48,5 @@ pacioli-cmd.exe -in <file> [-output-folder <folder>] [-genpdf [-pdfname <file>]]
  -output-folder <folder>   Where to put output files
  -pdfname <file>           Name of the generated PDF file
  -xmlname <file>           If given, the XML file will be copied/extracted
-`
+```
 
