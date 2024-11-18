@@ -13,6 +13,20 @@ You can download the latest release for Windows [here](https://github.com/koozal
 
 The package includes a command line `pacioli-cmd.exe` that can be used to process E-Rechnung/Zugferd files in batch jobs and similar scenarios.
 
+#### Beispiel: Lies eine XML-Datei ein und erzeuge ein PDF-Dokument dazu
+
+`pacioli-cmd.exe -in erech.xml -pdfname erech.pdf`
+
+
+#### Beispiel: XML-Anhang einer Zugferd-Datei extrahieren und abspeichern
+
+Liest eine Zugferd-Datei mit dem Namen "zugferdfile.pdf" ein und speichert die darin integrierte XML-Datei unter dem Namen "erech.xml" in den Ordner "c:\tmp".
+
+`pacioli-cmd.exe -in zugferdfile.pdf -output-folder c:\tmp -xmlname erech.xml`
+
+
+
+
 # Platform
 This program is intended for use on Windows. It's based on .NET 8 and the GUI is implemented with Windows Forms.
 
