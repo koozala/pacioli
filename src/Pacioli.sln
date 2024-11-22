@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pacioli.Config.Persistence"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacioli.CLI.NET8", "Pacioli.CLI.NET8\Pacioli.CLI.NET8.csproj", "{4330658C-1C3A-4A8A-9BB6-C580E898665A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacioli.Updater", "Pacioli.Updater\Pacioli.Updater.csproj", "{A99A76F2-38E9-4ECD-B605-ED8A46DA6906}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacioli.Updater.Test", "Pacioli.Updater.Test\Pacioli.Updater.Test.csproj", "{28AC4C08-B87F-447F-8AB0-B17A08E52977}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{4330658C-1C3A-4A8A-9BB6-C580E898665A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4330658C-1C3A-4A8A-9BB6-C580E898665A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4330658C-1C3A-4A8A-9BB6-C580E898665A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A99A76F2-38E9-4ECD-B605-ED8A46DA6906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A99A76F2-38E9-4ECD-B605-ED8A46DA6906}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A99A76F2-38E9-4ECD-B605-ED8A46DA6906}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A99A76F2-38E9-4ECD-B605-ED8A46DA6906}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28AC4C08-B87F-447F-8AB0-B17A08E52977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28AC4C08-B87F-447F-8AB0-B17A08E52977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28AC4C08-B87F-447F-8AB0-B17A08E52977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28AC4C08-B87F-447F-8AB0-B17A08E52977}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

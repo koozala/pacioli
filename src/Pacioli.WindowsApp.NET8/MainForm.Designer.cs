@@ -43,6 +43,7 @@
             attachmentInfoLbl = new Label();
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
+            aufNeueVersionPrüfenToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
@@ -69,34 +70,34 @@
             // öffnenToolStripMenuItem
             // 
             öffnenToolStripMenuItem.Name = "öffnenToolStripMenuItem";
-            öffnenToolStripMenuItem.Size = new Size(270, 34);
+            öffnenToolStripMenuItem.Size = new Size(240, 34);
             öffnenToolStripMenuItem.Text = "Öffnen";
             öffnenToolStripMenuItem.Click += öffnenToolStripMenuItem_Click;
             // 
             // speichernToolStripMenuItem
             // 
             speichernToolStripMenuItem.Name = "speichernToolStripMenuItem";
-            speichernToolStripMenuItem.Size = new Size(270, 34);
+            speichernToolStripMenuItem.Size = new Size(240, 34);
             speichernToolStripMenuItem.Text = "PDF Speichern...";
             speichernToolStripMenuItem.Click += speichernToolStripMenuItem_Click;
             // 
             // einstellungenToolStripMenuItem
             // 
             einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
-            einstellungenToolStripMenuItem.Size = new Size(270, 34);
+            einstellungenToolStripMenuItem.Size = new Size(240, 34);
             einstellungenToolStripMenuItem.Text = "Einstellungen";
             einstellungenToolStripMenuItem.Click += einstellungenToolStripMenuItem_Click;
             // 
             // beendenToolStripMenuItem
             // 
             beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
-            beendenToolStripMenuItem.Size = new Size(270, 34);
+            beendenToolStripMenuItem.Size = new Size(240, 34);
             beendenToolStripMenuItem.Text = "Beenden";
             beendenToolStripMenuItem.Click += beendenToolStripMenuItem_Click;
             // 
             // aboutToolStripMenuItem
             // 
-            aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { überPacioliToolStripMenuItem });
+            aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { überPacioliToolStripMenuItem, aufNeueVersionPrüfenToolStripMenuItem });
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             aboutToolStripMenuItem.Size = new Size(122, 29);
             aboutToolStripMenuItem.Text = "Information";
@@ -104,7 +105,7 @@
             // überPacioliToolStripMenuItem
             // 
             überPacioliToolStripMenuItem.Name = "überPacioliToolStripMenuItem";
-            überPacioliToolStripMenuItem.Size = new Size(206, 34);
+            überPacioliToolStripMenuItem.Size = new Size(305, 34);
             überPacioliToolStripMenuItem.Text = "Über Pacioli";
             überPacioliToolStripMenuItem.Click += überPacioliToolStripMenuItem_Click;
             // 
@@ -165,6 +166,13 @@
             // 
             openFileDialog1.FileName = "openFileDialog1";
             // 
+            // aufNeueVersionPrüfenToolStripMenuItem
+            // 
+            aufNeueVersionPrüfenToolStripMenuItem.Name = "aufNeueVersionPrüfenToolStripMenuItem";
+            aufNeueVersionPrüfenToolStripMenuItem.Size = new Size(305, 34);
+            aufNeueVersionPrüfenToolStripMenuItem.Text = "Auf neue Version prüfen";
+            aufNeueVersionPrüfenToolStripMenuItem.Click += aufNeueVersionPrüfenToolStripMenuItem_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -203,6 +211,7 @@
         private ToolStripMenuItem einstellungenToolStripMenuItem;
         private FlowLayoutPanel flowLayoutPanel2;
         private Label attachmentInfoLbl;
+        private ToolStripMenuItem aufNeueVersionPrüfenToolStripMenuItem;
     }
 }
 

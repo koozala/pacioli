@@ -1,38 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationIcon>Pacioli_64.ico</ApplicationIcon>
-    <AssemblyName>Pacioli</AssemblyName>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<ApplicationIcon>Pacioli_64.ico</ApplicationIcon>
+		<AssemblyName>Pacioli</AssemblyName>
+		<AssemblyVersion>0.10.*</AssemblyVersion>
+		<Deterministic>false</Deterministic>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="Pacioli_64.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Pacioli_64.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.10" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.10" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Pacioli.Config.Persistence\Pacioli.Config.Persistence.csproj" />
-    <ProjectReference Include="..\Pacioli.Language\Pacioli.Language.csproj" />
-    <ProjectReference Include="..\Pacioli.Pdf\Pacioli.Pdf.csproj" />
-    <ProjectReference Include="..\Pacioli.Preview\Pacioli.Preview.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Pacioli.Config.Persistence\Pacioli.Config.Persistence.csproj" />
+		<ProjectReference Include="..\Pacioli.Language\Pacioli.Language.csproj" />
+		<ProjectReference Include="..\Pacioli.Pdf\Pacioli.Pdf.csproj" />
+		<ProjectReference Include="..\Pacioli.Preview\Pacioli.Preview.csproj" />
+		<ProjectReference Include="..\Pacioli.Updater\Pacioli.Updater.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="MainForm.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="MainForm.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="Pacioli_64.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="Pacioli_64.ico">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>

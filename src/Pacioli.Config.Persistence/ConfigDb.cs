@@ -96,6 +96,56 @@ VALUES ($user, $folder, $attachFlr, $lang, $openAfterSave)
             command.Parameters.AddWithValue("$openAfterSave", pref.OpenAfterSave);
         }
 
+        public void SaveProgramInfoVersionName(string versionName)
+        {
+            CreateTable_ProgramInfo();
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText =
+                    @"
+UPDATE ProgramInfo
+SET VersionName = $name
+";
+                command.Parameters.AddWithValue("$name", versionName);
+                var r = command.ExecuteNonQuery();
+                if (r == 0)
+                {
+                    var command2 = connection.CreateCommand();
+                    command2.CommandText =
+                        @"
+INSERT INTO ProgramInfo
+VALUES ($name)
+";
+                    command.Parameters.AddWithValue("$name", versionName);
+                    r = command2.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public string ReadProgramInfoVersionName()
+        {
+            CreateTable_ProgramInfo();
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = @"SELECT VersionName FROM ProgramInfo";
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return reader.GetString(0);
+                    }
+                    else
+                    {
+                        return "noVersionAvailable";
+                    }
+                }
+            }
+        }
+
         bool IntToBool(long value)
         {
             return value != 0 ? true : false;
@@ -115,6 +165,20 @@ CREATE TABLE IF NOT EXISTS UserPreferences (User TEXT, Folder TEXT, AttachmentFo
             }
         }
 
+        void CreateTable_ProgramInfo()
+        {
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText =
+                    @"
+CREATE TABLE IF NOT EXISTS ProgramInfo (VersionName TEXT)
+";
+                command.ExecuteNonQuery();
+            }
+        }
+
         void DropTable()
         {
             using (var connection = new SqliteConnection(connectionString))
@@ -128,5 +192,19 @@ DROP TABLE UserPreferences
                 command.ExecuteNonQuery();
             }
         }
+        void DropTable_ProgramInfo()
+        {
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText =
+                    @"
+DROP TABLE ProgramInfo
+";
+                command.ExecuteNonQuery();
+            }
+        }
+
     }
 }

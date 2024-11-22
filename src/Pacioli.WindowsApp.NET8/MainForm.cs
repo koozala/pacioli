@@ -3,6 +3,7 @@ using Pacioli.Config.Persistence;
 using Pacioli.Language.Resources;
 using Pacioli.Pdf.Invoice;
 using Pacioli.Preview.ImageGeneration;
+using Pacioli.Updater.AutoUpdate;
 using Pacioli.WindowsApp.NET8.Controls;
 using Pacioli.WindowsApp.NET8.Util;
 using System.Diagnostics;
@@ -170,7 +171,10 @@ namespace Pacioli.WindowsApp.NET8
 
         private void überPacioliToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Pacioli verarbeitet elektronische Rechnungen und transformiert sie in PDF-Dateien.\n\nMehr Informationen im Internet: https://github.com/koozala/pacioli", "Pacioli");
+            string version = VersionInformation.GetVersion();
+            var repo = new PacioliRepository();
+
+            MessageBox.Show($"Pacioli verarbeitet elektronische Rechnungen und transformiert sie in PDF-Dateien.\nVersion: {version}\nVerfügbare Version: {repo.VersionName}\n{repo.DownloadUrl}\n\nMehr Informationen im Internet: https://github.com/koozala/pacioli", "Pacioli");
         }
 
         private void einstellungenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -178,6 +182,11 @@ namespace Pacioli.WindowsApp.NET8
             var settingsForm = new AppSettingsForm();
             settingsForm.ShowDialog();
         }
-       
+
+        private void aufNeueVersionPrüfenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var check = new UpdateCheck();
+            check.Execute(false);
+        }
     }
 }
