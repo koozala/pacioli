@@ -34,12 +34,12 @@
             F_Left = new Button();
             F_PageNo = new Label();
             F_Right = new Button();
-            tableLayoutPanel2 = new TableLayoutPanel();
+            F_TitlePanel = new TableLayoutPanel();
             F_TopLabel = new Label();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)F_PictureBox).BeginInit();
             flowLayoutPanel1.SuspendLayout();
-            tableLayoutPanel2.SuspendLayout();
+            F_TitlePanel.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -48,7 +48,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(F_PictureBox, 0, 1);
             tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 0, 2);
-            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 0);
+            tableLayoutPanel1.Controls.Add(F_TitlePanel, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -114,21 +114,21 @@
             F_Right.UseVisualStyleBackColor = true;
             F_Right.Click += F_Right_Click;
             // 
-            // tableLayoutPanel2
+            // F_TitlePanel
             // 
-            tableLayoutPanel2.BackColor = Color.Moccasin;
-            tableLayoutPanel2.ColumnCount = 1;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel2.Controls.Add(F_TopLabel, 0, 0);
-            tableLayoutPanel2.Dock = DockStyle.Fill;
-            tableLayoutPanel2.Location = new Point(3, 3);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 1;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel2.Size = new Size(927, 54);
-            tableLayoutPanel2.TabIndex = 3;
+            F_TitlePanel.BackColor = Color.Moccasin;
+            F_TitlePanel.ColumnCount = 1;
+            F_TitlePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            F_TitlePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            F_TitlePanel.Controls.Add(F_TopLabel, 0, 0);
+            F_TitlePanel.Dock = DockStyle.Fill;
+            F_TitlePanel.Location = new Point(3, 3);
+            F_TitlePanel.Name = "F_TitlePanel";
+            F_TitlePanel.RowCount = 1;
+            F_TitlePanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            F_TitlePanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            F_TitlePanel.Size = new Size(927, 54);
+            F_TitlePanel.TabIndex = 3;
             // 
             // F_TopLabel
             // 
@@ -153,8 +153,8 @@
             ((System.ComponentModel.ISupportInitialize)F_PictureBox).EndInit();
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
-            tableLayoutPanel2.ResumeLayout(false);
-            tableLayoutPanel2.PerformLayout();
+            F_TitlePanel.ResumeLayout(false);
+            F_TitlePanel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -167,6 +167,6 @@
         private Button F_Left;
         private Label F_PageNo;
         private Button F_Right;
-        private TableLayoutPanel tableLayoutPanel2;
+        private TableLayoutPanel F_TitlePanel;
     }
 }

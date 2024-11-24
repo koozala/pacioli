@@ -31,7 +31,8 @@ namespace Pacioli.WindowsApp.NET8
             InitializeComponent();
 
             docPanelDerived = new DocViewPanel("E-Rechnung");
-            docPanelOriginal = new DocViewPanel("Original PDF");
+            docPanelOriginal = new DocViewPanel("ZUGFeRD PDF");
+            docPanelOriginal.FF_TitlePanel.BackColor = Color.Lavender;
 
             tableLayoutPanel1.Controls.Add(docPanelDerived);
             tableLayoutPanel1.SetCellPosition(docPanelDerived, new TableLayoutPanelCellPosition(1, 1));

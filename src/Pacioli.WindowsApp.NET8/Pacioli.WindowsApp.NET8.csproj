@@ -8,7 +8,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>Pacioli_64.ico</ApplicationIcon>
 		<AssemblyName>Pacioli</AssemblyName>
-		<AssemblyVersion>0.10.*</AssemblyVersion>
+		<AssemblyVersion>0.11.*</AssemblyVersion>
 		<Deterministic>false</Deterministic>
 	</PropertyGroup>
 

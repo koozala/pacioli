@@ -18,10 +18,33 @@ namespace Pacioli.WindowsApp.NET8
         int pageNumber;
         Image? loadedImage = null;
 
+        int ZoomLevel = 1;
+        int OffsetX = 0;
+        int OffsetY = 0;
+
         public DocViewerForm()
         {
             InitializeComponent();
             pageNumber = 0;
+            F_PictureBox.MouseWheel += F_PictureBox_MouseWheel;
+        }
+
+        private void F_PictureBox_MouseWheel(object? sender, MouseEventArgs e)
+        {
+            ZoomLevel += e.Delta;
+            UpdateImage();
+        }
+
+        Image ReworkImage(Image source)
+        {
+            double factor = 1.0 + ZoomLevel / 10f;
+            Bitmap newBm = new Bitmap(source.Width, source.Height);
+            Graphics g = Graphics.FromImage(newBm);
+
+            Bitmap bmp2 = new Bitmap(source, new Size((int)(source.Width * factor), (int)(source.Height * factor)));
+            g.DrawImage(bmp2, 0, 0);
+
+            return (Image)newBm;
         }
 
         public void SetFile(string fileName)
@@ -41,7 +64,7 @@ namespace Pacioli.WindowsApp.NET8
                 }
 
                 F_PictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                F_PictureBox.Image = loadedImage;
+                F_PictureBox.Image = ReworkImage(loadedImage);
 
                 F_PageNo.Text = (pageNumber + 1).ToString();
             }

@@ -15,8 +15,7 @@ namespace Pacioli.Preview.ImageGeneration
         public SizeF PageSize { get; set; }
 
         IEnumerable<SKBitmap> Bitmaps { get; set; }
-
-        //Dictionary<int,>
+        IEnumerable<Image> FastBitmaps { get; set; }
 
 
         public Converter(string pdfFile)
@@ -25,30 +24,12 @@ namespace Pacioli.Preview.ImageGeneration
             PageSize = PDFtoImage.Conversion.GetPageSize(PdfData, 0);
             PageCount = PDFtoImage.Conversion.GetPageCount(PdfData);
             Bitmaps = PDFtoImage.Conversion.ToImages(PdfData!);
+            FastBitmaps = Bitmaps.Select(x => Bitmap.FromStream(x.Encode(SKEncodedImageFormat.Png, 80).AsStream()));
         }
 
         public void Convert(string imgFile)
         {
             PDFtoImage.Conversion.SavePng(imgFile, PdfData!, page: 0);
-        }
-
-        public int Convert(string imgFile, int pageNo)
-        {
-            if (pageNo < 0)
-            {
-                pageNo = 0;
-            }
-            if (pageNo > PageCount - 1)
-            {
-                pageNo = PageCount - 1;
-            }
-            //PDFtoImage.Conversion.SavePng(imgFile, PdfData!, page: pageNo);
-            SKData skData = Bitmaps.ElementAt(pageNo).Encode(SKEncodedImageFormat.Png, 100);
-            using (FileStream outStream = new FileStream(imgFile, FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                skData.AsStream().CopyTo(outStream);
-            }
-            return pageNo;
         }
 
         public Stream ConvertToStream(ref int pageNo)
@@ -64,6 +45,19 @@ namespace Pacioli.Preview.ImageGeneration
             //PDFtoImage.Conversion.SavePng(imgFile, PdfData!, page: pageNo);
             SKData skData = Bitmaps.ElementAt(pageNo).Encode(SKEncodedImageFormat.Png, 100);
             return skData.AsStream();
+        }
+
+        public Image GetPage(ref int pageNo)
+        {
+            if (pageNo < 0)
+            {
+                pageNo = 0;
+            }
+            if (pageNo > PageCount - 1)
+            {
+                pageNo = PageCount - 1;
+            }
+            return FastBitmaps.ElementAt(pageNo);
         }
     }
 }

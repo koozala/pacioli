@@ -37,13 +37,13 @@
             beendenToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             überPacioliToolStripMenuItem = new ToolStripMenuItem();
+            aufNeueVersionPrüfenToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutPanel1 = new TableLayoutPanel();
             fileNameTb = new TextBox();
             flowLayoutPanel2 = new FlowLayoutPanel();
             attachmentInfoLbl = new Label();
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
-            aufNeueVersionPrüfenToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
@@ -109,6 +109,13 @@
             überPacioliToolStripMenuItem.Text = "Über Pacioli";
             überPacioliToolStripMenuItem.Click += überPacioliToolStripMenuItem_Click;
             // 
+            // aufNeueVersionPrüfenToolStripMenuItem
+            // 
+            aufNeueVersionPrüfenToolStripMenuItem.Name = "aufNeueVersionPrüfenToolStripMenuItem";
+            aufNeueVersionPrüfenToolStripMenuItem.Size = new Size(305, 34);
+            aufNeueVersionPrüfenToolStripMenuItem.Text = "Auf neue Version prüfen";
+            aufNeueVersionPrüfenToolStripMenuItem.Click += aufNeueVersionPrüfenToolStripMenuItem_Click;
+            // 
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.AutoSize = true;
@@ -165,13 +172,6 @@
             // openFileDialog1
             // 
             openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // aufNeueVersionPrüfenToolStripMenuItem
-            // 
-            aufNeueVersionPrüfenToolStripMenuItem.Name = "aufNeueVersionPrüfenToolStripMenuItem";
-            aufNeueVersionPrüfenToolStripMenuItem.Size = new Size(305, 34);
-            aufNeueVersionPrüfenToolStripMenuItem.Text = "Auf neue Version prüfen";
-            aufNeueVersionPrüfenToolStripMenuItem.Click += aufNeueVersionPrüfenToolStripMenuItem_Click;
             // 
             // MainForm
             // 

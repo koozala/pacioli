@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="PDFtoImage" Version="4.1.1" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
     <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
   </ItemGroup>
 
