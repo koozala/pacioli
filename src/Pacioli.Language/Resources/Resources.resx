@@ -303,4 +303,7 @@
   <data name="days" xml:space="preserve">
     <value>Tage</value>
   </data>
+  <data name="infoText1" xml:space="preserve">
+    <value>Dieses Dokument stellt den Inhalt einer E-Rechnung dar. Die Originaldatei ist {0}.</value>
+  </data>
 </root>

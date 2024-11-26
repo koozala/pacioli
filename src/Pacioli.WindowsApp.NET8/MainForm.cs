@@ -9,40 +9,28 @@ using Pacioli.WindowsApp.NET8.Util;
 using System.Diagnostics;
 using System.Drawing.Printing;
 using System.Globalization;
+using System.Security.Cryptography.Xml;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Pacioli.WindowsApp.NET8
 {
     public partial class MainForm : Form
     {
-        string? pdfPath = null;
-        int pageNumber = 0;
-        Converter? converter = null;
-        Converter? original = null;
-        DocViewerForm docViewer;
-
-        DocViewPanel docPanelDerived;
-        DocViewPanel docPanelOriginal;
-
         ConfigDb cdb;
+        UserPreferences preferences;
 
         public MainForm()
         {
             InitializeComponent();
 
-            docPanelDerived = new DocViewPanel("E-Rechnung");
-            docPanelOriginal = new DocViewPanel("ZUGFeRD PDF");
-            docPanelOriginal.FF_TitlePanel.BackColor = Color.Lavender;
-
-            tableLayoutPanel1.Controls.Add(docPanelDerived);
-            tableLayoutPanel1.SetCellPosition(docPanelDerived, new TableLayoutPanelCellPosition(1, 1));
-            docPanelDerived.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Controls.Add(docPanelOriginal);
-            tableLayoutPanel1.SetCellPosition(docPanelOriginal, new TableLayoutPanelCellPosition(2, 1));
-            docPanelOriginal.Dock = DockStyle.Fill;
+            F_TabControl.Controls.Clear();
+            F_TabControl.AllowDrop = true;
+            F_TabControl.DragEnter += MainForm_DragEnter;
+            F_TabControl.DragDrop += MainForm_DragDrop;
 
             cdb = new ConfigDb();
-            UserPreferences preferences = cdb.ReadPreferences();
+            preferences = cdb.ReadPreferences();
             preferences.SetCulture();
         }
 
@@ -57,57 +45,47 @@ namespace Pacioli.WindowsApp.NET8
 
             if (dr == DialogResult.OK)
             {
-                pdfPath = Path.GetTempFileName();
-                fileNameTb.Text = openFileDialog1.FileName;
-                preferences.DefaultFolder = Path.GetDirectoryName(openFileDialog1.FileName)!;
-                cdb.SavePreferences(preferences);
+                AddFile(openFileDialog1.FileName);
+            }
 
-                original = null;
+            preferences.DefaultFolder = Path.GetDirectoryName(openFileDialog1.FileName)!;
+            cdb.SavePreferences(preferences);
+        }
 
-                try
-                {
-                    /* Convert to PDF and write to temp file */
-                    Writer writer = new Writer(openFileDialog1.FileName, preferences.AttachmentOutputFolder);
-                    writer.Write(pdfPath);
-                    int countAttachments = writer.GetAttachmentCount();
-                    string aInfo = Resources.attachmentsNone;
-                    if (countAttachments > 0)
-                    {
-                        aInfo = string.Format(Resources.attachmentsTxt, countAttachments);
-                    }
-                    attachmentInfoLbl.Text = aInfo;
+        private void AddFile(string fileName)
+        {
+            RecordPanel rp = new RecordPanel();
+            try
+            {
+                rp.SetFile(fileName, preferences.AttachmentOutputFolder);
+                TabPage page = new TabPage();
+                page.Text = Path.GetFileName(fileName);
 
-                    docPanelDerived.SetDocument(pdfPath);
+                rp.Dock = DockStyle.Fill;
+                page.Controls.Add(rp);
+                F_TabControl.Controls.Add(page);
+                F_TabControl.SelectedTab = page;
 
-                    if (writer.IsZugferd)
-                    {
-                        //if (docViewer == null || docViewer.IsDisposed)
-                        //{
-                        //    docViewer = new DocViewerForm();
-                        //}
-                        //docViewer.SetFile(openFileDialog1.FileName);
-                        //docViewer.Show();
-                        //docViewer.Top = this.Top;
-                        //docViewer.Left = this.Left + this.Width;
-                        //docViewer.Height = this.Height;
-                        //docViewer.Width = this.Width;
+                rp.AllowDrop = true;
+                rp.DragEnter += MainForm_DragEnter;
+                rp.DragDrop += MainForm_DragDrop;
 
-                        original = new Converter(openFileDialog1.FileName);
-                        docPanelOriginal.SetDocument(openFileDialog1.FileName);
-                    }
-                    else if (docViewer != null && !docViewer.IsDisposed)
-                    {
-                        docViewer.Close();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Fehler beim Lesen der Datei: {ex.Message}");
-                    return;
-                }
-                pageNumber = 0;
-                converter = new Converter(pdfPath);
-                UpdateImage();
+                rp.FF_TablePanel.AllowDrop = true;
+                rp.FF_TablePanel.DragEnter += MainForm_DragEnter;
+                rp.FF_TablePanel.DragDrop += MainForm_DragDrop;
+
+                rp.DocPanelDerived.AllowDrop = true;
+                rp.DocPanelDerived.DragEnter += MainForm_DragEnter;
+                rp.DocPanelDerived.DragDrop += MainForm_DragDrop;
+
+                rp.DocPanelOriginal.AllowDrop = true;
+                rp.DocPanelOriginal.DragEnter += MainForm_DragEnter;
+                rp.DocPanelOriginal.DragDrop -= MainForm_DragDrop;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Fehler beim Lesen der Datei {fileName}: {ex.Message}");
+                return;
             }
         }
 
@@ -116,30 +94,19 @@ namespace Pacioli.WindowsApp.NET8
             Application.Exit();
         }
 
-        private void UpdateImage()
-        {
-            if (converter != null)
-            {
-                docPanelDerived.Visible = true;
-                docPanelDerived.FF_Picture.SizeMode = PictureBoxSizeMode.Zoom;
-            }
-
-            if (original != null)
-            {
-                docPanelOriginal.Visible = true;
-                docPanelOriginal.FF_Picture.SizeMode = PictureBoxSizeMode.Zoom;
-            }
-            else
-            {
-                //pbOriginal.Image = null;
-                docPanelOriginal.Visible = false;
-            }
-        }
-
 
         private void speichernToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (converter == null)
+            var currentPage = F_TabControl.SelectedTab;
+            if (currentPage == null)
+            {
+                MessageBox.Show("Kein aktives Dokument");
+                return;
+            }
+
+            RecordPanel rp = (RecordPanel)currentPage.Controls[0];
+
+            if (rp.converter == null)
             {
                 MessageBox.Show("Kein Dokument geladen");
                 return;
@@ -148,14 +115,14 @@ namespace Pacioli.WindowsApp.NET8
             var pref = cdb.ReadPreferences();
 
             saveFileDialog1.InitialDirectory = pref.AttachmentOutputFolder;
-            saveFileDialog1.FileName = Path.GetFileNameWithoutExtension(fileNameTb.Text) + ".pdf";
+            saveFileDialog1.FileName = Path.GetFileNameWithoutExtension(rp.FF_FileNameTb.Text) + ".pdf";
             var result = saveFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
                 pref.AttachmentOutputFolder = Path.GetDirectoryName(saveFileDialog1.FileName)!;
                 cdb.SavePreferences(pref);
 
-                File.WriteAllBytes(saveFileDialog1.FileName, converter.PdfData!);
+                File.WriteAllBytes(saveFileDialog1.FileName, rp.converter.PdfData!);
 
                 if (pref.OpenAfterSave)
                 {
@@ -165,7 +132,6 @@ namespace Pacioli.WindowsApp.NET8
                         UseShellExecute = true
                     };
                     Process.Start(info);
-                    //Process.Start(saveFileDialog1.FileName);
                 }
             }
         }
@@ -189,5 +155,29 @@ namespace Pacioli.WindowsApp.NET8
             var check = new UpdateCheck();
             check.Execute(false);
         }
+
+        private void MainForm_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data!.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void MainForm_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data!.GetData(DataFormats.FileDrop, false);
+            StringBuilder sb = new StringBuilder();
+            foreach (var fn in files)
+            {
+                AddFile(fn);
+            }
+        }
+
     }
 }
+

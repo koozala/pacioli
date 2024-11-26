@@ -303,4 +303,7 @@
   <data name="days" xml:space="preserve">
     <value>Days</value>
   </data>
+  <data name="infoText1" xml:space="preserve">
+    <value>This document represents the contents of an electronic invoice. The source is {0}.</value>
+  </data>
 </root>

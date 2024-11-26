@@ -286,6 +286,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dieses Dokument stellt den Inhalt einer E-Rechnung dar. Die Originaldatei ist {0}..
+        /// </summary>
+        public static string infoText1 {
+            get {
+                return ResourceManager.GetString("infoText1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rechnung.
         /// </summary>
         public static string invoice {

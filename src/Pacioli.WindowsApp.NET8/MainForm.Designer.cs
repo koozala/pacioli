@@ -38,15 +38,13 @@
             aboutToolStripMenuItem = new ToolStripMenuItem();
             überPacioliToolStripMenuItem = new ToolStripMenuItem();
             aufNeueVersionPrüfenToolStripMenuItem = new ToolStripMenuItem();
-            tableLayoutPanel1 = new TableLayoutPanel();
-            fileNameTb = new TextBox();
-            flowLayoutPanel2 = new FlowLayoutPanel();
-            attachmentInfoLbl = new Label();
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
+            F_TabControl = new TabControl();
+            tabPage1 = new TabPage();
+            tabPage2 = new TabPage();
             menuStrip1.SuspendLayout();
-            tableLayoutPanel1.SuspendLayout();
-            flowLayoutPanel2.SuspendLayout();
+            F_TabControl.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -116,81 +114,61 @@
             aufNeueVersionPrüfenToolStripMenuItem.Text = "Auf neue Version prüfen";
             aufNeueVersionPrüfenToolStripMenuItem.Click += aufNeueVersionPrüfenToolStripMenuItem_Click;
             // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.AutoSize = true;
-            tableLayoutPanel1.ColumnCount = 4;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 44F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel1.Controls.Add(fileNameTb, 1, 2);
-            tableLayoutPanel1.Controls.Add(flowLayoutPanel2, 3, 1);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(0, 33);
-            tableLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 3;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
-            tableLayoutPanel1.Size = new Size(1351, 1055);
-            tableLayoutPanel1.TabIndex = 1;
-            // 
-            // fileNameTb
-            // 
-            tableLayoutPanel1.SetColumnSpan(fileNameTb, 3);
-            fileNameTb.Dock = DockStyle.Fill;
-            fileNameTb.Location = new Point(47, 999);
-            fileNameTb.Margin = new Padding(3, 4, 3, 4);
-            fileNameTb.Multiline = true;
-            fileNameTb.Name = "fileNameTb";
-            fileNameTb.ReadOnly = true;
-            fileNameTb.Size = new Size(1301, 52);
-            fileNameTb.TabIndex = 5;
-            // 
-            // flowLayoutPanel2
-            // 
-            flowLayoutPanel2.Controls.Add(attachmentInfoLbl);
-            flowLayoutPanel2.Dock = DockStyle.Fill;
-            flowLayoutPanel2.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel2.Location = new Point(1091, 53);
-            flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new Size(257, 939);
-            flowLayoutPanel2.TabIndex = 8;
-            // 
-            // attachmentInfoLbl
-            // 
-            attachmentInfoLbl.AutoSize = true;
-            attachmentInfoLbl.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            attachmentInfoLbl.Location = new Point(3, 0);
-            attachmentInfoLbl.Name = "attachmentInfoLbl";
-            attachmentInfoLbl.Size = new Size(159, 30);
-            attachmentInfoLbl.TabIndex = 0;
-            attachmentInfoLbl.Text = "Keine Anhänge";
-            // 
             // openFileDialog1
             // 
             openFileDialog1.FileName = "openFileDialog1";
             // 
+            // F_TabControl
+            // 
+            F_TabControl.Controls.Add(tabPage1);
+            F_TabControl.Controls.Add(tabPage2);
+            F_TabControl.Dock = DockStyle.Fill;
+            F_TabControl.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            F_TabControl.Location = new Point(0, 33);
+            F_TabControl.Name = "F_TabControl";
+            F_TabControl.Padding = new Point(9, 6);
+            F_TabControl.SelectedIndex = 0;
+            F_TabControl.Size = new Size(1351, 1055);
+            F_TabControl.TabIndex = 2;
+            // 
+            // tabPage1
+            // 
+            tabPage1.Location = new Point(4, 43);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(1343, 1008);
+            tabPage1.TabIndex = 0;
+            tabPage1.Text = "tabPage1";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            tabPage2.Location = new Point(4, 43);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(1343, 1008);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "tabPage2";
+            tabPage2.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
+            AllowDrop = true;
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1351, 1088);
-            Controls.Add(tableLayoutPanel1);
+            Controls.Add(F_TabControl);
             Controls.Add(menuStrip1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
             Margin = new Padding(3, 4, 3, 4);
             Name = "MainForm";
             Text = "Pacioli - ERechnung zu PDF";
+            DragDrop += MainForm_DragDrop;
+            DragEnter += MainForm_DragEnter;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
-            flowLayoutPanel2.ResumeLayout(false);
-            flowLayoutPanel2.PerformLayout();
+            F_TabControl.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -199,19 +177,18 @@
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem dateiToolStripMenuItem;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.ToolStripMenuItem öffnenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem beendenToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.TextBox fileNameTb;
         private System.Windows.Forms.ToolStripMenuItem speichernToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private ToolStripMenuItem aboutToolStripMenuItem;
         private ToolStripMenuItem überPacioliToolStripMenuItem;
         private ToolStripMenuItem einstellungenToolStripMenuItem;
-        private FlowLayoutPanel flowLayoutPanel2;
-        private Label attachmentInfoLbl;
         private ToolStripMenuItem aufNeueVersionPrüfenToolStripMenuItem;
+        private TabControl F_TabControl;
+        private TabPage tabPage1;
+        private TabPage tabPage2;
     }
 }
 

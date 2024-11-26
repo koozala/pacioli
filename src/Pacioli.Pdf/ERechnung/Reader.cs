@@ -17,7 +17,7 @@ namespace Pacioli.Pdf.ERechnung
             isZugferd = zr.Read(out data);
             if (isZugferd)
             {
-                var writer = new InvoiceWriter(data!, attachmentLocation);
+                var writer = new InvoiceWriter(data!, attachmentLocation, fileName);
                 data!.Close();
                 return writer;
             }

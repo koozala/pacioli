@@ -5,6 +5,7 @@ using iText.Kernel.Font;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas;
+using iText.Kernel.Pdf.Colorspace;
 using iText.Layout;
 using iText.Layout.Borders;
 using iText.Layout.Element;
@@ -49,15 +50,18 @@ namespace Pacioli.Pdf.Invoice
         UnitValue full = UnitValue.CreatePercentValue(100.0f);
         PdfFont bold = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
         string? attachmentsTargetPath;
+        string sourceFile;
 
         public InvoiceWriter(string fileName, string? _attachmentsTargetPath)
         {
+            sourceFile = fileName;
             descriptor = InvoiceDescriptor.Load(fileName);
             attachmentsTargetPath = _attachmentsTargetPath;
         }
 
-        public InvoiceWriter(Stream data, string? _attachmentsTargetPath)
+        public InvoiceWriter(Stream data, string? _attachmentsTargetPath, string source)
         {
+            sourceFile = source;
             descriptor = InvoiceDescriptor.Load(data);
             attachmentsTargetPath = _attachmentsTargetPath;
         }
@@ -91,15 +95,31 @@ namespace Pacioli.Pdf.Invoice
 
             PdfPage page1 = document.AddNewPage();
 
-            Paragraph header = new Paragraph().SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetFontSize(16);
+            Paragraph header = new Paragraph().SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetFontSize(16).SetFont(PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD));
             header.Add(Resources.invoice);
             doc.Add(header);
+
+            Paragraph infoText1 = new Paragraph().SetTextAlignment(TextAlignment.CENTER).SetFontSize(10);
+            infoText1.SetBorder(new SolidBorder(0.5f));
+            infoText1.Add(string.Format(Resources.infoText1, sourceFile));
+            doc.Add(infoText1);
 
             if (descriptor.InvoiceDate != null)
             {
                 string f1 = descriptor.InvoiceDate.Value.ToString("d");
-                Paragraph dateLine = new Paragraph($"{Resources.docDate}: {f1}").SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT).SetFontSize(14);
+                Paragraph dateLine = new Paragraph($"{Resources.docDate}: {f1}").SetTextAlignment(iText.Layout.Properties.TextAlignment.RIGHT).SetFontSize(12);
                 doc.Add(dateLine);
+            }
+
+            if (!string.IsNullOrWhiteSpace(descriptor.InvoiceNo))
+            {
+                Paragraph invoiceNo = new Paragraph($"{Resources.invoiceNo}: {descriptor.InvoiceNo}").SetTextAlignment(TextAlignment.RIGHT).SetFontSize(12);
+                doc.Add(invoiceNo);
+            }
+
+            if (!string.IsNullOrWhiteSpace(descriptor.OrderNo))
+            {
+                doc.Add(new Paragraph($"{Resources.orderNo}: {descriptor.OrderNo}").SetTextAlignment(TextAlignment.RIGHT).SetFontSize(12));
             }
 
             var p1 = new PartyBox($"{Resources.seller}", descriptor.Seller);
@@ -153,7 +173,6 @@ namespace Pacioli.Pdf.Invoice
             }
 
             StringBuilder reStr = new StringBuilder();
-            if (!string.IsNullOrWhiteSpace(descriptor.InvoiceNo)) reStr.Append($"{Resources.invoiceNo}: {descriptor.InvoiceNo} ");
             if (!string.IsNullOrWhiteSpace(descriptor.Buyer.ID.ID))
             {
                 reStr.Append($"{Resources.customerNo}: ");
@@ -166,11 +185,6 @@ namespace Pacioli.Pdf.Invoice
             if (reStr.Length > 0)
             {
                 doc.Add(new Paragraph(reStr.ToString()));
-            }
-
-            if (!string.IsNullOrWhiteSpace(descriptor.OrderNo))
-            {
-                doc.Add(new Paragraph($"{Resources.orderNo}: {descriptor.OrderNo}"));
             }
 
             if (descriptor.OrderDate != null)
