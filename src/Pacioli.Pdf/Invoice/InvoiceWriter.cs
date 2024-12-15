@@ -294,7 +294,16 @@ namespace Pacioli.Pdf.Invoice
                     {
                         s1.AppendLine($"{Resources.account}: {acct.TradeAccountID} {acct.TradeAccountTypeCode}");
                     }
-
+                    foreach (var charge in item.GetTradeAllowanceCharges())
+                    {
+                        string zuschlag = charge.ChargeIndicator ? "Zuschlag" : "Abschlag";
+                        s1.AppendLine($"{zuschlag}: {Fmt.ToStringWithUnit(charge.ChargePercentage, "0.0", "%")} {charge.ActualAmount.ToString("#,#0.00")} {charge.Currency.ToString()} {Fmt.ToStringWithName("Basis:", charge.BasisAmount, "#,#0.00")}");
+                    }
+                    foreach (var charge in item.GetSpecifiedTradeAllowanceCharges())
+                    {
+                        string zuschlag = charge.ChargeIndicator ? "Zuschlag" : "Abschlag";
+                        s1.AppendLine($"{zuschlag}: {Fmt.ToStringWithUnit(charge.ChargePercentage, "0.0", "%")} {charge.ActualAmount.ToString("#,#0.00")} {charge.Currency.ToString()} {Fmt.ToStringWithName("Basis:", charge.BasisAmount, "#,#0.00")}");
+                    }
                     tab.AddCell(new ItemCell(s1.ToString()));
                 }
                 tab.AddCell(new ItemCell($"{item.TaxPercent.ToString("0.00")}% {item.TaxType.ToUnit()} {item.TaxCategoryCode.ToUnit()}"));
@@ -341,7 +350,19 @@ namespace Pacioli.Pdf.Invoice
             }
             doc.Add(taxTab);
 
-
+            if (descriptor.GetTradeAllowanceCharges().Count > 0)
+            {
+                doc.Add(new Paragraph($"Rabatte und Zuschläge").SetMarginTop(20.0f));
+                TradeAllowanceChargesTab chargeTab = new TradeAllowanceChargesTab();
+                chargeTab.Add(descriptor.GetTradeAllowanceCharges());
+                doc.Add(chargeTab.GetTab());
+            }
+            //foreach (var charge in descriptor.GetTradeAllowanceCharges())
+            //{
+            //    string zuschlag = charge.ChargeIndicator ? "Zuschlag" : "Abschlag";
+            //    string s = $"{zuschlag}: {charge.Amount} {charge.ActualAmount} {charge.BasisAmount} Steuer: {charge.Tax.TypeCode} {charge.Tax.TaxAmount} {charge.ChargePercentage}%";
+            //    doc.Add(new Paragraph(s));
+            //}
 
 
             doc.Add(new Paragraph($"{Resources.sumOverview}:").SetMarginTop(20.0f));
