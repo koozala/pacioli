@@ -120,6 +120,7 @@
             // 
             // F_TabControl
             // 
+            F_TabControl.Appearance = TabAppearance.FlatButtons;
             F_TabControl.Controls.Add(tabPage1);
             F_TabControl.Controls.Add(tabPage2);
             F_TabControl.Dock = DockStyle.Fill;
@@ -133,20 +134,20 @@
             // 
             // tabPage1
             // 
-            tabPage1.Location = new Point(4, 43);
+            tabPage1.Location = new Point(4, 46);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(1343, 1008);
+            tabPage1.Size = new Size(1343, 1005);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "tabPage1";
             tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
-            tabPage2.Location = new Point(4, 43);
+            tabPage2.Location = new Point(4, 46);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(1343, 1008);
+            tabPage2.Size = new Size(1343, 1005);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;

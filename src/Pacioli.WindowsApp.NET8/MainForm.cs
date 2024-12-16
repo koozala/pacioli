@@ -59,11 +59,15 @@ namespace Pacioli.WindowsApp.NET8
 
             openFileDialog1.FileName = string.Empty;
             openFileDialog1.InitialDirectory = preferences.DefaultFolder;
+            openFileDialog1.Multiselect = true;
             DialogResult dr = openFileDialog1.ShowDialog();
 
             if (dr == DialogResult.OK)
             {
-                AddFile(openFileDialog1.FileName);
+                foreach (var fileName in openFileDialog1.FileNames)
+                {
+                    AddFile(fileName);
+                }
             }
 
             preferences.DefaultFolder = Path.GetDirectoryName(openFileDialog1.FileName)!;
