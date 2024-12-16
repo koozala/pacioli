@@ -1,4 +1,5 @@
-﻿using Pacioli.Updater.AutoUpdate;
+﻿using Pacioli.Language.Resources;
+using Pacioli.Updater.AutoUpdate;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,7 +22,7 @@ namespace Pacioli.WindowsApp.NET8.Util
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Fehler beim Kontaktieren des Servers: {ex.Message}", "Fehler", MessageBoxButtons.OK);
+                MessageBox.Show(string.Format(Resources.msgServerErrorText, ex.Message), Resources.error, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -30,7 +31,7 @@ namespace Pacioli.WindowsApp.NET8.Util
             var repository = new PacioliRepository();
             if (IsGreaterVersion(VersionInformation.GetVersion(), repository.VersionName))
             {
-                var result = MessageBox.Show($"Version {VersionInformation.GetVersion()} ist installiert. Eine aktuellere Version {repository.VersionName} von Pacioli ist verfügbar. Update durchführen?", "Neue Pacioli-Version verfügbar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var result = MessageBox.Show(string.Format(Resources.msgUpdateAsk, VersionInformation.GetVersion(), repository.VersionName), Resources.msgUpdateAnnounce, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     repository.ExecuteSetup();
@@ -40,7 +41,7 @@ namespace Pacioli.WindowsApp.NET8.Util
             }
             else if (!silent)
             {
-                MessageBox.Show($"Die aktuellste Version {VersionInformation.GetVersion()} ist installiert", "Keine neue Version", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show(string.Format(Resources.msgCurrentInfo, VersionInformation.GetVersion()), Resources.msgCurrentAnnounce, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
         }
 

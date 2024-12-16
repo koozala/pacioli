@@ -124,6 +124,7 @@ namespace Pacioli.WindowsApp.NET8
         private void speichernToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var currentPage = F_TabControl.SelectedTab;
+
             if (currentPage == null)
             {
                 MessageBox.Show(Resources.msgNoActiveDocument);
@@ -167,7 +168,7 @@ namespace Pacioli.WindowsApp.NET8
             string version = VersionInformation.GetVersion();
             var repo = new PacioliRepository();
 
-            MessageBox.Show($"Pacioli verarbeitet elektronische Rechnungen und transformiert sie in PDF-Dateien.\nVersion: {version}\nVerfügbare Version: {repo.VersionName}\n{repo.DownloadUrl}\n\nMehr Informationen im Internet: https://github.com/koozala/pacioli", "Pacioli");
+            MessageBox.Show(string.Format(Resources.msgInfoText, version, repo.VersionName, repo.DownloadUrl));
         }
 
         private void einstellungenToolStripMenuItem_Click(object sender, EventArgs e)

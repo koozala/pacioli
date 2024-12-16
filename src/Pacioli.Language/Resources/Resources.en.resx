@@ -315,4 +315,30 @@
   <data name="msgNoDocumentLoaded" xml:space="preserve">
     <value>No document loaded</value>
   </data>
+  <data name="msgInfoText" xml:space="preserve">
+    <value>Pacioli processes electronic invoices and transforms them to PDF files.
+Version: {0}
+Available version: {1}
+{2}
+
+More information on the Internet: https://github.com/koozala/pacioli</value>
+  </data>
+  <data name="msgUpdateAnnounce" xml:space="preserve">
+    <value>New version available</value>
+  </data>
+  <data name="msgUpdateAsk" xml:space="preserve">
+    <value>Version {0} is installed. A more recent version {1} is available. Perform update?</value>
+  </data>
+  <data name="msgCurrentAnnounce" xml:space="preserve">
+    <value>No update available</value>
+  </data>
+  <data name="msgCurrentInfo" xml:space="preserve">
+    <value>The most current version {0} is installed</value>
+  </data>
+  <data name="msgServerErrorText" xml:space="preserve">
+    <value>Error while contacting the server: {0}</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Error</value>
+  </data>
 </root>

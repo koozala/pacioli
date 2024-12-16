@@ -16,51 +16,15 @@ namespace Pacioli.WindowsApp.NET8.Controls
 {
     public partial class DocViewPanel : UserControl
     {
-        Converter? converter = null;
-        int pageNumber = 0;
-        Image? loadedImage = null;
-
-        int deltaCount = 0;
-        double zoom = 1.0;
-        double centerX = 0.5;
-        double centerY = 0.5;
-        bool mouseDown = false;
-        int mouseStartX = 0;
-        int mouseStartY = 0;
-
-
         public DocViewPanel(string title)
         {
-            try
-            {
-                InitializeComponent();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}");
-            }
+            InitializeComponent();
 
             string userDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var e = CoreWebView2Environment.CreateAsync(userDataFolder: userDataFolder).Result;
             var task = F_WebView.EnsureCoreWebView2Async(environment: e);
 
             F_TopLabel.Text = title;
-        }
-
-        public void Reset()
-        {
-            deltaCount = 0;
-            zoom = 1.0;
-            centerX = 0.5;
-            centerY = 0.5;
-            mouseDown = false;
-        }
-
-        private double Clamp(double x, double low, double high)
-        {
-            if (x < low) return low;
-            if (x > high) return high;
-            return x;
         }
 
         public TableLayoutPanel FF_TitlePanel
@@ -79,23 +43,8 @@ namespace Pacioli.WindowsApp.NET8.Controls
             }
         }
 
-        public Label FF_TopLabel
-        {
-            get
-            {
-                return F_TopLabel;
-            }
-            set
-            {
-                F_TopLabel = value;
-            }
-        }
-
         public void SetDocument(string fileName)
         {
-            converter = new Converter(fileName);
-            pageNumber = 0;
-            Reset();
             FF_WebView.Source = new Uri(fileName);
         }
 

@@ -259,6 +259,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fehler.
+        /// </summary>
+        public static string error {
+            get {
+                return ResourceManager.GetString("error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fehler beim Lesen der Datei {0}: {1}.
         /// </summary>
         public static string errorFileReadMessage {
@@ -340,6 +349,38 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keine neue Version.
+        /// </summary>
+        public static string msgCurrentAnnounce {
+            get {
+                return ResourceManager.GetString("msgCurrentAnnounce", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die aktuellste Version {0} ist installiert.
+        /// </summary>
+        public static string msgCurrentInfo {
+            get {
+                return ResourceManager.GetString("msgCurrentInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pacioli verarbeitet elektronische Rechnungen und transformiert sie in PDF-Dateien.
+        ///Version: {0}
+        ///Verfügbare Version: {1}
+        ///{2}
+        ///
+        ///Mehr Informationen im Internet: https://github.com/koozala/pacioli.
+        /// </summary>
+        public static string msgInfoText {
+            get {
+                return ResourceManager.GetString("msgInfoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kein aktives Dokument.
         /// </summary>
         public static string msgNoActiveDocument {
@@ -354,6 +395,33 @@ namespace Pacioli.Language.Resources {
         public static string msgNoDocumentLoaded {
             get {
                 return ResourceManager.GetString("msgNoDocumentLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fehler beim Kontaktieren des Servers: {0}.
+        /// </summary>
+        public static string msgServerErrorText {
+            get {
+                return ResourceManager.GetString("msgServerErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neue Pacioli-Version verfügbar.
+        /// </summary>
+        public static string msgUpdateAnnounce {
+            get {
+                return ResourceManager.GetString("msgUpdateAnnounce", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version {0} ist installiert. Eine aktuellere Version {1} von Pacioli ist verfügbar. Update durchführen?.
+        /// </summary>
+        public static string msgUpdateAsk {
+            get {
+                return ResourceManager.GetString("msgUpdateAsk", resourceCulture);
             }
         }
         

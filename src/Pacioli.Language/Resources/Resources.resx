@@ -315,4 +315,30 @@
   <data name="msgNoDocumentLoaded" xml:space="preserve">
     <value>Kein Dokument geladen</value>
   </data>
+  <data name="msgInfoText" xml:space="preserve">
+    <value>Pacioli verarbeitet elektronische Rechnungen und transformiert sie in PDF-Dateien.
+Version: {0}
+Verfügbare Version: {1}
+{2}
+
+Mehr Informationen im Internet: https://github.com/koozala/pacioli</value>
+  </data>
+  <data name="msgUpdateAnnounce" xml:space="preserve">
+    <value>Neue Pacioli-Version verfügbar</value>
+  </data>
+  <data name="msgUpdateAsk" xml:space="preserve">
+    <value>Version {0} ist installiert. Eine aktuellere Version {1} von Pacioli ist verfügbar. Update durchführen?</value>
+  </data>
+  <data name="msgCurrentAnnounce" xml:space="preserve">
+    <value>Keine neue Version</value>
+  </data>
+  <data name="msgCurrentInfo" xml:space="preserve">
+    <value>Die aktuellste Version {0} ist installiert</value>
+  </data>
+  <data name="msgServerErrorText" xml:space="preserve">
+    <value>Fehler beim Kontaktieren des Servers: {0}</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
 </root>
