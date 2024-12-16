@@ -306,4 +306,13 @@
   <data name="infoText1" xml:space="preserve">
     <value>This document represents the contents of an electronic invoice. The source is {0}.</value>
   </data>
+  <data name="errorFileReadMessage" xml:space="preserve">
+    <value>Error while reading file {0}: {1}</value>
+  </data>
+  <data name="msgNoActiveDocument" xml:space="preserve">
+    <value>No active document</value>
+  </data>
+  <data name="msgNoDocumentLoaded" xml:space="preserve">
+    <value>No document loaded</value>
+  </data>
 </root>

@@ -164,6 +164,8 @@
             Margin = new Padding(3, 4, 3, 4);
             Name = "MainForm";
             Text = "Pacioli - ERechnung zu PDF";
+            FormClosing += MainForm_FormClosing;
+            SizeChanged += MainForm_SizeChanged;
             DragDrop += MainForm_DragDrop;
             DragEnter += MainForm_DragEnter;
             menuStrip1.ResumeLayout(false);

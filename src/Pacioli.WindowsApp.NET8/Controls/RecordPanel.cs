@@ -36,6 +36,11 @@ namespace Pacioli.WindowsApp.NET8.Controls
             get { return attachmentInfoLbl; }
         }
 
+        public Panel FF_DragDropPanel
+        {
+            get { return F_DragDropPanel; }
+        }
+
         public Converter? converter { get; set; } = null;
         public Converter? original { get; set; } = null;
         public string? pdfPath { get; set; } = null;
@@ -55,10 +60,12 @@ namespace Pacioli.WindowsApp.NET8.Controls
 
             FF_TablePanel.Controls.Add(docPanelDerived);
             FF_TablePanel.SetCellPosition(docPanelDerived, new TableLayoutPanelCellPosition(1, 1));
+            FF_TablePanel.SetRowSpan(docPanelDerived, 2);
             docPanelDerived.Dock = DockStyle.Fill;
 
             FF_TablePanel.Controls.Add(docPanelOriginal);
             FF_TablePanel.SetCellPosition(docPanelOriginal, new TableLayoutPanelCellPosition(2, 1));
+            FF_TablePanel.SetRowSpan(docPanelOriginal, 2);
             docPanelOriginal.Dock = DockStyle.Fill;
 
             /* Content */
@@ -94,13 +101,11 @@ namespace Pacioli.WindowsApp.NET8.Controls
             if (converter != null)
             {
                 docPanelDerived!.Visible = true;
-                docPanelDerived.FF_Picture.SizeMode = PictureBoxSizeMode.Zoom;
             }
 
             if (original != null)
             {
                 docPanelOriginal!.Visible = true;
-                docPanelOriginal.FF_Picture.SizeMode = PictureBoxSizeMode.Zoom;
             }
             else
             {
@@ -108,6 +113,14 @@ namespace Pacioli.WindowsApp.NET8.Controls
             }
         }
 
+        public void Cleanup()
+        {
+            docPanelDerived!.Cleanup();
+            if (original != null)
+            {
+                docPanelOriginal!.Cleanup();
+            }
+        }
 
     }
 }

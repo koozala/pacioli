@@ -1,4 +1,5 @@
 ﻿using iText.Commons.Utils;
+using Microsoft.Web.WebView2.Core;
 using Pacioli.Config.Persistence;
 using Pacioli.Language.Resources;
 using Pacioli.Pdf.Invoice;
@@ -23,6 +24,23 @@ namespace Pacioli.WindowsApp.NET8
         public MainForm()
         {
             InitializeComponent();
+            InitializePacioli();
+        }
+
+        public MainForm(string[] args)
+        {
+            InitializeComponent();
+            InitializePacioli();
+
+            foreach (var file in args)
+            {
+                AddFile(file);
+            }
+        }
+
+        private void InitializePacioli()
+        {
+            this.WindowState = FormWindowState.Maximized;
 
             F_TabControl.Controls.Clear();
             F_TabControl.AllowDrop = true;
@@ -81,10 +99,14 @@ namespace Pacioli.WindowsApp.NET8
                 rp.DocPanelOriginal.AllowDrop = true;
                 rp.DocPanelOriginal.DragEnter += MainForm_DragEnter;
                 rp.DocPanelOriginal.DragDrop -= MainForm_DragDrop;
+
+                rp.FF_DragDropPanel.AllowDrop = true;
+                rp.FF_DragDropPanel.DragEnter += MainForm_DragEnter;
+                rp.FF_DragDropPanel.DragDrop += MainForm_DragDrop;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Fehler beim Lesen der Datei {fileName}: {ex.Message}");
+                MessageBox.Show(string.Format(Resources.errorFileReadMessage, fileName, ex.Message));
                 return;
             }
         }
@@ -100,7 +122,7 @@ namespace Pacioli.WindowsApp.NET8
             var currentPage = F_TabControl.SelectedTab;
             if (currentPage == null)
             {
-                MessageBox.Show("Kein aktives Dokument");
+                MessageBox.Show(Resources.msgNoActiveDocument);
                 return;
             }
 
@@ -108,7 +130,7 @@ namespace Pacioli.WindowsApp.NET8
 
             if (rp.converter == null)
             {
-                MessageBox.Show("Kein Dokument geladen");
+                MessageBox.Show(Resources.msgNoDocumentLoaded);
                 return;
             }
 
@@ -178,6 +200,28 @@ namespace Pacioli.WindowsApp.NET8
             }
         }
 
+        private void MainForm_SizeChanged(object sender, EventArgs e)
+        {
+            var currentPage = F_TabControl.SelectedTab;
+            if (currentPage == null)
+            {
+                return;
+            }
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            foreach (TabPage tp in F_TabControl.Controls)
+            {
+                foreach (var rp in tp.Controls)
+                {
+                    if (rp.GetType() == typeof(RecordPanel))
+                    {
+                        ((RecordPanel)rp).Cleanup();
+                    }
+                }
+            }
+        }
     }
 }
 

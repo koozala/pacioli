@@ -1,6 +1,8 @@
 
+using Microsoft.Web.WebView2.Core;
 using Pacioli.WindowsApp.NET8.Util;
 using System.Reflection;
+using System.Text;
 
 namespace Pacioli.WindowsApp.NET8
 {
@@ -19,7 +21,7 @@ namespace Pacioli.WindowsApp.NET8
             check.Execute(true);
 
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
+            Application.Run(new MainForm(args));
         }
     }
 }

@@ -306,4 +306,13 @@
   <data name="infoText1" xml:space="preserve">
     <value>Dieses Dokument stellt den Inhalt einer E-Rechnung dar. Die Originaldatei ist {0}.</value>
   </data>
+  <data name="errorFileReadMessage" xml:space="preserve">
+    <value>Fehler beim Lesen der Datei {0}: {1}</value>
+  </data>
+  <data name="msgNoActiveDocument" xml:space="preserve">
+    <value>Kein aktives Dokument</value>
+  </data>
+  <data name="msgNoDocumentLoaded" xml:space="preserve">
+    <value>Kein Dokument geladen</value>
+  </data>
 </root>

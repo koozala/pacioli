@@ -259,6 +259,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fehler beim Lesen der Datei {0}: {1}.
+        /// </summary>
+        public static string errorFileReadMessage {
+            get {
+                return ResourceManager.GetString("errorFileReadMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ausnahme.
         /// </summary>
         public static string exception {
@@ -327,6 +336,24 @@ namespace Pacioli.Language.Resources {
         public static string money {
             get {
                 return ResourceManager.GetString("money", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kein aktives Dokument.
+        /// </summary>
+        public static string msgNoActiveDocument {
+            get {
+                return ResourceManager.GetString("msgNoActiveDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kein Dokument geladen.
+        /// </summary>
+        public static string msgNoDocumentLoaded {
+            get {
+                return ResourceManager.GetString("msgNoDocumentLoaded", resourceCulture);
             }
         }
         

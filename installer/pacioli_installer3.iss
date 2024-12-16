@@ -10,7 +10,7 @@
 #define MyAppAssocExt ".exe"
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
 #define PgmVersionGetter "C:\wrk\repos\Rechnungsdruck_AS400_PDF\Pacioli - OSS ERechnung PDF\versionreader\ReadVersionInformation\ReadVersionInformation\bin\Release\net8.0\ReadVersionInformation.exe"
-#define VersionFile "S:\wrk\Projekte\RechPdf\Pacioli.Installer\version.txt"
+#define VersionFile "E:\_wrk\Projekte\E-Rechnungsdruck_AS400_PDF\Pacioli_Publish\version.txt"
 
 #define RetrieveVersion() \
   Local[0] = VersionFile, \
@@ -39,7 +39,7 @@ LicenseFile=C:\wrk\repos\Rechnungsdruck_AS400_PDF\Pacioli - OSS ERechnung PDF\gi
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputDir=S:\wrk\Projekte\RechPdf\Pacioli.Installer
+OutputDir=E:\_wrk\Projekte\E-Rechnungsdruck_AS400_PDF\Pacioli_Publish\Installer
 OutputBaseFilename=paciolisetup
 SetupIconFile=C:\wrk\repos\Rechnungsdruck_AS400_PDF\Graphics\Pacioli_64a.ico
 Compression=lzma
@@ -78,10 +78,10 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "S:\wrk\Projekte\RechPdf\Pacioli.NET.Selfcontained\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "S:\wrk\Projekte\RechPdf\Pacioli.NET.Selfcontained\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "S:\wrk\Projekte\RechPdf\Pacioli.Commandline\pacioli-cmd.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "S:\wrk\Projekte\RechPdf\Pacioli.Commandline\pacioli-cmd.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\_wrk\Projekte\E-Rechnungsdruck_AS400_PDF\Pacioli_Publish\GUI\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\_wrk\Projekte\E-Rechnungsdruck_AS400_PDF\Pacioli_Publish\GUI\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "E:\_wrk\Projekte\E-Rechnungsdruck_AS400_PDF\Pacioli_Publish\CLI\pacioli-cmd.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\_wrk\Projekte\E-Rechnungsdruck_AS400_PDF\Pacioli_Publish\CLI\pacioli-cmd.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
