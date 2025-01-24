@@ -1,11 +1,11 @@
-﻿using iText.IO.Font.Constants;
+﻿using iText.Commons.Actions;
+using iText.IO.Font.Constants;
 using iText.Kernel.Colors;
-using iText.Kernel.Events;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas;
-using iText.Kernel.Pdf.Colorspace;
+using iText.Kernel.Pdf.Event;
 using iText.Layout;
 using iText.Layout.Borders;
 using iText.Layout.Element;
@@ -32,9 +32,20 @@ namespace Pacioli.Pdf.Invoice
             _para = para;
         }
 
-        public void HandleEvent(Event ev)
+        public void HandleEvent(IEvent ev)
         {
             PdfDocumentEvent docEvent = (PdfDocumentEvent)ev;
+            PdfDocument doc = docEvent.GetDocument();
+            PdfPage page = docEvent.GetPage();
+            PdfCanvas cv = new PdfCanvas(page);
+
+            var c = new Canvas(cv, new iText.Kernel.Geom.Rectangle(_leftMargin, _bottomMargin, _pageWidth - _leftMargin - _rightMargin, 50.0f));
+            c.Add(_para);
+        }
+
+        public void OnEvent(IEvent @event)
+        {
+            PdfDocumentEvent docEvent = (PdfDocumentEvent)@event;
             PdfDocument doc = docEvent.GetDocument();
             PdfPage page = docEvent.GetPage();
             PdfCanvas cv = new PdfCanvas(page);

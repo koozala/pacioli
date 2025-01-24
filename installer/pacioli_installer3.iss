@@ -9,8 +9,8 @@
 #define MyAppAssocName MyAppName + ""
 #define MyAppAssocExt ".exe"
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
-#define PgmVersionGetter "C:\wrk\repos\Rechnungsdruck_AS400_PDF\Pacioli - OSS ERechnung PDF\versionreader\ReadVersionInformation\ReadVersionInformation\bin\Release\net8.0\ReadVersionInformation.exe"
-#define VersionFile "E:\_wrk\Projekte\E-Rechnungsdruck_AS400_PDF\Pacioli_Publish\version.txt"
+#define PgmVersionGetter "C:\wrk\repos\Pacioli ERechnung\versionreader\ReadVersionInformation\ReadVersionInformation\bin\Release\net8.0\ReadVersionInformation.exe"
+#define VersionFile "C:\wrk\repos\Pacioli ERechnung\release\version.txt"
 
 #define RetrieveVersion() \
   Local[0] = VersionFile, \
@@ -35,11 +35,11 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 ChangesAssociations=yes
 DisableProgramGroupPage=yes
-LicenseFile=C:\wrk\repos\Rechnungsdruck_AS400_PDF\Pacioli - OSS ERechnung PDF\github\pacioli\LICENSE
+LicenseFile="C:\wrk\repos\Pacioli ERechnung\github\pacioli\LICENSE"
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputDir=E:\_wrk\Projekte\E-Rechnungsdruck_AS400_PDF\Pacioli_Publish\Installer
+OutputDir=C:\wrk\repos\Pacioli ERechnung\release\Installer
 OutputBaseFilename=paciolisetup
 SetupIconFile=C:\wrk\repos\Rechnungsdruck_AS400_PDF\Graphics\Pacioli_64a.ico
 Compression=lzma
@@ -78,10 +78,10 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "E:\_wrk\Projekte\E-Rechnungsdruck_AS400_PDF\Pacioli_Publish\GUI\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\_wrk\Projekte\E-Rechnungsdruck_AS400_PDF\Pacioli_Publish\GUI\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "E:\_wrk\Projekte\E-Rechnungsdruck_AS400_PDF\Pacioli_Publish\CLI\pacioli-cmd.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\_wrk\Projekte\E-Rechnungsdruck_AS400_PDF\Pacioli_Publish\CLI\pacioli-cmd.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\wrk\repos\Pacioli ERechnung\release\GUI\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\wrk\repos\Pacioli ERechnung\release\GUI\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\wrk\repos\Pacioli ERechnung\release\CLI\pacioli-cmd.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\wrk\repos\Pacioli ERechnung\release\CLI\pacioli-cmd.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
