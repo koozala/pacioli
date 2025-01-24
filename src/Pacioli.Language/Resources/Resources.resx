@@ -136,7 +136,7 @@
     <value>Abrechnungszeitraum</value>
   </data>
   <data name="buyer" xml:space="preserve">
-    <value>Käufer</value>
+    <value>Empfänger</value>
   </data>
   <data name="buyerAssignedId" xml:space="preserve">
     <value>Eigene Artikelnr.</value>
