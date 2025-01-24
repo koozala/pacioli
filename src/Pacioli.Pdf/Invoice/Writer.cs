@@ -7,7 +7,11 @@ namespace Pacioli.Pdf.Invoice
     {
         public bool IsZugferd { get { return _isZugferd; } }
 
+        public byte[]? XmlData { get { return xmlData; } }
+
         private bool _isZugferd = false;
+
+        private byte[]? xmlData;
 
 
         public static void Write(string inputFile, string outputFile, string attachmentsTargetPath)
@@ -19,7 +23,7 @@ namespace Pacioli.Pdf.Invoice
 
         public Writer(string inputFile, string attachmentsTargetPath)
         {
-            writer = Reader.Open(inputFile, attachmentsTargetPath, out _isZugferd);
+            writer = Reader.Open(inputFile, attachmentsTargetPath, out _isZugferd, out xmlData);
         }
 
         public int GetAttachmentCount()

@@ -133,11 +133,11 @@ namespace Pacioli.WindowsApp.NET8
 
             RecordPanel rp = (RecordPanel)currentPage.Controls[0];
 
-            if (rp.converter == null)
-            {
-                MessageBox.Show(Resources.msgNoDocumentLoaded);
-                return;
-            }
+            //if (rp.converter == null)
+            //{
+            //    MessageBox.Show(Resources.msgNoDocumentLoaded);
+            //    return;
+            //}
 
             var pref = cdb.ReadPreferences();
 
@@ -149,7 +149,7 @@ namespace Pacioli.WindowsApp.NET8
                 pref.AttachmentOutputFolder = Path.GetDirectoryName(saveFileDialog1.FileName)!;
                 cdb.SavePreferences(pref);
 
-                File.WriteAllBytes(saveFileDialog1.FileName, rp.converter.PdfData!);
+                //File.WriteAllBytes(saveFileDialog1.FileName, rp.converter.PdfData!);
 
                 if (pref.OpenAfterSave)
                 {

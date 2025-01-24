@@ -41,12 +41,12 @@ namespace Pacioli.WindowsApp.NET8.Controls
             get { return F_DragDropPanel; }
         }
 
-        public Converter? converter { get; set; } = null;
-        public Converter? original { get; set; } = null;
         public string? pdfPath { get; set; } = null;
 
         DocViewPanel? docPanelDerived = null;
         DocViewPanel? docPanelOriginal = null;
+
+        bool ShowOriginal = false;
 
         public DocViewPanel? DocPanelDerived { get { return docPanelDerived; } }
         public DocViewPanel? DocPanelOriginal { get { return docPanelOriginal; } }
@@ -54,8 +54,9 @@ namespace Pacioli.WindowsApp.NET8.Controls
         public void SetFile(string fileName, string attachmentFolder)
         {
             /* Layout */
-            docPanelDerived = new DocViewPanel("E-Rechnung");
-            docPanelOriginal = new DocViewPanel("ZUGFeRD PDF");
+            docPanelDerived = new DocViewPanel("E-Rechnung", fileName, attachmentFolder, false);
+            docPanelOriginal = new DocViewPanel("ZUGFeRD PDF (Original)", fileName, attachmentFolder, true);
+            docPanelOriginal.FF_SwitchView.Visible = false;
             docPanelOriginal.FF_TitlePanel.BackColor = Color.Lavender;
 
             FF_TablePanel.Controls.Add(docPanelDerived);
@@ -84,39 +85,27 @@ namespace Pacioli.WindowsApp.NET8.Controls
             }
             FF_AttachmentInfoLbl.Text = aInfo;
 
-            docPanelDerived.SetDocument(pdfPath);
+            docPanelDerived.Render();
 
             if (writer.IsZugferd)
             {
-                original = new Converter(fileName);
-                docPanelOriginal.SetDocument(fileName);
+                ShowOriginal = true;
+                docPanelOriginal.Render();
             }
 
-            converter = new Converter(pdfPath);
             UpdateImage();
         }
 
         private void UpdateImage()
         {
-            if (converter != null)
-            {
-                docPanelDerived!.Visible = true;
-            }
-
-            if (original != null)
-            {
-                docPanelOriginal!.Visible = true;
-            }
-            else
-            {
-                docPanelOriginal!.Visible = false;
-            }
+            docPanelDerived!.Visible = true;
+            docPanelOriginal!.Visible = ShowOriginal;
         }
 
         public void Cleanup()
         {
             docPanelDerived!.Cleanup();
-            if (original != null)
+            if (ShowOriginal)
             {
                 docPanelOriginal!.Cleanup();
             }

@@ -9,7 +9,8 @@ namespace Pacioli.Pdf.ERechnung
 {
     public class Reader
     {
-        public static InvoiceWriter Open(string fileName, string attachmentLocation, out bool isZugferd)
+
+        public static InvoiceWriter Open(string fileName, string attachmentLocation, out bool isZugferd, out byte[]? xmlData)
         {
             ZugferdReader zr = new ZugferdReader(fileName);
             Stream? data;
@@ -17,12 +18,17 @@ namespace Pacioli.Pdf.ERechnung
             isZugferd = zr.Read(out data);
             if (isZugferd)
             {
+                xmlData = new byte[data!.Length];
+                data.Read(xmlData, 0, xmlData.Length);
+                data.Seek(0, SeekOrigin.Begin);
+
                 var writer = new InvoiceWriter(data!, attachmentLocation, fileName);
                 data!.Close();
                 return writer;
             }
             else
             {
+                xmlData = null;
                 return new InvoiceWriter(fileName, attachmentLocation);
             }
 

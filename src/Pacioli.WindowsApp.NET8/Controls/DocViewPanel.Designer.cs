@@ -32,9 +32,12 @@
             F_TitlePanel = new TableLayoutPanel();
             F_TopLabel = new Label();
             F_WebView = new Microsoft.Web.WebView2.WinForms.WebView2();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            F_SwitchView = new Button();
             tableLayoutPanel1.SuspendLayout();
             F_TitlePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)F_WebView).BeginInit();
+            flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -43,6 +46,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(F_TitlePanel, 0, 0);
             tableLayoutPanel1.Controls.Add(F_WebView, 0, 1);
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 0, 2);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -94,6 +98,25 @@
             F_WebView.TabIndex = 4;
             F_WebView.ZoomFactor = 1D;
             // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Controls.Add(F_SwitchView);
+            flowLayoutPanel1.Dock = DockStyle.Fill;
+            flowLayoutPanel1.Location = new Point(3, 990);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(927, 54);
+            flowLayoutPanel1.TabIndex = 5;
+            // 
+            // F_SwitchView
+            // 
+            F_SwitchView.Location = new Point(3, 3);
+            F_SwitchView.Name = "F_SwitchView";
+            F_SwitchView.Size = new Size(177, 34);
+            F_SwitchView.TabIndex = 0;
+            F_SwitchView.Text = "Simple View";
+            F_SwitchView.UseVisualStyleBackColor = true;
+            F_SwitchView.Click += F_SwitchView_Click;
+            // 
             // DocViewPanel
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -105,6 +128,7 @@
             F_TitlePanel.ResumeLayout(false);
             F_TitlePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)F_WebView).EndInit();
+            flowLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -114,5 +138,7 @@
         private Label F_TopLabel;
         private TableLayoutPanel F_TitlePanel;
         private Microsoft.Web.WebView2.WinForms.WebView2 F_WebView;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private Button F_SwitchView;
     }
 }
