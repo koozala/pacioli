@@ -10,6 +10,7 @@ Massgeblich für die Verarbeitung und Archivierung von Rechnungen ist die XML-Da
 Neben den "einfachen" XML-Dateien verarbeitet Pacioli auch die sogenannten ZUGFeRD-Dateien. Das sind PDFs, die die XML-Datei als Anhang mitbringen. Mit Pacioli lässt sich eine unabhängige PDF-Datei erstellen, so dass man die 
 Angaben in der ZUGFeRD-PDF überprüfen kann.
 
+Feedback, Ideen, Anfragen an [pacioli@silent-pulse.com](mailto:pacioli@silent-pulse.com).
 
 ## Benutzung
 
