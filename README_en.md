@@ -7,6 +7,8 @@ Pacioli can read XML and ZUGFeRD files representing electronic invoices, show a 
 
 You can download the latest release for Windows [here](https://github.com/koozala/pacioli/releases/latest).
 
+Any question, feedback? Please send to [pacioli@silent-pulse.com](mailto:pacioli@silent-pulse.com).
+
 <img src="https://github.com/koozala/pacioli/blob/main/doc/Pacioli_Screenshot_1.png" width="450">
 
 ## Command Line Utility
