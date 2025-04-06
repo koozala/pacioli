@@ -70,8 +70,12 @@ namespace Pacioli.WindowsApp.NET8
                 }
             }
 
-            preferences.DefaultFolder = Path.GetDirectoryName(openFileDialog1.FileName)!;
-            cdb.SavePreferences(preferences);
+            var path = Path.GetDirectoryName(openFileDialog1.FileName);
+            if (path != null)
+            {
+                preferences.DefaultFolder = path;
+                cdb.SavePreferences(preferences);
+            }
         }
 
         private void AddFile(string fileName)
