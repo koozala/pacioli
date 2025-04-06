@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>pacioli-cmd</AssemblyName>
-    <Version>0.12</Version>
+    <Version>0.13</Version>
   </PropertyGroup>
 
   <ItemGroup>

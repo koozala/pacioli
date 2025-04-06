@@ -12,7 +12,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<ApplicationIcon>Pacioli_64.ico</ApplicationIcon>
 		<AssemblyName>Pacioli</AssemblyName>
-		<AssemblyVersion>0.12.*</AssemblyVersion>
+		<AssemblyVersion>0.13.*</AssemblyVersion>
 		<Deterministic>false</Deterministic>
 	</PropertyGroup>
 

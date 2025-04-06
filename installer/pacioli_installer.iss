@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Pacioli"
-#define MyAppVersion "v0.4-alpha"
+#define MyAppVersion "v0.13"
 #define MyAppPublisher "koozala"
 #define MyAppURL "https://github.com/koozala/pacioli"
 #define MyAppExeName "Pacioli.exe"
@@ -15,7 +15,8 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{26E50BDA-4C1B-44CC-87C0-6A83C9C78EAF}
 AppName={#MyAppName}
-AppVersion={#MyAppVersion}
+;AppVersion={#MyAppVersion}
+AppVersion="v0.8"
 ;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
@@ -24,11 +25,11 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 ChangesAssociations=yes
 DisableProgramGroupPage=yes
-LicenseFile=C:\wrk\repos\Rechnungsdruck_AS400_PDF\Pacioli - OSS ERechnung PDF\github\pacioli\LICENSE
+LicenseFile=C:\wrk\repos\Pacioli ERechnung\github\pacioli\LICENSE
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputDir=S:\wrk\Projekte\RechPdf\Pacioli.Installer
+OutputDir=C:\wrk\repos\Pacioli ERechnung\release\Installer
 OutputBaseFilename=paciolisetup
 SetupIconFile=C:\wrk\repos\Rechnungsdruck_AS400_PDF\Graphics\Pacioli_64a.ico
 Compression=lzma
@@ -67,10 +68,10 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "S:\wrk\Projekte\RechPdf\Pacioli.NET.Selfcontained\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "S:\wrk\Projekte\RechPdf\Pacioli.NET.Selfcontained\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "S:\wrk\Projekte\RechPdf\Pacioli.Commandline\pacioli-cmd.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "S:\wrk\Projekte\RechPdf\Pacioli.Commandline\pacioli-cmd.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\wrk\repos\Pacioli ERechnung\release\GUI\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\wrk\repos\Pacioli ERechnung\release\GUI\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\wrk\repos\Pacioli ERechnung\release\CLI\pacioli-cmd.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\wrk\repos\Pacioli ERechnung\release\CLI\pacioli-cmd.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
