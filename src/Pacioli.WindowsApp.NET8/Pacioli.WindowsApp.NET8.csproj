@@ -21,8 +21,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.1" />
-		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2957.106" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.3" />
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3124.44" />
+		<PackageReference Include="PDFtoImage" Version="5.1.0-preview6" />
+		<PackageReference Include="ZUGFeRD-csharp" Version="17.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>

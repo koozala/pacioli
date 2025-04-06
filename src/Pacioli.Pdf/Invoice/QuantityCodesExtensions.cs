@@ -39,8 +39,6 @@ namespace Pacioli.Pdf.Invoice
                     return "Gramm";
                 case QuantityCodes.H87:
                     return "Anz.";
-                case QuantityCodes.HAR:
-                    return "ha";
                 case QuantityCodes.HUR:
                     return "Std.";
                 case QuantityCodes.KGM:
@@ -49,8 +47,6 @@ namespace Pacioli.Pdf.Invoice
                     return "km";
                 case QuantityCodes.KT:
                     return "Kit";
-                case QuantityCodes.KTM:
-                    return "km";
                 case QuantityCodes.KWH:
                     return "kWh";
                 case QuantityCodes.KWT:

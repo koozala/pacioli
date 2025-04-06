@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="itext" Version="9.0.0" />
-    <PackageReference Include="itext.bouncy-castle-adapter" Version="9.0.0" />
-    <PackageReference Include="ZUGFeRD-csharp" Version="16.1.0" />
+    <PackageReference Include="itext" Version="9.1.0" />
+    <PackageReference Include="itext.bouncy-castle-adapter" Version="9.1.0" />
+    <PackageReference Include="ZUGFeRD-csharp" Version="17.2.0" />
   </ItemGroup>
 
   <ItemGroup>
