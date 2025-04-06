@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Pacioli"
-#define MyAppVersion "v0.13"
+#define MyAppVersion "v0.14"
 #define MyAppPublisher "koozala"
 #define MyAppURL "https://github.com/koozala/pacioli"
 #define MyAppExeName "Pacioli.exe"
