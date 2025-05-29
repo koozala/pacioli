@@ -16,7 +16,7 @@ Feedback, Ideen, Anfragen an [pacioli@silent-pulse.com](mailto:pacioli@silent-pu
 
 ## Benutzung
 
-Die neueste Version von Pacioli kann hier heruntergeladen werden: [Aktuelle Pacioli-Version](https://github.com/koozala/pacioli/releases/latest). Pacioli ist kostenlos und kann frei verwendet werden.
+Die neueste Version von Pacioli kann hier heruntergeladen werden: [Aktuelle Pacioli-Version](https://www.epacioli.de/FileDownload/Download?filename=paciolisetup.exe). Pacioli ist kostenlos und kann frei verwendet werden.
 
 Nach der Installation lässt sich das Programm über das Windows-Startmenü starten.
 
