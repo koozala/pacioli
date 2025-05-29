@@ -4,6 +4,8 @@ _For the English version, see [here](README_en.md)._
 
 Ein Windows-Tool zum Lesen und Konvertieren von elektronischen Rechnungen. 
 
+Webseite: [Pacioli](https://www.epacioli.de/)
+
 Die E-Rechnung ist im Wesentlichen eine XML-Datei, die sich nur schwer direkt lesen lässt. Mit Pacioli lassen sich aus diesen XML-Dateien lesbare PDF-Dateien erzeugen. Diese stellen **keinen Ersatz** für die XML-Dateien dar! 
 Massgeblich für die Verarbeitung und Archivierung von Rechnungen ist die XML-Datei. Eine zugehörige PDF-Datei dient lediglich zur leichteren Überprüfung der Angaben in der XML-Datei.
 
