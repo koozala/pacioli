@@ -104,7 +104,7 @@ namespace Pacioli.Pdf.Invoice
                 case QuantityCodes.XSA:
                     return "Sack";
                 default:
-                    return "-";
+                    return string.Empty;
             }
         }
     }

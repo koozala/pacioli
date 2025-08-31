@@ -341,4 +341,10 @@ More information on the Internet: https://github.com/koozala/pacioli</value>
   <data name="error" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="bankverbindung" xml:space="preserve">
+    <value>Banking details</value>
+  </data>
+  <data name="accountHolder" xml:space="preserve">
+    <value>Account holder</value>
+  </data>
 </root>

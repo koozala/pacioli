@@ -79,7 +79,7 @@ namespace Pacioli.Pdf.Invoice
 
         public int CountAttachments()
         {
-            return descriptor.TradeLineItems.Sum(x => x.GetAdditionalReferencedDocuments().Count);
+            return descriptor.GetTradeLineItems().Sum(x => x.GetAdditionalReferencedDocuments().Count);
         }
 
         public void Write(string outputFileName)
@@ -230,7 +230,7 @@ namespace Pacioli.Pdf.Invoice
             tab.AddHeaderCell(new ItemCell($"{Resources.sum}"));
 
             int lineCount = 0;
-            foreach (var item in descriptor.TradeLineItems)
+            foreach (var item in descriptor.GetTradeLineItems())
             {
                 lineCount++;
                 tab.AddCell(new ItemCell($"{lineCount}"));
@@ -326,7 +326,7 @@ namespace Pacioli.Pdf.Invoice
             doc.Add(tab);
 
 
-            foreach (var item in descriptor.TradeLineItems)
+            foreach (var item in descriptor.GetTradeLineItems())
             {
                 if (item.GetAdditionalReferencedDocuments().Count > 0)
                 {
@@ -350,7 +350,7 @@ namespace Pacioli.Pdf.Invoice
             taxTab.AddHeaderCell($"{Resources.taxAmount}");
             taxTab.AddHeaderCell($"{Resources.exception}");
             taxTab.AddHeaderCell($"{Resources.allowanceChargeBasis}");
-            foreach (var tax in descriptor.Taxes)
+            foreach (var tax in descriptor.GetApplicableTradeTaxes())
             {
                 taxTab.AddCell(new ItemCellRight($"{tax.Percent.ToString("0.00")}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.TypeCode.ToUnit()} {(tax.CategoryCode == null ? string.Empty : tax.CategoryCode.Value.ToUnit())}"));
@@ -398,9 +398,21 @@ namespace Pacioli.Pdf.Invoice
             doc.Add(sumTab);
 
 
-            foreach (var bank in descriptor.CreditorBankAccounts)
+            foreach (var bank in descriptor.GetCreditorFinancialAccounts())
             {
-                var box = new PartyBox(bank.BankName, $"{bank.Name}\n{bank.IBAN}\n{bank.BIC}\n{bank.Bankleitzahl}\n{bank.ID}");
+                StringBuilder sb = new StringBuilder();
+                sb.Append($"{Resources.accountHolder}: {bank.Name}");
+                sb.Append($"\nIBAN: {bank.IBAN}");
+                sb.Append($"\nBIC: {bank.BIC}");
+                if (!string.IsNullOrWhiteSpace(bank.Bankleitzahl))
+                {
+                    sb.Append($"BLZ: \n{bank.Bankleitzahl}");
+                }
+                if (!string.IsNullOrWhiteSpace(bank.ID))
+                {
+                    sb.Append($"\n{bank.ID}");
+                }
+                var box = new PartyBox(Resources.bankverbindung, sb.ToString());
                 doc.Add(box);
             }
 
@@ -480,23 +492,25 @@ namespace Pacioli.Pdf.Invoice
             }
 
 
-            doc.Add(new Paragraph($"{Resources.remarks}").SetFont(bold).SetFontSize(12.0f).SetMarginTop(20.0f));
-
-            foreach (var note in descriptor.Notes.Where(x => x.SubjectCode == SubjectCodes.Unknown))
+            if (descriptor.GetNotes().Count > 0)
             {
-                Paragraph line = new Paragraph($"{note.Content}");
-                line.SetBackgroundColor(ColorConstants.LIGHT_GRAY);
-                doc.Add(line);
-            }
+                doc.Add(new Paragraph($"{Resources.remarks}").SetFont(bold).SetFontSize(12.0f).SetMarginTop(20.0f));
 
-            foreach (var note in descriptor.Notes.Where(x => x.SubjectCode != SubjectCodes.Unknown))
-            {
-                string code = note.SubjectCode == SubjectCodes.Unknown ? $"[{Resources.remark}]" : note.SubjectCode.ToString();
-                Paragraph line = new Paragraph($"{note.Content}");
-                line.SetBackgroundColor(ColorConstants.LIGHT_GRAY);
-                doc.Add(line);
-            }
+                foreach (var note in descriptor.GetNotes().Where(x => x.SubjectCode == SubjectCodes.Unknown))
+                {
+                    Paragraph line = new Paragraph($"{note.Content}");
+                    line.SetBackgroundColor(ColorConstants.LIGHT_GRAY);
+                    doc.Add(line);
+                }
 
+                foreach (var note in descriptor.GetNotes().Where(x => x.SubjectCode != SubjectCodes.Unknown))
+                {
+                    string code = note.SubjectCode == SubjectCodes.Unknown ? $"[{Resources.remark}]" : note.SubjectCode.ToString();
+                    Paragraph line = new Paragraph($"{note.Content}");
+                    line.SetBackgroundColor(ColorConstants.LIGHT_GRAY);
+                    doc.Add(line);
+                }
+            }
 
 
             //for (int pageNo = 1; pageNo <= document.GetNumberOfPages(); pageNo++)

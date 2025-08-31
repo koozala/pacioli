@@ -70,6 +70,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kontoinhaber.
+        /// </summary>
+        public static string accountHolder {
+            get {
+                return ResourceManager.GetString("accountHolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Abschläge.
         /// </summary>
         public static string allowance {
@@ -124,6 +133,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bankverbindung.
+        /// </summary>
+        public static string bankverbindung {
+            get {
+                return ResourceManager.GetString("bankverbindung", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Basis.
         /// </summary>
         public static string basis {
@@ -142,7 +160,7 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Käufer.
+        ///   Looks up a localized string similar to Empfänger.
         /// </summary>
         public static string buyer {
             get {
