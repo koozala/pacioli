@@ -54,8 +54,7 @@ namespace Pacioli.Pdf.Invoice
                 AddText($"{party.Country}\n");
             }
 
-            string t = party.ID.SchemeID != GlobalIDSchemeIdentifiers.Unknown ? party.ID.SchemeID.ToString() : string.Empty;
-            AddText($"{t} {party.ID.ID}\n");
+            AddText($"{party.ID.SchemeID.ToString()} {party.ID.ID}\n");
 
             this
                 .SetPadding(5.0f)

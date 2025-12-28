@@ -1,5 +1,6 @@
 ﻿
 using Pacioli.Pdf.ERechnung;
+using System;
 
 namespace Pacioli.Pdf.Invoice
 {
@@ -9,13 +10,13 @@ namespace Pacioli.Pdf.Invoice
 
         private bool _isZugferd = false;
 
+        InvoiceWriter? writer = null;
+
 
         public static void Write(string inputFile, string outputFile, string attachmentsTargetPath)
         {
             new InvoiceWriter(inputFile, attachmentsTargetPath).Write(outputFile);
         }
-
-        InvoiceWriter writer;
 
         public Writer(string inputFile, string attachmentsTargetPath)
         {
@@ -24,12 +25,19 @@ namespace Pacioli.Pdf.Invoice
 
         public int GetAttachmentCount()
         {
+            if (writer == null)
+            {
+                throw new InvalidOperationException("Writer not initialized.");
+            }
             return writer.CountAttachments();
         }
 
         public void Write(string outputFile)
         {
-
+            if (writer == null)
+            {
+                throw new InvalidOperationException("Writer not initialized.");
+            }
             writer.Write(outputFile);
         }
 

@@ -187,10 +187,7 @@ namespace Pacioli.Pdf.Invoice
             if (!string.IsNullOrWhiteSpace(descriptor.Buyer.ID.ID))
             {
                 reStr.Append($"{Resources.customerNo}: ");
-                if (descriptor.Buyer.ID.SchemeID != GlobalIDSchemeIdentifiers.Unknown)
-                {
-                    reStr.Append($" {descriptor.Buyer.ID.SchemeID}");
-                }
+                reStr.Append($" {descriptor.Buyer.ID.SchemeID}");
                 reStr.Append($" {descriptor.Buyer.ID.ID}");
             }
             if (reStr.Length > 0)
@@ -317,8 +314,8 @@ namespace Pacioli.Pdf.Invoice
                     }
                     tab.AddCell(new ItemCell(s1.ToString()));
                 }
-                tab.AddCell(new ItemCell($"{item.TaxPercent.ToString("0.00")}% {item.TaxType.ToUnit()} {item.TaxCategoryCode.ToUnit()}"));
-                tab.AddCell(new ItemCellRight($"{item.BilledQuantity.ToString(DecimalExtensions.PrecFmt(item.BilledQuantity))} {item.UnitCode.ToUnit()}"));
+                tab.AddCell(new ItemCell($"{item.TaxPercent.ToString("0.00")}% {(item.TaxType.HasValue ? item.TaxType.Value.ToUnit() : string.Empty)} {(item.TaxCategoryCode.HasValue ? item.TaxCategoryCode.Value.ToUnit() : string.Empty)}"));
+                tab.AddCell(new ItemCellRight($"{item.BilledQuantity.ToString(DecimalExtensions.PrecFmt(item.BilledQuantity))} {(item.UnitCode.HasValue ? item.UnitCode.Value.ToUnit().ToString() :  string.Empty)}"));
                 tab.AddCell(new ItemCellRight($"{Fmt.ToString(item.NetUnitPrice, "#,0.00")}"));
                 tab.AddCell(new ItemCellRight($"{Fmt.ToString(item.GrossUnitPrice, "#,0.00")}"));
                 tab.AddCell(new ItemCellRight($"{Fmt.ToString(item.LineTotalAmount, "#,0.00")}"));
@@ -353,7 +350,7 @@ namespace Pacioli.Pdf.Invoice
             foreach (var tax in descriptor.GetApplicableTradeTaxes())
             {
                 taxTab.AddCell(new ItemCellRight($"{tax.Percent.ToString("0.00")}"));
-                taxTab.AddCell(new ItemCellRight($"{tax.TypeCode.ToUnit()} {(tax.CategoryCode == null ? string.Empty : tax.CategoryCode.Value.ToUnit())}"));
+                taxTab.AddCell(new ItemCellRight($"{(tax.TypeCode.HasValue ? tax.TypeCode.Value.ToUnit() : string.Empty)} {(tax.CategoryCode == null ? string.Empty : tax.CategoryCode.Value.ToUnit())}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.BasisAmount}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.TaxAmount}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.ExemptionReason} {tax.ExemptionReasonCode}"));
@@ -361,11 +358,11 @@ namespace Pacioli.Pdf.Invoice
             }
             doc.Add(taxTab);
 
-            if (descriptor.GetTradeAllowanceCharges().Count > 0)
+            if (descriptor.TradeAllowanceCharges.Count > 0)
             {
                 doc.Add(new Paragraph($"Rabatte und Zuschläge").SetMarginTop(20.0f));
                 TradeAllowanceChargesTab chargeTab = new TradeAllowanceChargesTab();
-                chargeTab.Add(descriptor.GetTradeAllowanceCharges());
+                chargeTab.Add(descriptor.TradeAllowanceCharges);
                 doc.Add(chargeTab.GetTab());
             }
             //foreach (var charge in descriptor.GetTradeAllowanceCharges())
@@ -496,16 +493,9 @@ namespace Pacioli.Pdf.Invoice
             {
                 doc.Add(new Paragraph($"{Resources.remarks}").SetFont(bold).SetFontSize(12.0f).SetMarginTop(20.0f));
 
-                foreach (var note in descriptor.GetNotes().Where(x => x.SubjectCode == SubjectCodes.Unknown))
+                foreach (var note in descriptor.Notes)
                 {
-                    Paragraph line = new Paragraph($"{note.Content}");
-                    line.SetBackgroundColor(ColorConstants.LIGHT_GRAY);
-                    doc.Add(line);
-                }
-
-                foreach (var note in descriptor.GetNotes().Where(x => x.SubjectCode != SubjectCodes.Unknown))
-                {
-                    string code = note.SubjectCode == SubjectCodes.Unknown ? $"[{Resources.remark}]" : note.SubjectCode.ToString();
+                    string code = note.SubjectCode.ToString();
                     Paragraph line = new Paragraph($"{note.Content}");
                     line.SetBackgroundColor(ColorConstants.LIGHT_GRAY);
                     doc.Add(line);

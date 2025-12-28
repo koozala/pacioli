@@ -87,6 +87,8 @@ namespace Pacioli.WindowsApp.NET8
                 TabPage page = new TabPage();
                 page.Text = Path.GetFileName(fileName);
 
+                /* Add RecordPanel to TabPage */
+
                 rp.Dock = DockStyle.Fill;
                 page.Controls.Add(rp);
                 F_TabControl.Controls.Add(page);

@@ -23,7 +23,7 @@ namespace Pacioli.Pdf.Invoice
             tab.AddHeaderCell("Steuer");
         }
 
-        public void Add(IEnumerable<TradeAllowanceCharge> charges)
+        public void Add(IEnumerable<AbstractTradeAllowanceCharge> charges)
         {
             foreach (var charge in charges)
             {
