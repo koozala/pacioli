@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Pacioli.Preview.ImageGeneration
 {
-    public class Converter
+    public class PdfToImageConverter
     {
         public byte[]? PdfData = null;
         public int PageCount { get; set; } = 0;
@@ -18,7 +18,7 @@ namespace Pacioli.Preview.ImageGeneration
         IEnumerable<Image> FastBitmaps { get; set; }
 
 
-        public Converter(string pdfFile)
+        public PdfToImageConverter(string pdfFile)
         {
             PdfData = File.ReadAllBytes(pdfFile);
             PageSize = PDFtoImage.Conversion.GetPageSize(PdfData, 0);
