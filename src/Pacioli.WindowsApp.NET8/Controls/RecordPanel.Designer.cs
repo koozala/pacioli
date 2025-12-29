@@ -43,14 +43,15 @@
             // 
             F_TablePanel.AllowDrop = true;
             F_TablePanel.AutoSize = true;
-            F_TablePanel.ColumnCount = 4;
+            F_TablePanel.ColumnCount = 5;
             F_TablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 44F));
-            F_TablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            F_TablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            F_TablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            F_TablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            F_TablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            F_TablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            F_TablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             F_TablePanel.Controls.Add(F_FileNameTb, 1, 3);
-            F_TablePanel.Controls.Add(flowLayoutPanel2, 3, 1);
-            F_TablePanel.Controls.Add(F_DragDropPanel, 3, 2);
+            F_TablePanel.Controls.Add(flowLayoutPanel2, 4, 1);
+            F_TablePanel.Controls.Add(F_DragDropPanel, 4, 2);
             F_TablePanel.Dock = DockStyle.Fill;
             F_TablePanel.Location = new Point(0, 0);
             F_TablePanel.Margin = new Padding(3, 4, 3, 4);
@@ -65,7 +66,7 @@
             // 
             // F_FileNameTb
             // 
-            F_TablePanel.SetColumnSpan(F_FileNameTb, 3);
+            F_TablePanel.SetColumnSpan(F_FileNameTb, 4);
             F_FileNameTb.Dock = DockStyle.Fill;
             F_FileNameTb.Location = new Point(47, 1126);
             F_FileNameTb.Margin = new Padding(3, 4, 3, 4);
@@ -82,9 +83,9 @@
             flowLayoutPanel2.Dock = DockStyle.Fill;
             flowLayoutPanel2.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            flowLayoutPanel2.Location = new Point(1339, 53);
+            flowLayoutPanel2.Location = new Point(1502, 53);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new Size(319, 530);
+            flowLayoutPanel2.Size = new Size(156, 530);
             flowLayoutPanel2.TabIndex = 8;
             // 
             // attachmentInfoLbl
@@ -93,7 +94,7 @@
             attachmentInfoLbl.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
             attachmentInfoLbl.Location = new Point(3, 0);
             attachmentInfoLbl.Name = "attachmentInfoLbl";
-            attachmentInfoLbl.Size = new Size(159, 30);
+            attachmentInfoLbl.Size = new Size(99, 60);
             attachmentInfoLbl.TabIndex = 0;
             attachmentInfoLbl.Text = "Keine Anhänge";
             // 
@@ -104,9 +105,9 @@
             F_DragDropPanel.Controls.Add(F_DragDropLabel);
             F_DragDropPanel.Dock = DockStyle.Fill;
             F_DragDropPanel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            F_DragDropPanel.Location = new Point(1339, 589);
+            F_DragDropPanel.Location = new Point(1502, 589);
             F_DragDropPanel.Name = "F_DragDropPanel";
-            F_DragDropPanel.Size = new Size(319, 530);
+            F_DragDropPanel.Size = new Size(156, 530);
             F_DragDropPanel.TabIndex = 9;
             // 
             // F_DragDropLabel

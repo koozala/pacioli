@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace Pacioli.WindowsApp.NET8.Controls
 {
@@ -41,12 +42,15 @@ namespace Pacioli.WindowsApp.NET8.Controls
             get { return F_DragDropPanel; }
         }
 
-        public Converter? converter { get; set; } = null;
-        public Converter? original { get; set; } = null;
+        public PdfToImageConverter? renderedDoc { get; set; } = null;
+        public PdfToImageConverter? original { get; set; } = null;
         public string? pdfPath { get; set; } = null;
+
+        private Stream XmlDataStream = new MemoryStream();
 
         DocViewPanel? docPanelDerived = null;
         DocViewPanel? docPanelOriginal = null;
+        XmlViewPanel? docPanelXml = null;
 
         public DocViewPanel? DocPanelDerived { get { return docPanelDerived; } }
         public DocViewPanel? DocPanelOriginal { get { return docPanelOriginal; } }
@@ -56,6 +60,7 @@ namespace Pacioli.WindowsApp.NET8.Controls
             /* Layout */
             docPanelDerived = new DocViewPanel("E-Rechnung");
             docPanelOriginal = new DocViewPanel("ZUGFeRD PDF");
+            docPanelXml = new XmlViewPanel();
             docPanelOriginal.FF_TitlePanel.BackColor = Color.Lavender;
 
             FF_TablePanel.Controls.Add(docPanelDerived);
@@ -68,13 +73,18 @@ namespace Pacioli.WindowsApp.NET8.Controls
             FF_TablePanel.SetRowSpan(docPanelOriginal, 2);
             docPanelOriginal.Dock = DockStyle.Fill;
 
+            FF_TablePanel.Controls.Add(docPanelXml);
+            FF_TablePanel.SetCellPosition(docPanelXml, new TableLayoutPanelCellPosition(3, 1));
+            FF_TablePanel.SetRowSpan(docPanelXml, 2);
+            docPanelXml.Dock = DockStyle.Fill;
+
             /* Content */
 
             pdfPath = Path.GetTempFileName();
             FF_FileNameTb.Text = fileName;
 
             /* Convert to PDF and write to temp file */
-            Writer writer = new Writer(fileName, attachmentFolder);
+            Writer writer = new Writer(fileName, attachmentFolder, XmlDataStream);
             writer.Write(pdfPath);
             int countAttachments = writer.GetAttachmentCount();
             string aInfo = Resources.attachmentsNone;
@@ -88,17 +98,20 @@ namespace Pacioli.WindowsApp.NET8.Controls
 
             if (writer.IsZugferd)
             {
-                original = new Converter(fileName);
+                original = new PdfToImageConverter(fileName);
                 docPanelOriginal.SetDocument(fileName);
             }
 
-            converter = new Converter(pdfPath);
+            /* XML View */
+            docPanelXml.LoadXml(XmlDataStream);
+
+            renderedDoc = new PdfToImageConverter(pdfPath);
             UpdateImage();
         }
 
         private void UpdateImage()
         {
-            if (converter != null)
+            if (renderedDoc != null)
             {
                 docPanelDerived!.Visible = true;
             }
