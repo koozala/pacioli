@@ -1,6 +1,7 @@
 ﻿
 using Pacioli.Pdf.ERechnung;
 using System;
+using System.IO;
 
 namespace Pacioli.Pdf.Invoice
 {
@@ -12,15 +13,19 @@ namespace Pacioli.Pdf.Invoice
 
         InvoiceWriter? writer = null;
 
+        Reader reader;
+
+
 
         public static void Write(string inputFile, string outputFile, string attachmentsTargetPath)
         {
             new InvoiceWriter(inputFile, attachmentsTargetPath).Write(outputFile);
         }
 
-        public Writer(string inputFile, string attachmentsTargetPath)
+        public Writer(string inputFile, string attachmentsTargetPath, Stream xmlDataStream)
         {
-            writer = Reader.Open(inputFile, attachmentsTargetPath, out _isZugferd);
+            reader = new Reader();
+            writer = reader.Open(inputFile, attachmentsTargetPath, out _isZugferd, xmlDataStream);
         }
 
         public int GetAttachmentCount()
