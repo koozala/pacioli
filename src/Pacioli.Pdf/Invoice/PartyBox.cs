@@ -2,7 +2,9 @@
 using iText.Kernel.Font;
 using iText.Layout.Borders;
 using iText.Layout.Element;
+using Org.BouncyCastle.Utilities.IO;
 using s2industries.ZUGFeRD;
+using System.Text;
 
 namespace Pacioli.Pdf.Invoice
 {
@@ -44,17 +46,27 @@ namespace Pacioli.Pdf.Invoice
                 AddText($"{party.Street}\n");
             }
 
-            if (!string.IsNullOrWhiteSpace(party.City))
-            {
-                AddText($"{party.Postcode} {party.City}\n");
-            }
-
+            StringBuilder sb = new StringBuilder();
+            string blank = string.Empty;
             if (!string.IsNullOrWhiteSpace(party.Country.ToString()))
             {
-                AddText($"{party.Country}\n");
+                sb.Append(party.Country.ToString());
+                blank = " "; 
+            }
+            if (!string.IsNullOrWhiteSpace(party.Postcode))
+            {
+                sb.Append($"{blank}{party.Postcode}");
+                blank = " ";
+            }
+            if (!string.IsNullOrWhiteSpace(party.City))
+            {
+                sb.Append($"{blank}{party.City}");
             }
 
-            AddText($"{party.ID.SchemeID.ToString()} {party.ID.ID}\n");
+            if (!string.IsNullOrWhiteSpace(party.ID.ID))
+            {
+                AddText($"{party.ID.ID} ({party.ID.SchemeID.ToString()})\n");
+            }
 
             this
                 .SetPadding(5.0f)
