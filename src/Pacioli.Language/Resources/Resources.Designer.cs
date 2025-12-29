@@ -19,7 +19,7 @@ namespace Pacioli.Language.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -728,6 +728,555 @@ namespace Pacioli.Language.Resources {
         public static string totalSum {
             get {
                 return ResourceManager.GetString("totalSum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steuermeldung (Rechnung).
+        /// </summary>
+        public static string type102 {
+            get {
+                return ResourceManager.GetString("type102", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnungsdatenblatt.
+        /// </summary>
+        public static string type130 {
+            get {
+                return ResourceManager.GetString("type130", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verkürzte Baurechnung.
+        /// </summary>
+        public static string type202 {
+            get {
+                return ResourceManager.GetString("type202", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vorläufige Baurechnung.
+        /// </summary>
+        public static string type203 {
+            get {
+                return ResourceManager.GetString("type203", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Baurechnung.
+        /// </summary>
+        public static string type204 {
+            get {
+                return ResourceManager.GetString("type204", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zwischen-/Abschlagsrechnung.
+        /// </summary>
+        public static string type211 {
+            get {
+                return ResourceManager.GetString("type211", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schlussrechnung.
+        /// </summary>
+        public static string type218 {
+            get {
+                return ResourceManager.GetString("type218", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnung über abgeschlossene Einheiten.
+        /// </summary>
+        public static string type219 {
+            get {
+                return ResourceManager.GetString("type219", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eigengutschrift.
+        /// </summary>
+        public static string type261 {
+            get {
+                return ResourceManager.GetString("type261", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zusammengefasste Gutschrift.
+        /// </summary>
+        public static string type262 {
+            get {
+                return ResourceManager.GetString("type262", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preisanpassungsrechnung.
+        /// </summary>
+        public static string type295 {
+            get {
+                return ResourceManager.GetString("type295", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preisanpassungsgutschrift.
+        /// </summary>
+        public static string type296 {
+            get {
+                return ResourceManager.GetString("type296", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gutschrift über Rückstellungen.
+        /// </summary>
+        public static string type308 {
+            get {
+                return ResourceManager.GetString("type308", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proformarechnung.
+        /// </summary>
+        public static string type325 {
+            get {
+                return ResourceManager.GetString("type325", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Teilrechnung.
+        /// </summary>
+        public static string type326 {
+            get {
+                return ResourceManager.GetString("type326", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnung mit Lieferschein.
+        /// </summary>
+        public static string type331 {
+            get {
+                return ResourceManager.GetString("type331", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Handelsrechnung.
+        /// </summary>
+        public static string type380 {
+            get {
+                return ResourceManager.GetString("type380", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gutschrift.
+        /// </summary>
+        public static string type381 {
+            get {
+                return ResourceManager.GetString("type381", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnung.
+        /// </summary>
+        public static string type382 {
+            get {
+                return ResourceManager.GetString("type382", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Belastungsanzeige.
+        /// </summary>
+        public static string type383 {
+            get {
+                return ResourceManager.GetString("type383", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnungskorrektur.
+        /// </summary>
+        public static string type384 {
+            get {
+                return ResourceManager.GetString("type384", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Konsolidierte Rechnung.
+        /// </summary>
+        public static string type385 {
+            get {
+                return ResourceManager.GetString("type385", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vorauszahlungsrechnung.
+        /// </summary>
+        public static string type386 {
+            get {
+                return ResourceManager.GetString("type386", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mietrechnung.
+        /// </summary>
+        public static string type387 {
+            get {
+                return ResourceManager.GetString("type387", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steuerrechnung.
+        /// </summary>
+        public static string type388 {
+            get {
+                return ResourceManager.GetString("type388", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eigenrechnung.
+        /// </summary>
+        public static string type389 {
+            get {
+                return ResourceManager.GetString("type389", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delkredere-Rechnung.
+        /// </summary>
+        public static string type390 {
+            get {
+                return ResourceManager.GetString("type390", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inkasso-Rechnung.
+        /// </summary>
+        public static string type393 {
+            get {
+                return ResourceManager.GetString("type393", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leasing-Rechnung.
+        /// </summary>
+        public static string type394 {
+            get {
+                return ResourceManager.GetString("type394", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Konsignationsrechnung.
+        /// </summary>
+        public static string type395 {
+            get {
+                return ResourceManager.GetString("type395", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inkasso-Gutschrift.
+        /// </summary>
+        public static string type396 {
+            get {
+                return ResourceManager.GetString("type396", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maschinelle Gutschrift.
+        /// </summary>
+        public static string type420 {
+            get {
+                return ResourceManager.GetString("type420", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Belastungsanzeige.
+        /// </summary>
+        public static string type456 {
+            get {
+                return ResourceManager.GetString("type456", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Storno einer Belastung.
+        /// </summary>
+        public static string type457 {
+            get {
+                return ResourceManager.GetString("type457", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Storno einer Gutschrift.
+        /// </summary>
+        public static string type458 {
+            get {
+                return ResourceManager.GetString("type458", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnungskorrekt (selbst ausgestellt).
+        /// </summary>
+        public static string type471 {
+            get {
+                return ResourceManager.GetString("type471", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inkassorechnungskorrektur.
+        /// </summary>
+        public static string type472 {
+            get {
+                return ResourceManager.GetString("type472", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inkassorechnungskorrektur (selbst ausgestellt).
+        /// </summary>
+        public static string type473 {
+            get {
+                return ResourceManager.GetString("type473", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eigene Vorauszahlungsrechnung.
+        /// </summary>
+        public static string type500 {
+            get {
+                return ResourceManager.GetString("type500", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eigene Inkassorechnung.
+        /// </summary>
+        public static string type501 {
+            get {
+                return ResourceManager.GetString("type501", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eigene Inkassogutschrift.
+        /// </summary>
+        public static string type502 {
+            get {
+                return ResourceManager.GetString("type502", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Korrigierte Vorausgutschrift.
+        /// </summary>
+        public static string type503 {
+            get {
+                return ResourceManager.GetString("type503", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eigenrechnung.
+        /// </summary>
+        public static string type527 {
+            get {
+                return ResourceManager.GetString("type527", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speditionsgutschrift.
+        /// </summary>
+        public static string type532 {
+            get {
+                return ResourceManager.GetString("type532", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speditionskorrekturrechnung.
+        /// </summary>
+        public static string type553 {
+            get {
+                return ResourceManager.GetString("type553", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnung des Versicherers.
+        /// </summary>
+        public static string type575 {
+            get {
+                return ResourceManager.GetString("type575", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speditionsrechnung.
+        /// </summary>
+        public static string type623 {
+            get {
+                return ResourceManager.GetString("type623", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hafenkostenrechnung.
+        /// </summary>
+        public static string type633 {
+            get {
+                return ResourceManager.GetString("type633", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zahlungsaufforderung (Rechnung).
+        /// </summary>
+        public static string type71 {
+            get {
+                return ResourceManager.GetString("type71", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnungsinformation.
+        /// </summary>
+        public static string type751 {
+            get {
+                return ResourceManager.GetString("type751", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frachtrechnung.
+        /// </summary>
+        public static string type780 {
+            get {
+                return ResourceManager.GetString("type780", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnung über Waren oder Leistungen.
+        /// </summary>
+        public static string type80 {
+            get {
+                return ResourceManager.GetString("type80", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gutschrift über Waren oder Leistungen.
+        /// </summary>
+        public static string type81 {
+            get {
+                return ResourceManager.GetString("type81", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anspruchsanzeige.
+        /// </summary>
+        public static string type817 {
+            get {
+                return ResourceManager.GetString("type817", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnung über erhobene Dienste.
+        /// </summary>
+        public static string type82 {
+            get {
+                return ResourceManager.GetString("type82", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gutschrift über Finanzangleichungen.
+        /// </summary>
+        public static string type83 {
+            get {
+                return ResourceManager.GetString("type83", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnung über Finanzangleichungen.
+        /// </summary>
+        public static string type84 {
+            get {
+                return ResourceManager.GetString("type84", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Konsulatsfaktura.
+        /// </summary>
+        public static string type870 {
+            get {
+                return ResourceManager.GetString("type870", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Teilbaurechnung.
+        /// </summary>
+        public static string type875 {
+            get {
+                return ResourceManager.GetString("type875", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Teilschlussbaurechnung.
+        /// </summary>
+        public static string type876 {
+            get {
+                return ResourceManager.GetString("type876", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schlussbaurechnung.
+        /// </summary>
+        public static string type877 {
+            get {
+                return ResourceManager.GetString("type877", resourceCulture);
             }
         }
         

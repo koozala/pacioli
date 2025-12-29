@@ -347,4 +347,187 @@ Mehr Informationen im Internet: https://github.com/koozala/pacioli</value>
   <data name="accountHolder" xml:space="preserve">
     <value>Kontoinhaber</value>
   </data>
+  <data name="type71" xml:space="preserve">
+    <value>Zahlungsaufforderung (Rechnung)</value>
+  </data>
+  <data name="type80" xml:space="preserve">
+    <value>Rechnung über Waren oder Leistungen</value>
+  </data>
+  <data name="type81" xml:space="preserve">
+    <value>Gutschrift über Waren oder Leistungen</value>
+  </data>
+  <data name="type82" xml:space="preserve">
+    <value>Rechnung über erhobene Dienste</value>
+  </data>
+  <data name="type83" xml:space="preserve">
+    <value>Gutschrift über Finanzangleichungen</value>
+  </data>
+  <data name="type84" xml:space="preserve">
+    <value>Rechnung über Finanzangleichungen</value>
+  </data>
+  <data name="type102" xml:space="preserve">
+    <value>Steuermeldung (Rechnung)</value>
+  </data>
+  <data name="type130" xml:space="preserve">
+    <value>Rechnungsdatenblatt</value>
+  </data>
+  <data name="type202" xml:space="preserve">
+    <value>Verkürzte Baurechnung</value>
+  </data>
+  <data name="type203" xml:space="preserve">
+    <value>Vorläufige Baurechnung</value>
+  </data>
+  <data name="type204" xml:space="preserve">
+    <value>Baurechnung</value>
+  </data>
+  <data name="type211" xml:space="preserve">
+    <value>Zwischen-/Abschlagsrechnung</value>
+  </data>
+  <data name="type218" xml:space="preserve">
+    <value>Schlussrechnung</value>
+  </data>
+  <data name="type219" xml:space="preserve">
+    <value>Rechnung über abgeschlossene Einheiten</value>
+  </data>
+  <data name="type261" xml:space="preserve">
+    <value>Eigengutschrift</value>
+  </data>
+  <data name="type262" xml:space="preserve">
+    <value>Zusammengefasste Gutschrift</value>
+  </data>
+  <data name="type295" xml:space="preserve">
+    <value>Preisanpassungsrechnung</value>
+  </data>
+  <data name="type296" xml:space="preserve">
+    <value>Preisanpassungsgutschrift</value>
+  </data>
+  <data name="type308" xml:space="preserve">
+    <value>Gutschrift über Rückstellungen</value>
+  </data>
+  <data name="type325" xml:space="preserve">
+    <value>Proformarechnung</value>
+  </data>
+  <data name="type326" xml:space="preserve">
+    <value>Teilrechnung</value>
+  </data>
+  <data name="type331" xml:space="preserve">
+    <value>Rechnung mit Lieferschein</value>
+  </data>
+  <data name="type380" xml:space="preserve">
+    <value>Handelsrechnung</value>
+  </data>
+  <data name="type381" xml:space="preserve">
+    <value>Gutschrift</value>
+  </data>
+  <data name="type382" xml:space="preserve">
+    <value>Rechnung</value>
+  </data>
+  <data name="type383" xml:space="preserve">
+    <value>Belastungsanzeige</value>
+  </data>
+  <data name="type384" xml:space="preserve">
+    <value>Rechnungskorrektur</value>
+  </data>
+  <data name="type385" xml:space="preserve">
+    <value>Konsolidierte Rechnung</value>
+  </data>
+  <data name="type386" xml:space="preserve">
+    <value>Vorauszahlungsrechnung</value>
+  </data>
+  <data name="type387" xml:space="preserve">
+    <value>Mietrechnung</value>
+  </data>
+  <data name="type388" xml:space="preserve">
+    <value>Steuerrechnung</value>
+  </data>
+  <data name="type389" xml:space="preserve">
+    <value>Eigenrechnung</value>
+  </data>
+  <data name="type390" xml:space="preserve">
+    <value>Delkredere-Rechnung</value>
+  </data>
+  <data name="type393" xml:space="preserve">
+    <value>Inkasso-Rechnung</value>
+  </data>
+  <data name="type394" xml:space="preserve">
+    <value>Leasing-Rechnung</value>
+  </data>
+  <data name="type395" xml:space="preserve">
+    <value>Konsignationsrechnung</value>
+  </data>
+  <data name="type396" xml:space="preserve">
+    <value>Inkasso-Gutschrift</value>
+  </data>
+  <data name="type420" xml:space="preserve">
+    <value>Maschinelle Gutschrift</value>
+  </data>
+  <data name="type456" xml:space="preserve">
+    <value>Belastungsanzeige</value>
+  </data>
+  <data name="type457" xml:space="preserve">
+    <value>Storno einer Belastung</value>
+  </data>
+  <data name="type458" xml:space="preserve">
+    <value>Storno einer Gutschrift</value>
+  </data>
+  <data name="type471" xml:space="preserve">
+    <value>Rechnungskorrekt (selbst ausgestellt)</value>
+  </data>
+  <data name="type472" xml:space="preserve">
+    <value>Inkassorechnungskorrektur</value>
+  </data>
+  <data name="type473" xml:space="preserve">
+    <value>Inkassorechnungskorrektur (selbst ausgestellt)</value>
+  </data>
+  <data name="type500" xml:space="preserve">
+    <value>Eigene Vorauszahlungsrechnung</value>
+  </data>
+  <data name="type501" xml:space="preserve">
+    <value>Eigene Inkassorechnung</value>
+  </data>
+  <data name="type502" xml:space="preserve">
+    <value>Eigene Inkassogutschrift</value>
+  </data>
+  <data name="type503" xml:space="preserve">
+    <value>Korrigierte Vorausgutschrift</value>
+  </data>
+  <data name="type527" xml:space="preserve">
+    <value>Eigenrechnung</value>
+  </data>
+  <data name="type532" xml:space="preserve">
+    <value>Speditionsgutschrift</value>
+  </data>
+  <data name="type553" xml:space="preserve">
+    <value>Speditionskorrekturrechnung</value>
+  </data>
+  <data name="type575" xml:space="preserve">
+    <value>Rechnung des Versicherers</value>
+  </data>
+  <data name="type623" xml:space="preserve">
+    <value>Speditionsrechnung</value>
+  </data>
+  <data name="type633" xml:space="preserve">
+    <value>Hafenkostenrechnung</value>
+  </data>
+  <data name="type751" xml:space="preserve">
+    <value>Rechnungsinformation</value>
+  </data>
+  <data name="type780" xml:space="preserve">
+    <value>Frachtrechnung</value>
+  </data>
+  <data name="type817" xml:space="preserve">
+    <value>Anspruchsanzeige</value>
+  </data>
+  <data name="type870" xml:space="preserve">
+    <value>Konsulatsfaktura</value>
+  </data>
+  <data name="type875" xml:space="preserve">
+    <value>Teilbaurechnung</value>
+  </data>
+  <data name="type876" xml:space="preserve">
+    <value>Teilschlussbaurechnung</value>
+  </data>
+  <data name="type877" xml:space="preserve">
+    <value>Schlussbaurechnung</value>
+  </data>
 </root>

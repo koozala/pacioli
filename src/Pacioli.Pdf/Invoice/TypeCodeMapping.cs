@@ -1,0 +1,142 @@
+﻿using Pacioli.Language.Resources;
+using s2industries.ZUGFeRD;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Pacioli.Pdf.Invoice
+{
+    internal class TypeCodeMapping
+    {
+        public static string Map(InvoiceType typeCode)
+        {
+            switch (typeCode)
+            {
+                case InvoiceType.RequestForPayment:
+                    return Resources.type71;
+                case InvoiceType.DebitNoteRelatedToGoodsOrServices:
+                    return Resources.type80;
+                case InvoiceType.CreditNoteRelatedToGoodsOrServices:
+                    return Resources.type81;
+                case InvoiceType.MeteredServicesInvoice:
+                    return Resources.type82;
+                case InvoiceType.CreditNoteRelatedToFinancialAdjustments:
+                    return Resources.type83;
+                case InvoiceType.DebitnoteRelatedToFinancialAdjustments:
+                    return Resources.type84;
+                case InvoiceType.TaxNotification:
+                    return Resources.type102;
+                case InvoiceType.InvoicingDataSheet:
+                    return Resources.type130;
+                case InvoiceType.DirectPaymentValuation:
+                    return Resources.type202;
+                case InvoiceType.ProvisionalPaymentValuation:
+                    return Resources.type203;
+                case InvoiceType.PaymentValuation:
+                    return Resources.type204;
+                case InvoiceType.InterimApplicationForPayment:
+                    return Resources.type211;
+                case InvoiceType.FinalPaymentRequestBasedOnCompletionOfWork:
+                    return Resources.type218;
+                case InvoiceType.PaymentRequestForCompletedUnits:
+                    return Resources.type219;
+                case InvoiceType.SelfBilledCreditNote:
+                    return Resources.type261;
+                case InvoiceType.ConsolidatedCreditNoteGoodsAndServices:
+                    return Resources.type262;
+                case InvoiceType.PriceVariationInvoice:
+                    return Resources.type295;
+                case InvoiceType.CreditNoteForPriceVariation:
+                    return Resources.type296;
+                case InvoiceType.DelcredereCreditNote:
+                    return Resources.type308;
+                case InvoiceType.ProformaInvoice:
+                    return Resources.type325;
+                case InvoiceType.PartialInvoice:
+                    return Resources.type326;
+                case InvoiceType.CommercialInvoiceWithPackingList:
+                    return Resources.type331;
+                case InvoiceType.Invoice:
+                    return Resources.type380;
+                case InvoiceType.CreditNote:
+                    return Resources.type381;
+                case InvoiceType.CommissionNote:
+                    return Resources.type382;
+                case InvoiceType.DebitNote:
+                    return Resources.type383;
+                case InvoiceType.Correction:
+                    return Resources.type384;
+                case InvoiceType.ConsolidatedInvoice:
+                    return Resources.type385;
+                case InvoiceType.PrepaymentInvoice:
+                    return Resources.type386;
+                case InvoiceType.HireInvoice:
+                    return Resources.type387;
+                case InvoiceType.TaxInvoice:
+                    return Resources.type388;
+                case InvoiceType.SelfBilledInvoice:
+                    return Resources.type389;
+                case InvoiceType.DelcredereInvoice:
+                    return Resources.type390;
+                case InvoiceType.FactoredInvoice:
+                    return Resources.type393;
+                case InvoiceType.LeaseInvoice:
+                    return Resources.type394;
+                case InvoiceType.ConsignmentInvoice:
+                    return Resources.type395;
+                case InvoiceType.FactoredCreditNote:
+                    return Resources.type396;
+                case InvoiceType.OcrPaymentCreditNote:
+                    return Resources.type420;
+                case InvoiceType.DebitAdvice:
+                    return Resources.type456;
+                case InvoiceType.ReversalOfDebit:
+                    return Resources.type457;
+                case InvoiceType.ReversalOfCredit:
+                    return Resources.type458;
+                case InvoiceType.SelfBilledCorrectiveInvoice:
+                    return Resources.type471;
+                case InvoiceType.FactoredCorrectiveInvoice:
+                    return Resources.type472;
+                case InvoiceType.SelfBilledFactoredCorrectiveInvoice:
+                    return Resources.type473;
+                case InvoiceType.SelfPrepaymentInvoice:
+                    return Resources.type500;
+                case InvoiceType.SelfBilledFactoredInvoice:
+                    return Resources.type501;
+                case InvoiceType.SelfBilledFactoredCreditNote:
+                    return Resources.type502;
+                case InvoiceType.PrepaymentCreditNoteCorrected:
+                    return Resources.type503;
+                case InvoiceType.SelfBilledDebitNote:
+                    return Resources.type527;
+                case InvoiceType.ForwardersCreditNote:
+                    return Resources.type532;
+                case InvoiceType.ForwardersInvoiceDiscrepancyReport:
+                    return Resources.type553;
+                case InvoiceType.InsurersInvoice:
+                    return Resources.type575;
+                case InvoiceType.ForwardersInvoice:
+                    return Resources.type623;
+                case InvoiceType.PortChargesDocuments:
+                    return Resources.type633;
+                case InvoiceType.InvoiceInformation:
+                    return Resources.type751;
+                case InvoiceType.FreightInvoice:
+                    return Resources.type780;
+                case InvoiceType.ClaimNotification:
+                    return Resources.type817;
+                case InvoiceType.ConsularInvoice:
+                    return Resources.type870;
+                case InvoiceType.PartialConstructionInvoice:
+                    return Resources.type875;
+                case InvoiceType.PartialFinalConstructionInvoice:
+                    return Resources.type876;
+                case InvoiceType.FinalConstructionInvoice:
+                    return Resources.type877;
+                default:
+                    return string.Empty;
+            }
+        }
+    }
+}

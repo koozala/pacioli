@@ -63,6 +63,11 @@ namespace Pacioli.Pdf.Invoice
         string? attachmentsTargetPath;
         string sourceFile;
 
+        /// <summary>
+        /// Initialize from an XML file
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="_attachmentsTargetPath"></param>
         public InvoiceWriter(string fileName, string? _attachmentsTargetPath)
         {
             sourceFile = fileName;
@@ -106,14 +111,22 @@ namespace Pacioli.Pdf.Invoice
 
             PdfPage page1 = document.AddNewPage();
 
-            Paragraph header = new Paragraph().SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetFontSize(16).SetFont(PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD));
-            header.Add(Resources.invoice);
-            doc.Add(header);
-
             Paragraph infoText1 = new Paragraph().SetTextAlignment(TextAlignment.CENTER).SetFontSize(10);
             infoText1.SetBorder(new SolidBorder(0.5f));
             infoText1.Add(string.Format(Resources.infoText1, sourceFile));
             doc.Add(infoText1);
+
+
+            // Überschrift
+
+            if (!string.IsNullOrWhiteSpace(descriptor.Name))
+            {
+                doc.Add(new Paragraph($"{descriptor.Name}").SetTextAlignment(TextAlignment.CENTER).SetFontSize(14).SetFont(bold).SetMarginTop(10.0f));
+            }
+            doc.Add(new Paragraph($"{TypeCodeMapping.Map(descriptor.Type)}").SetTextAlignment(TextAlignment.CENTER).SetFontSize(12).SetFont(bold).SetMarginTop(10.0f));
+
+
+            // Datum usw.
 
             if (descriptor.InvoiceDate != null)
             {
@@ -183,12 +196,14 @@ namespace Pacioli.Pdf.Invoice
                 doc.Add(new Paragraph($"{Resources.refOrder}: {descriptor.ReferenceOrderNo}"));
             }
 
+            // Kundennummer
+
             StringBuilder reStr = new StringBuilder();
             if (!string.IsNullOrWhiteSpace(descriptor.Buyer.ID.ID))
             {
                 reStr.Append($"{Resources.customerNo}: ");
-                reStr.Append($" {descriptor.Buyer.ID.SchemeID}");
                 reStr.Append($" {descriptor.Buyer.ID.ID}");
+                reStr.Append($" ({descriptor.Buyer.ID.SchemeID})");
             }
             if (reStr.Length > 0)
             {
@@ -211,7 +226,7 @@ namespace Pacioli.Pdf.Invoice
                 doc.Add(new Paragraph($"{Resources.deliveryDate}: {descriptor.ActualDeliveryDate.Value.ToString("d")}"));
             }
 
-            doc.Add(new Paragraph($"{Resources.currencyNote} {descriptor.Currency}"));
+            doc.Add(new Paragraph($"{Resources.currencyNote} {descriptor.Currency}").SetFont(bold));
 
             /*
              * Positionen
@@ -315,7 +330,7 @@ namespace Pacioli.Pdf.Invoice
                     tab.AddCell(new ItemCell(s1.ToString()));
                 }
                 tab.AddCell(new ItemCell($"{item.TaxPercent.ToString("0.00")}% {(item.TaxType.HasValue ? item.TaxType.Value.ToUnit() : string.Empty)} {(item.TaxCategoryCode.HasValue ? item.TaxCategoryCode.Value.ToUnit() : string.Empty)}"));
-                tab.AddCell(new ItemCellRight($"{item.BilledQuantity.ToString(DecimalExtensions.PrecFmt(item.BilledQuantity))} {(item.UnitCode.HasValue ? item.UnitCode.Value.ToUnit().ToString() :  string.Empty)}"));
+                tab.AddCell(new ItemCellRight($"{item.BilledQuantity.ToString(DecimalExtensions.PrecFmt(item.BilledQuantity))} {(item.UnitCode.HasValue ? item.UnitCode.Value.ToUnit().ToString() : string.Empty)}"));
                 tab.AddCell(new ItemCellRight($"{Fmt.ToString(item.NetUnitPrice, "#,0.00")}"));
                 tab.AddCell(new ItemCellRight($"{Fmt.ToString(item.GrossUnitPrice, "#,0.00")}"));
                 tab.AddCell(new ItemCellRight($"{Fmt.ToString(item.LineTotalAmount, "#,0.00")}"));
@@ -495,8 +510,17 @@ namespace Pacioli.Pdf.Invoice
 
                 foreach (var note in descriptor.Notes)
                 {
-                    string code = note.SubjectCode.ToString();
-                    Paragraph line = new Paragraph($"{note.Content}");
+                    StringBuilder sb = new StringBuilder();
+                    AddContentCodeLine(sb, note.ContentCode);
+                    AddSubjectCodeLine(sb, note.SubjectCode);
+                    if (sb.Length > 0)
+                    {
+                        Paragraph codeLine = new Paragraph(sb.ToString()).SetFontSize(11f);
+                        codeLine.SetBackgroundColor(ColorConstants.CYAN);
+                        doc.Add(codeLine);
+                    }
+
+                    Paragraph line = new Paragraph($"{note.Content}").SetFontSize(11f);
                     line.SetBackgroundColor(ColorConstants.LIGHT_GRAY);
                     doc.Add(line);
                 }
@@ -516,5 +540,24 @@ namespace Pacioli.Pdf.Invoice
 
             doc.Close();
         }
+
+        void AddContentCodeLine(StringBuilder sb, ContentCodes? codes)
+        {
+            if (codes.HasValue)
+            {
+                if (sb.Length > 0) sb.Append(", ");
+                sb.Append($"Inhaltscodierung: {codes.Value.ToString()}");
+            }
+        }
+
+        void AddSubjectCodeLine(StringBuilder sb, SubjectCodes? codes)
+        {
+            if (codes.HasValue)
+            {
+                if (sb.Length > 0) sb.Append(", ");
+                sb.Append($"Betreffcodierung: {codes.Value.ToString()}");
+            }
+        }
+
     }
 }

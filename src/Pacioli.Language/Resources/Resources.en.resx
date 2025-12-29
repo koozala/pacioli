@@ -347,4 +347,187 @@ More information on the Internet: https://github.com/koozala/pacioli</value>
   <data name="accountHolder" xml:space="preserve">
     <value>Account holder</value>
   </data>
+  <data name="type71" xml:space="preserve">
+    <value>Request for Payment (Invoice)</value>
+  </data>
+  <data name="type80" xml:space="preserve">
+    <value>Debit Note Related to Goods or Services</value>
+  </data>
+  <data name="type81" xml:space="preserve">
+    <value>Credit Node Related to Goods or Services</value>
+  </data>
+  <data name="type82" xml:space="preserve">
+    <value>Metered Services Invoice</value>
+  </data>
+  <data name="type83" xml:space="preserve">
+    <value>Credit Note Related to Financial Adjustments</value>
+  </data>
+  <data name="type84" xml:space="preserve">
+    <value>Debit Note Related to Financial Adjustments</value>
+  </data>
+  <data name="type102" xml:space="preserve">
+    <value>Tax Notification (Invoice)</value>
+  </data>
+  <data name="type130" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="type202" xml:space="preserve">
+    <value>Direct Payment Valuation (Invoice)</value>
+  </data>
+  <data name="type203" xml:space="preserve">
+    <value>Provisional Payment Valuation (Invoice)</value>
+  </data>
+  <data name="type204" xml:space="preserve">
+    <value>Payment Valuation (Invoice)</value>
+  </data>
+  <data name="type211" xml:space="preserve">
+    <value>Interim Application for Payment (Invoice)</value>
+  </data>
+  <data name="type218" xml:space="preserve">
+    <value>Final Payment Request</value>
+  </data>
+  <data name="type219" xml:space="preserve">
+    <value>Payment Request for Completed Units</value>
+  </data>
+  <data name="type261" xml:space="preserve">
+    <value>Self Billed Credit Note</value>
+  </data>
+  <data name="type262" xml:space="preserve">
+    <value>Consolidated Credit Note</value>
+  </data>
+  <data name="type295" xml:space="preserve">
+    <value>Price Variation Invoice</value>
+  </data>
+  <data name="type296" xml:space="preserve">
+    <value>Price Variation Credit Node</value>
+  </data>
+  <data name="type308" xml:space="preserve">
+    <value>Delcredere Credit Note</value>
+  </data>
+  <data name="type325" xml:space="preserve">
+    <value>Proforma Invoice</value>
+  </data>
+  <data name="type326" xml:space="preserve">
+    <value>Partial Invoice</value>
+  </data>
+  <data name="type331" xml:space="preserve">
+    <value>Commercial Invoice with Packing List</value>
+  </data>
+  <data name="type380" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="type381" xml:space="preserve">
+    <value>Credit Note</value>
+  </data>
+  <data name="type382" xml:space="preserve">
+    <value>Commission Note</value>
+  </data>
+  <data name="type383" xml:space="preserve">
+    <value>Debit Note</value>
+  </data>
+  <data name="type384" xml:space="preserve">
+    <value>Correction</value>
+  </data>
+  <data name="type385" xml:space="preserve">
+    <value>Consolidated Invoice</value>
+  </data>
+  <data name="type386" xml:space="preserve">
+    <value>Prepayment Invoice</value>
+  </data>
+  <data name="type387" xml:space="preserve">
+    <value>Hire Invoice</value>
+  </data>
+  <data name="type388" xml:space="preserve">
+    <value>Tax Invoice</value>
+  </data>
+  <data name="type389" xml:space="preserve">
+    <value>Self Billed Invoice</value>
+  </data>
+  <data name="type390" xml:space="preserve">
+    <value>Delcredere Invoice</value>
+  </data>
+  <data name="type393" xml:space="preserve">
+    <value>Factored Invoice</value>
+  </data>
+  <data name="type394" xml:space="preserve">
+    <value>Lease Invoice</value>
+  </data>
+  <data name="type395" xml:space="preserve">
+    <value>Consignment Invoice</value>
+  </data>
+  <data name="type396" xml:space="preserve">
+    <value>Factored Credit Note</value>
+  </data>
+  <data name="type420" xml:space="preserve">
+    <value>OCR Payment Credit Note</value>
+  </data>
+  <data name="type456" xml:space="preserve">
+    <value>Debit Advice</value>
+  </data>
+  <data name="type457" xml:space="preserve">
+    <value>Reversal of Debit</value>
+  </data>
+  <data name="type458" xml:space="preserve">
+    <value>Reversal of Credit</value>
+  </data>
+  <data name="type471" xml:space="preserve">
+    <value>Self Billed Corrective Invoice</value>
+  </data>
+  <data name="type472" xml:space="preserve">
+    <value>Factored Corrective Invoice</value>
+  </data>
+  <data name="type473" xml:space="preserve">
+    <value>Self Billed Factored Corrective Invoice</value>
+  </data>
+  <data name="type500" xml:space="preserve">
+    <value>Self Prepayment Invoice</value>
+  </data>
+  <data name="type501" xml:space="preserve">
+    <value>Self Billed Factored Invoice</value>
+  </data>
+  <data name="type502" xml:space="preserve">
+    <value>Self Billed Factored Credit Note</value>
+  </data>
+  <data name="type503" xml:space="preserve">
+    <value>Prepayment Credit Note Corrected</value>
+  </data>
+  <data name="type527" xml:space="preserve">
+    <value>Self Billed Debit Note</value>
+  </data>
+  <data name="type532" xml:space="preserve">
+    <value>Forwarders Credit Note</value>
+  </data>
+  <data name="type553" xml:space="preserve">
+    <value>Forwarders Invoice Discrepancy Report</value>
+  </data>
+  <data name="type575" xml:space="preserve">
+    <value>Insurers Invoice</value>
+  </data>
+  <data name="type623" xml:space="preserve">
+    <value>Forwarders Invoice</value>
+  </data>
+  <data name="type633" xml:space="preserve">
+    <value>Port Charges Documents</value>
+  </data>
+  <data name="type751" xml:space="preserve">
+    <value>Invoice Information</value>
+  </data>
+  <data name="type780" xml:space="preserve">
+    <value>Freight Invoice</value>
+  </data>
+  <data name="type817" xml:space="preserve">
+    <value>Claim Notification</value>
+  </data>
+  <data name="type870" xml:space="preserve">
+    <value>Consular Invoice</value>
+  </data>
+  <data name="type875" xml:space="preserve">
+    <value>Partial Construction Invoice</value>
+  </data>
+  <data name="type876" xml:space="preserve">
+    <value>Partial Final Construction Invoice</value>
+  </data>
+  <data name="type877" xml:space="preserve">
+    <value>Final Construction Invoice</value>
+  </data>
 </root>
