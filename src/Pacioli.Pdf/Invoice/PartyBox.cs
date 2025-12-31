@@ -61,6 +61,12 @@ namespace Pacioli.Pdf.Invoice
             if (!string.IsNullOrWhiteSpace(party.City))
             {
                 sb.Append($"{blank}{party.City}");
+                blank = " ";
+            }
+            if (sb.Length > 0)
+            {
+                AddText(sb.ToString());
+                sb.Append("\n");
             }
 
             if (!string.IsNullOrWhiteSpace(party.ID.ID))

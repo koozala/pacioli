@@ -1,5 +1,6 @@
 
 using Microsoft.Web.WebView2.Core;
+using Pacioli.Config.Persistence;
 using Pacioli.WindowsApp.NET8.Util;
 using System.Reflection;
 using System.Text;
@@ -16,6 +17,8 @@ namespace Pacioli.WindowsApp.NET8
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
+
+            UserPreferences.LoadPreferences();
 
             var check = new UpdateCheck();
             check.Execute(true);

@@ -49,122 +49,97 @@
             // 
             // menuStrip1
             // 
+            resources.ApplyResources(menuStrip1, "menuStrip1");
             menuStrip1.ImageScalingSize = new Size(24, 24);
             menuStrip1.Items.AddRange(new ToolStripItem[] { dateiToolStripMenuItem, aboutToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new Padding(7, 2, 0, 2);
-            menuStrip1.Size = new Size(1351, 33);
-            menuStrip1.TabIndex = 0;
-            menuStrip1.Text = "menuStrip1";
             // 
             // dateiToolStripMenuItem
             // 
+            resources.ApplyResources(dateiToolStripMenuItem, "dateiToolStripMenuItem");
             dateiToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { öffnenToolStripMenuItem, speichernToolStripMenuItem, einstellungenToolStripMenuItem, beendenToolStripMenuItem });
             dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
-            dateiToolStripMenuItem.Size = new Size(69, 29);
-            dateiToolStripMenuItem.Text = "Datei";
             // 
             // öffnenToolStripMenuItem
             // 
+            resources.ApplyResources(öffnenToolStripMenuItem, "öffnenToolStripMenuItem");
             öffnenToolStripMenuItem.Name = "öffnenToolStripMenuItem";
-            öffnenToolStripMenuItem.Size = new Size(240, 34);
-            öffnenToolStripMenuItem.Text = "Öffnen";
             öffnenToolStripMenuItem.Click += öffnenToolStripMenuItem_Click;
             // 
             // speichernToolStripMenuItem
             // 
+            resources.ApplyResources(speichernToolStripMenuItem, "speichernToolStripMenuItem");
             speichernToolStripMenuItem.Name = "speichernToolStripMenuItem";
-            speichernToolStripMenuItem.Size = new Size(240, 34);
-            speichernToolStripMenuItem.Text = "PDF Speichern...";
             speichernToolStripMenuItem.Click += speichernToolStripMenuItem_Click;
             // 
             // einstellungenToolStripMenuItem
             // 
+            resources.ApplyResources(einstellungenToolStripMenuItem, "einstellungenToolStripMenuItem");
             einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
-            einstellungenToolStripMenuItem.Size = new Size(240, 34);
-            einstellungenToolStripMenuItem.Text = "Einstellungen";
             einstellungenToolStripMenuItem.Click += einstellungenToolStripMenuItem_Click;
             // 
             // beendenToolStripMenuItem
             // 
+            resources.ApplyResources(beendenToolStripMenuItem, "beendenToolStripMenuItem");
             beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
-            beendenToolStripMenuItem.Size = new Size(240, 34);
-            beendenToolStripMenuItem.Text = "Beenden";
             beendenToolStripMenuItem.Click += beendenToolStripMenuItem_Click;
             // 
             // aboutToolStripMenuItem
             // 
+            resources.ApplyResources(aboutToolStripMenuItem, "aboutToolStripMenuItem");
             aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { überPacioliToolStripMenuItem, aufNeueVersionPrüfenToolStripMenuItem });
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(122, 29);
-            aboutToolStripMenuItem.Text = "Information";
             // 
             // überPacioliToolStripMenuItem
             // 
+            resources.ApplyResources(überPacioliToolStripMenuItem, "überPacioliToolStripMenuItem");
             überPacioliToolStripMenuItem.Name = "überPacioliToolStripMenuItem";
-            überPacioliToolStripMenuItem.Size = new Size(305, 34);
-            überPacioliToolStripMenuItem.Text = "Über Pacioli";
             überPacioliToolStripMenuItem.Click += überPacioliToolStripMenuItem_Click;
             // 
             // aufNeueVersionPrüfenToolStripMenuItem
             // 
+            resources.ApplyResources(aufNeueVersionPrüfenToolStripMenuItem, "aufNeueVersionPrüfenToolStripMenuItem");
             aufNeueVersionPrüfenToolStripMenuItem.Name = "aufNeueVersionPrüfenToolStripMenuItem";
-            aufNeueVersionPrüfenToolStripMenuItem.Size = new Size(305, 34);
-            aufNeueVersionPrüfenToolStripMenuItem.Text = "Auf neue Version prüfen";
             aufNeueVersionPrüfenToolStripMenuItem.Click += aufNeueVersionPrüfenToolStripMenuItem_Click;
             // 
             // openFileDialog1
             // 
             openFileDialog1.FileName = "openFileDialog1";
+            resources.ApplyResources(openFileDialog1, "openFileDialog1");
+            // 
+            // saveFileDialog1
+            // 
+            resources.ApplyResources(saveFileDialog1, "saveFileDialog1");
             // 
             // F_TabControl
             // 
-            F_TabControl.Appearance = TabAppearance.FlatButtons;
+            resources.ApplyResources(F_TabControl, "F_TabControl");
             F_TabControl.Controls.Add(tabPage1);
             F_TabControl.Controls.Add(tabPage2);
-            F_TabControl.Dock = DockStyle.Fill;
-            F_TabControl.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            F_TabControl.Location = new Point(0, 33);
             F_TabControl.Name = "F_TabControl";
-            F_TabControl.Padding = new Point(9, 6);
             F_TabControl.SelectedIndex = 0;
-            F_TabControl.Size = new Size(1351, 1055);
-            F_TabControl.TabIndex = 2;
             // 
             // tabPage1
             // 
-            tabPage1.Location = new Point(4, 46);
+            resources.ApplyResources(tabPage1, "tabPage1");
             tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(1343, 1005);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "tabPage1";
             tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
-            tabPage2.Location = new Point(4, 46);
+            resources.ApplyResources(tabPage2, "tabPage2");
             tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(1343, 1005);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
+            resources.ApplyResources(this, "$this");
             AllowDrop = true;
-            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1351, 1088);
             Controls.Add(F_TabControl);
             Controls.Add(menuStrip1);
-            Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
-            Margin = new Padding(3, 4, 3, 4);
             Name = "MainForm";
-            Text = "Pacioli - ERechnung zu PDF";
             FormClosing += MainForm_FormClosing;
             SizeChanged += MainForm_SizeChanged;
             DragDrop += MainForm_DragDrop;

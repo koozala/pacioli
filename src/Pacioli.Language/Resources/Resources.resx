@@ -530,4 +530,10 @@ Mehr Informationen im Internet: https://github.com/koozala/pacioli</value>
   <data name="type877" xml:space="preserve">
     <value>Schlussbaurechnung</value>
   </data>
+  <data name="title_Content" xml:space="preserve">
+    <value>E-Rechnung Inhalt</value>
+  </data>
+  <data name="title_XmlView" xml:space="preserve">
+    <value>XML Ansicht</value>
+  </data>
 </root>

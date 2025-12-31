@@ -723,6 +723,24 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to E-Rechnung Inhalt.
+        /// </summary>
+        public static string title_Content {
+            get {
+                return ResourceManager.GetString("title_Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XML Ansicht.
+        /// </summary>
+        public static string title_XmlView {
+            get {
+                return ResourceManager.GetString("title_XmlView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gesamtsumme.
         /// </summary>
         public static string totalSum {

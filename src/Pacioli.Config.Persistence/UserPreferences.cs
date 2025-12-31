@@ -16,6 +16,14 @@ namespace Pacioli.Config.Persistence
         public string AttachmentOutputFolder { get; set; }
         public bool OpenAfterSave { get; set; }
 
+        public static UserPreferences LoadPreferences()
+        {
+            ConfigDb cdb = new ConfigDb();
+            UserPreferences preferences = cdb.ReadPreferences();
+            preferences.SetCulture();
+            return preferences;
+        }
+
         public UserPreferences()
         {
             UserName = Environment.UserName;

@@ -530,4 +530,10 @@ More information on the Internet: https://github.com/koozala/pacioli</value>
   <data name="type877" xml:space="preserve">
     <value>Final Construction Invoice</value>
   </data>
+  <data name="title_Content" xml:space="preserve">
+    <value>E-Invoice Content</value>
+  </data>
+  <data name="title_XmlView" xml:space="preserve">
+    <value>XML View</value>
+  </data>
 </root>

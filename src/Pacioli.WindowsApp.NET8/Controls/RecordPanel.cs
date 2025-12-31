@@ -58,7 +58,7 @@ namespace Pacioli.WindowsApp.NET8.Controls
         public void SetFile(string fileName, string attachmentFolder)
         {
             /* Layout */
-            docPanelDerived = new DocViewPanel("E-Rechnung");
+            docPanelDerived = new DocViewPanel(Resources.title_Content);
             docPanelOriginal = new DocViewPanel("ZUGFeRD PDF");
             docPanelXml = new XmlViewPanel();
             docPanelOriginal.FF_TitlePanel.BackColor = Color.Lavender;

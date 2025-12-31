@@ -19,7 +19,7 @@ namespace Pacioli.WindowsApp.NET8
     public partial class MainForm : Form
     {
         ConfigDb cdb;
-        UserPreferences preferences;
+        UserPreferences preferences = UserPreferences.LoadPreferences();
 
         public MainForm()
         {
@@ -46,10 +46,6 @@ namespace Pacioli.WindowsApp.NET8
             F_TabControl.AllowDrop = true;
             F_TabControl.DragEnter += MainForm_DragEnter;
             F_TabControl.DragDrop += MainForm_DragDrop;
-
-            cdb = new ConfigDb();
-            preferences = cdb.ReadPreferences();
-            preferences.SetCulture();
         }
 
         private void öffnenToolStripMenuItem_Click(object sender, EventArgs e)

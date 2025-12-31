@@ -117,171 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
-    <value>F_TabControl</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="menuStrip1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>7, 2, 0, 2</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="F_TabControl.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 10pt, style=Bold</value>
-  </data>
-  <data name="öffnenToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>270, 34</value>
-  </data>
-  <data name="menuStrip1.Text" xml:space="preserve">
-    <value>menuStrip1</value>
-  </data>
-  <data name="F_TabControl.Padding" type="System.Drawing.Point, System.Drawing">
-    <value>9, 6</value>
-  </data>
-  <data name="&gt;&gt;einstellungenToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;aboutToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuStrip1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;überPacioliToolStripMenuItem.Name" xml:space="preserve">
-    <value>überPacioliToolStripMenuItem</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;speichernToolStripMenuItem.Name" xml:space="preserve">
-    <value>speichernToolStripMenuItem</value>
-  </data>
-  <data name="tabPage2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="&gt;&gt;menuStrip1.Name" xml:space="preserve">
-    <value>menuStrip1</value>
-  </data>
-  <data name="&gt;&gt;überPacioliToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="einstellungenToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>270, 34</value>
-  </data>
-  <data name="&gt;&gt;beendenToolStripMenuItem.Name" xml:space="preserve">
-    <value>beendenToolStripMenuItem</value>
-  </data>
   <data name="öffnenToolStripMenuItem.Text" xml:space="preserve">
-    <value>Öffnen</value>
-  </data>
-  <data name="&gt;&gt;öffnenToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>Open</value>
   </data>
   <data name="überPacioliToolStripMenuItem.Text" xml:space="preserve">
-    <value>Über Pacioli</value>
+    <value>About Pacioli</value>
   </data>
-  <data name="überPacioliToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>305, 34</value>
-  </data>
-  <data name="aufNeueVersionPrüfenToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>305, 34</value>
-  </data>
-  <data name="&gt;&gt;F_TabControl.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;F_TabControl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.Name" xml:space="preserve">
-    <value>tabPage1</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.Parent" xml:space="preserve">
-    <value>F_TabControl</value>
-  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="dateiToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 29</value>
-  </data>
-  <data name="speichernToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>270, 34</value>
-  </data>
-  <data name="&gt;&gt;F_TabControl.Name" xml:space="preserve">
-    <value>F_TabControl</value>
-  </data>
-  <data name="&gt;&gt;openFileDialog1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="F_TabControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1351, 1055</value>
-  </data>
-  <data name="&gt;&gt;F_TabControl.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>69, 29</value>
   </data>
   <data name="speichernToolStripMenuItem.Text" xml:space="preserve">
-    <value>PDF Speichern...</value>
-  </data>
-  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1343, 1005</value>
-  </data>
-  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1343, 1005</value>
-  </data>
-  <data name="&gt;&gt;speichernToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="F_TabControl.Appearance" type="System.Windows.Forms.TabAppearance, System.Windows.Forms">
-    <value>FlatButtons</value>
-  </data>
-  <data name="&gt;&gt;menuStrip1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="menuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1351, 33</value>
-  </data>
-  <data name="tabPage2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 46</value>
-  </data>
-  <data name="&gt;&gt;saveFileDialog1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SaveFileDialog, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;openFileDialog1.Name" xml:space="preserve">
-    <value>openFileDialog1</value>
-  </data>
-  <data name="aboutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 29</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 4, 3, 4</value>
+    <value>Save PDF...</value>
   </data>
   <data name="aboutToolStripMenuItem.Text" xml:space="preserve">
     <value>Information</value>
   </data>
-  <data name="&gt;&gt;dateiToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1351, 1088</value>
-  </data>
-  <data name="&gt;&gt;aufNeueVersionPrüfenToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Pacioli - ERechnung zu PDF</value>
+    <value>Pacioli - E-Invoice to PDF</value>
   </data>
   <data name="einstellungenToolStripMenuItem.Text" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>Preferences</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -502,98 +358,17 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
 </value>
   </data>
-  <data name="menuStrip1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;öffnenToolStripMenuItem.Name" xml:space="preserve">
-    <value>öffnenToolStripMenuItem</value>
-  </data>
-  <data name="F_TabControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 33</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;aboutToolStripMenuItem.Name" xml:space="preserve">
-    <value>aboutToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;menuStrip1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="F_TabControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="dateiToolStripMenuItem.Text" xml:space="preserve">
-    <value>Datei</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tabPage1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="&gt;&gt;dateiToolStripMenuItem.Name" xml:space="preserve">
-    <value>dateiToolStripMenuItem</value>
-  </data>
-  <data name="F_TabControl.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;beendenToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="menuStrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="&gt;&gt;saveFileDialog1.Name" xml:space="preserve">
-    <value>saveFileDialog1</value>
-  </data>
-  <data name="tabPage1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 46</value>
+    <value>File</value>
   </data>
   <data name="aufNeueVersionPrüfenToolStripMenuItem.Text" xml:space="preserve">
-    <value>Auf neue Version prüfen</value>
+    <value>Check for new version</value>
   </data>
-  <data name="&gt;&gt;einstellungenToolStripMenuItem.Name" xml:space="preserve">
-    <value>einstellungenToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;aufNeueVersionPrüfenToolStripMenuItem.Name" xml:space="preserve">
-    <value>aufNeueVersionPrüfenToolStripMenuItem</value>
-  </data>
-  <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>MainForm</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.Name" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>10, 25</value>
-  </data>
-  <data name="beendenToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>270, 34</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="&gt;&gt;$this.Name" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="beendenToolStripMenuItem.Text" xml:space="preserve">
-    <value>Beenden</value>
-  </data>
-  <assembly alias="System.Private.CoreLib" name="System.Private.CoreLib, Culture=neutral, PublicKeyToken=7cec85d7bea7798e" />
-  <data name="$this.Language" type="System.Globalization.CultureInfo, System.Private.CoreLib">
-    <value>de</value>
-  </data>
-  <data name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing">
-    <value>205, 17</value>
-  </data>
-  <data name="saveFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing">
-    <value>440, 17</value>
-  </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing">
-    <value>17, 17</value>
+    <value>Exit</value>
   </data>
 </root>

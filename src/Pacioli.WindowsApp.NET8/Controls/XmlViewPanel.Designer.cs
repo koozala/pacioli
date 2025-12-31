@@ -1,4 +1,6 @@
-﻿namespace Pacioli.WindowsApp.NET8.Controls
+﻿using Pacioli.Language.Resources;
+
+namespace Pacioli.WindowsApp.NET8.Controls
 {
     partial class XmlViewPanel
     {
@@ -67,7 +69,7 @@
             F_XmlViewLabel.Name = "F_XmlViewLabel";
             F_XmlViewLabel.Size = new Size(808, 50);
             F_XmlViewLabel.TabIndex = 1;
-            F_XmlViewLabel.Text = "XML Ansicht";
+            F_XmlViewLabel.Text = Resources.title_XmlView;
             F_XmlViewLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // XmlViewPanel
