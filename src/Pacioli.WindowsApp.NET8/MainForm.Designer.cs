@@ -38,13 +38,17 @@
             aboutToolStripMenuItem = new ToolStripMenuItem();
             überPacioliToolStripMenuItem = new ToolStripMenuItem();
             aufNeueVersionPrüfenToolStripMenuItem = new ToolStripMenuItem();
+            applikationBewertenToolStripMenuItem = new ToolStripMenuItem();
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
             F_TabControl = new TabControl();
             tabPage1 = new TabPage();
             tabPage2 = new TabPage();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            hinweisFeld2 = new Pacioli.WindowsApp.NET8.Controls.Rating.HinweisFeld();
             menuStrip1.SuspendLayout();
             F_TabControl.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
@@ -87,7 +91,7 @@
             // aboutToolStripMenuItem
             // 
             resources.ApplyResources(aboutToolStripMenuItem, "aboutToolStripMenuItem");
-            aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { überPacioliToolStripMenuItem, aufNeueVersionPrüfenToolStripMenuItem });
+            aboutToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { überPacioliToolStripMenuItem, aufNeueVersionPrüfenToolStripMenuItem, applikationBewertenToolStripMenuItem });
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             // 
             // überPacioliToolStripMenuItem
@@ -101,6 +105,12 @@
             resources.ApplyResources(aufNeueVersionPrüfenToolStripMenuItem, "aufNeueVersionPrüfenToolStripMenuItem");
             aufNeueVersionPrüfenToolStripMenuItem.Name = "aufNeueVersionPrüfenToolStripMenuItem";
             aufNeueVersionPrüfenToolStripMenuItem.Click += aufNeueVersionPrüfenToolStripMenuItem_Click;
+            // 
+            // applikationBewertenToolStripMenuItem
+            // 
+            resources.ApplyResources(applikationBewertenToolStripMenuItem, "applikationBewertenToolStripMenuItem");
+            applikationBewertenToolStripMenuItem.Name = "applikationBewertenToolStripMenuItem";
+            applikationBewertenToolStripMenuItem.Click += applikationBewertenToolStripMenuItem_Click;
             // 
             // openFileDialog1
             // 
@@ -131,12 +141,25 @@
             tabPage2.Name = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
             // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(tableLayoutPanel1, "tableLayoutPanel1");
+            tableLayoutPanel1.BackColor = SystemColors.Control;
+            tableLayoutPanel1.Controls.Add(F_TabControl, 0, 0);
+            tableLayoutPanel1.Controls.Add(hinweisFeld2, 0, 1);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // hinweisFeld2
+            // 
+            resources.ApplyResources(hinweisFeld2, "hinweisFeld2");
+            hinweisFeld2.Name = "hinweisFeld2";
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             AllowDrop = true;
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(F_TabControl);
+            Controls.Add(tableLayoutPanel1);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "MainForm";
@@ -147,6 +170,8 @@
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             F_TabControl.ResumeLayout(false);
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -167,6 +192,9 @@
         private TabControl F_TabControl;
         private TabPage tabPage1;
         private TabPage tabPage2;
+        private ToolStripMenuItem applikationBewertenToolStripMenuItem;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Controls.Rating.HinweisFeld hinweisFeld2;
     }
 }
 

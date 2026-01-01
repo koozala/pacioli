@@ -37,7 +37,7 @@ namespace Pacioli.Config.Persistence
                 var command = connection.CreateCommand();
                 command.CommandText =
                     @"
-SELECT User, Folder, AttachmentFolder, Language, OpenAfterSave
+SELECT User, Folder, AttachmentFolder, Language, OpenAfterSave, PerformUpdateCheck, SendRatingData
 FROM UserPreferences
 WHERE User = $user
 ";
@@ -50,6 +50,8 @@ WHERE User = $user
                         preferences.AttachmentOutputFolder = (string)reader["AttachmentFolder"];
                         preferences.LanguageCode = (string)reader["Language"];
                         preferences.OpenAfterSave = IntToBool((long)reader["OpenAfterSave"]);
+                        preferences.PerformUpdateCheck = IntToBool((long)reader["PerformUpdateCheck"]);
+                        preferences.SendRatingData = IntToBool((long)reader["SendRatingData"]);
                         var y = preferences.OpenAfterSave;
                         var x = reader["OpenAfterSave"];
                     }
@@ -68,7 +70,7 @@ WHERE User = $user
                 command.CommandText =
                     @"
 UPDATE UserPreferences
-SET Folder = $folder, AttachmentFolder = $attachFlr, Language = $lang, OpenAfterSave = $openAfterSave
+SET Folder = $folder, AttachmentFolder = $attachFlr, Language = $lang, OpenAfterSave = $openAfterSave, PerformUpdateCheck = $performUpdateCheck, SendRatingData = $sendRatingData
 WHERE User = $user
 ";
                 AddParameters(command, pref);
@@ -79,7 +81,7 @@ WHERE User = $user
                     command2.CommandText =
                         @"
 INSERT INTO UserPreferences
-VALUES ($user, $folder, $attachFlr, $lang, $openAfterSave)
+VALUES ($user, $folder, $attachFlr, $lang, $openAfterSave, $performUpdateCheck, $sendRatingData)
 ";
                     AddParameters(command2, pref);
                     r = command2.ExecuteNonQuery();
@@ -94,6 +96,8 @@ VALUES ($user, $folder, $attachFlr, $lang, $openAfterSave)
             command.Parameters.AddWithValue("$attachFlr", pref.AttachmentOutputFolder);
             command.Parameters.AddWithValue("$lang", pref.LanguageCode);
             command.Parameters.AddWithValue("$openAfterSave", pref.OpenAfterSave);
+            command.Parameters.AddWithValue("$performUpdateCheck", pref.PerformUpdateCheck);
+            command.Parameters.AddWithValue("$sendRatingData", pref.SendRatingData);
         }
 
         public void SaveProgramInfoVersionName(string versionName)
@@ -159,7 +163,7 @@ VALUES ($name)
                 var command = connection.CreateCommand();
                 command.CommandText =
                     @"
-CREATE TABLE IF NOT EXISTS UserPreferences (User TEXT, Folder TEXT, AttachmentFolder TEXT, Language TEXT, OpenAfterSave BOOLEAN)
+CREATE TABLE IF NOT EXISTS UserPreferences (User TEXT, Folder TEXT, AttachmentFolder TEXT, Language TEXT, OpenAfterSave BOOLEAN, PerformUpdateCheck BOOLEAN, SendRatingData BOOLEAN)
 ";
                 command.ExecuteNonQuery();
             }

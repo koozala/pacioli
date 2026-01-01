@@ -25,12 +25,28 @@ namespace Pacioli.WindowsApp.NET8
         {
             InitializeComponent();
             InitializePacioli();
+
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Refresh();
+
+            hinweisFeld2.Dock = DockStyle.Fill;
+            hinweisFeld2.Refresh();
+
+            this.Refresh();
         }
 
         public MainForm(string[] args)
         {
             InitializeComponent();
             InitializePacioli();
+
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Refresh();
+
+            hinweisFeld2.Dock = DockStyle.Fill;
+            hinweisFeld2.Refresh();
+
+            this.Refresh();
 
             foreach (var file in args)
             {
@@ -228,6 +244,16 @@ namespace Pacioli.WindowsApp.NET8
                     }
                 }
             }
+        }
+
+        private void applikationBewertenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var ratingForm = new RatingForm();
+            ratingForm.ShowDialog();
+        }
+
+        private void hinweisFeld2_Load(object sender, EventArgs e)
+        {
         }
     }
 }

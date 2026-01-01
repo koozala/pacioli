@@ -365,10 +365,16 @@
     <value>Check for new version</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="&gt;&gt;einstellungenToolStripMenuItem.Name" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="&gt;&gt;$this.Name" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="beendenToolStripMenuItem.Text" xml:space="preserve">
     <value>Exit</value>
+  </data>
+  <data name="applikationBewertenToolStripMenuItem.Text" xml:space="preserve">
+    <value>Rate this application</value>
   </data>
 </root>

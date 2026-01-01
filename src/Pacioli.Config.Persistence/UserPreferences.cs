@@ -15,6 +15,8 @@ namespace Pacioli.Config.Persistence
         public string LanguageCode { get; set; }
         public string AttachmentOutputFolder { get; set; }
         public bool OpenAfterSave { get; set; }
+        public bool PerformUpdateCheck { get; set; }
+        public bool SendRatingData { get; set; }
 
         public static UserPreferences LoadPreferences()
         {
@@ -31,6 +33,8 @@ namespace Pacioli.Config.Persistence
             AttachmentOutputFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             LanguageCode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
             OpenAfterSave = true;
+            PerformUpdateCheck = true;
+            SendRatingData = true;
         }
 
         public void SetCulture()

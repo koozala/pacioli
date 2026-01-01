@@ -37,6 +37,7 @@ namespace Pacioli.WindowsApp.NET8
                 languageCombo.SelectedItem = selectedLanguage;
             }
             F_OpenAfterSave.Checked = pref.OpenAfterSave;
+            F_PerformUpdateCheck.Checked = pref.PerformUpdateCheck;
         }
 
         private void selectFolderBtn_Click(object sender, EventArgs e)
@@ -58,6 +59,7 @@ namespace Pacioli.WindowsApp.NET8
                 pref.LanguageCode = ((LanguageDescriptor)languageCombo.SelectedItem).Code;
             }
             pref.OpenAfterSave = F_OpenAfterSave.Checked;
+            pref.PerformUpdateCheck = F_PerformUpdateCheck.Checked;
             cdb.SavePreferences(pref);
             this.Close();
 

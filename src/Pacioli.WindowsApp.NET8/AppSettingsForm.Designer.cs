@@ -38,6 +38,8 @@
             languageCombo = new ComboBox();
             label2 = new Label();
             F_OpenAfterSave = new CheckBox();
+            label5 = new Label();
+            F_PerformUpdateCheck = new CheckBox();
             SuspendLayout();
             // 
             // label1
@@ -64,6 +66,10 @@
             saveBtn.UseVisualStyleBackColor = true;
             saveBtn.Click += saveBtn_Click;
             // 
+            // folderBrowserDialog1
+            // 
+            resources.ApplyResources(folderBrowserDialog1, "folderBrowserDialog1");
+            // 
             // languageLbl
             // 
             resources.ApplyResources(languageLbl, "languageLbl");
@@ -71,8 +77,8 @@
             // 
             // languageCombo
             // 
-            languageCombo.FormattingEnabled = true;
             resources.ApplyResources(languageCombo, "languageCombo");
+            languageCombo.FormattingEnabled = true;
             languageCombo.Name = "languageCombo";
             // 
             // label2
@@ -86,10 +92,23 @@
             F_OpenAfterSave.Name = "F_OpenAfterSave";
             F_OpenAfterSave.UseVisualStyleBackColor = true;
             // 
+            // label5
+            // 
+            resources.ApplyResources(label5, "label5");
+            label5.Name = "label5";
+            // 
+            // F_PerformUpdateCheck
+            // 
+            resources.ApplyResources(F_PerformUpdateCheck, "F_PerformUpdateCheck");
+            F_PerformUpdateCheck.Name = "F_PerformUpdateCheck";
+            F_PerformUpdateCheck.UseVisualStyleBackColor = true;
+            // 
             // AppSettingsForm
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(F_PerformUpdateCheck);
+            Controls.Add(label5);
             Controls.Add(F_OpenAfterSave);
             Controls.Add(label2);
             Controls.Add(languageCombo);
@@ -114,5 +133,7 @@
         private ComboBox languageCombo;
         private Label label2;
         private CheckBox F_OpenAfterSave;
+        private Label label5;
+        private CheckBox F_PerformUpdateCheck;
     }
 }

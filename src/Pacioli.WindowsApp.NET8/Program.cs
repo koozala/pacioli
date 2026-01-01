@@ -18,10 +18,13 @@ namespace Pacioli.WindowsApp.NET8
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
 
-            UserPreferences.LoadPreferences();
+            var pref = UserPreferences.LoadPreferences();
 
-            var check = new UpdateCheck();
-            check.Execute(true);
+            if (pref.PerformUpdateCheck)
+            {
+                var check = new UpdateCheck();
+                check.Execute(true);
+            }
 
             ApplicationConfiguration.Initialize();
             Application.Run(new MainForm(args));
