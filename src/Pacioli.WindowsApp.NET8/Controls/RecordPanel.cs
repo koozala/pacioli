@@ -52,6 +52,8 @@ namespace Pacioli.WindowsApp.NET8.Controls
         DocViewPanel? docPanelOriginal = null;
         XmlViewPanel? docPanelXml = null;
 
+        bool ShowXml = false;
+
         public DocViewPanel? DocPanelDerived { get { return docPanelDerived; } }
         public DocViewPanel? DocPanelOriginal { get { return docPanelOriginal; } }
 
@@ -77,6 +79,8 @@ namespace Pacioli.WindowsApp.NET8.Controls
             FF_TablePanel.SetCellPosition(docPanelXml, new TableLayoutPanelCellPosition(3, 1));
             FF_TablePanel.SetRowSpan(docPanelXml, 2);
             docPanelXml.Dock = DockStyle.Fill;
+
+            FF_TablePanel.ColumnStyles[3].Width = 0; // Hide XML view by default
 
             /* Content */
 
@@ -135,5 +139,18 @@ namespace Pacioli.WindowsApp.NET8.Controls
             }
         }
 
+        private void FF_ShowXmlButton_Click(object sender, EventArgs e)
+        {
+            ShowXml = !ShowXml;
+
+            if (ShowXml)
+            {
+                FF_TablePanel.ColumnStyles[3].Width = 33; // Show XML view
+            }
+            else
+            {
+                FF_TablePanel.ColumnStyles[3].Width = 0; // Hide XML view by default
+            }
+        }
     }
 }
