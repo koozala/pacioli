@@ -344,7 +344,7 @@ namespace Pacioli.Pdf.Invoice
                 {
                     foreach (var refdoc in item.GetAdditionalReferencedDocuments())
                     {
-                        if (attachmentsTargetPath != null)
+                        if (attachmentsTargetPath != null && refdoc.AttachmentBinaryObject != null)
                         {
                             File.WriteAllBytes(System.IO.Path.Combine(attachmentsTargetPath, refdoc.Filename), refdoc.AttachmentBinaryObject);
                         }

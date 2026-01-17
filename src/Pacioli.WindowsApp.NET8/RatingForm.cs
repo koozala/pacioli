@@ -86,6 +86,10 @@ namespace Pacioli.WindowsApp.NET8
             this.Close();
         }
 
+        private void F_UserFeedbackControl_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

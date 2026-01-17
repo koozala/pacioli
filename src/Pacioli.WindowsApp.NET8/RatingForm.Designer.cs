@@ -46,6 +46,7 @@
             // 
             resources.ApplyResources(F_UserFeedbackControl, "F_UserFeedbackControl");
             F_UserFeedbackControl.Name = "F_UserFeedbackControl";
+            F_UserFeedbackControl.Load += F_UserFeedbackControl_Load;
             // 
             // F_InitalQuestion
             // 
