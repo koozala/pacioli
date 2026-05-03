@@ -320,12 +320,12 @@ namespace Pacioli.Pdf.Invoice
                     foreach (var charge in item.GetTradeAllowanceCharges())
                     {
                         string zuschlag = charge.ChargeIndicator ? "Zuschlag" : "Abschlag";
-                        s1.AppendLine($"{zuschlag}: {Fmt.ToStringWithUnit(charge.ChargePercentage, "0.0", "%")} {charge.ActualAmount.ToString("#,#0.00")} {charge.Currency.ToString()} {Fmt.ToStringWithName("Basis:", charge.BasisAmount, "#,#0.00")}");
+                        s1.AppendLine($"{zuschlag}: {Fmt.ToStringWithUnit(charge.ChargePercentage, "0.0", "%")} {charge.ActualAmount.ToString("#,#0.00")} {charge.Currency.ToString()} {Fmt.ToStringWithName("Basis:", charge.BasisAmount, "#,#0.00")} {charge.Reason}");
                     }
                     foreach (var charge in item.GetSpecifiedTradeAllowanceCharges())
                     {
                         string zuschlag = charge.ChargeIndicator ? "Zuschlag" : "Abschlag";
-                        s1.AppendLine($"{zuschlag}: {Fmt.ToStringWithUnit(charge.ChargePercentage, "0.0", "%")} {charge.ActualAmount.ToString("#,#0.00")} {charge.Currency.ToString()} {Fmt.ToStringWithName("Basis:", charge.BasisAmount, "#,#0.00")}");
+                        s1.AppendLine($"{zuschlag}: {Fmt.ToStringWithUnit(charge.ChargePercentage, "0.0", "%")} {charge.ActualAmount.ToString("#,#0.00")} {charge.Currency.ToString()} {Fmt.ToStringWithName("Basis:", charge.BasisAmount, "#,#0.00")} {charge.Reason}");
                     }
                     tab.AddCell(new ItemCell(s1.ToString()));
                 }
