@@ -1,24 +1,17 @@
-﻿using Pacioli.Language.Resources;
+using Pacioli.Language.Resources;
 using Pacioli.Updater.AutoUpdate;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Pacioli.WindowsApp.NET8.Util
 {
     public class UpdateCheck
     {
-        public UpdateCheck() { }
-
-        public void Execute(bool silent)
+        public async Task ExecuteAsync(bool silent)
         {
             try
             {
-                ExecuteGo(silent);
+                await ExecuteGoAsync(silent);
             }
             catch (Exception ex)
             {
@@ -26,15 +19,15 @@ namespace Pacioli.WindowsApp.NET8.Util
             }
         }
 
-        public void ExecuteGo(bool silent)
+        async Task ExecuteGoAsync(bool silent)
         {
-            var repository = new PacioliRepository();
+            var repository = await PacioliRepository.CreateAsync();
             if (IsGreaterVersion(VersionInformation.GetVersion(), repository.VersionName))
             {
                 var result = MessageBox.Show(string.Format(Resources.msgUpdateAsk, VersionInformation.GetVersion(), repository.VersionName), Resources.msgUpdateAnnounce, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    repository.ExecuteSetup();
+                    await repository.ExecuteSetupAsync();
                     Application.Exit();
                     Process.GetCurrentProcess().Kill();
                 }

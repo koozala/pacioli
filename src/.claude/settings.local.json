@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\wrk\\\\repos\\\\Pacioli ERechnung\\\\github\\\\pacioli\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "PowerShell(ls \"C:\\\\wrk\\\\repos\\\\Pacioli ERechnung\\\\github\\\\pacioli\" | where { -not $_.PSIsContainer })",
+      "PowerShell(ls \"C:\\\\wrk\\\\repos\\\\Pacioli ERechnung\\\\github\\\\pacioli\" | where { $_.PSIsContainer } | select Name)",
+      "Bash(grep -v \"\\\\\\\\.vs\")",
+      "Bash(dotnet build *)",
+      "Bash(Select-String -Pattern \"error|Error|warning.*async|warning.*Task\")"
+    ]
+  }
+}

@@ -181,10 +181,10 @@ namespace Pacioli.WindowsApp.NET8
             }
         }
 
-        private void überPacioliToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void überPacioliToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string version = VersionInformation.GetVersion();
-            var repo = new PacioliRepository();
+            var repo = await PacioliRepository.CreateAsync();
 
             MessageBox.Show(string.Format(Resources.msgInfoText, version, repo.VersionName, repo.DownloadUrl));
         }
@@ -195,10 +195,10 @@ namespace Pacioli.WindowsApp.NET8
             settingsForm.ShowDialog();
         }
 
-        private void aufNeueVersionPrüfenToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void aufNeueVersionPrüfenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var check = new UpdateCheck();
-            check.Execute(false);
+            await check.ExecuteAsync(false);
         }
 
         private void MainForm_DragEnter(object sender, DragEventArgs e)

@@ -23,7 +23,9 @@ namespace Pacioli.WindowsApp.NET8
             if (pref.PerformUpdateCheck)
             {
                 var check = new UpdateCheck();
-                check.Execute(true);
+                // Safe to block here: no SynchronizationContext is installed before Application.Run,
+                // so GetAwaiter().GetResult() cannot deadlock.
+                check.ExecuteAsync(true).GetAwaiter().GetResult();
             }
 
             ApplicationConfiguration.Initialize();

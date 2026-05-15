@@ -5,10 +5,10 @@ namespace Pacioli.Updater.Test
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var repo = new PacioliRepository();
-            repo.ExecuteSetup();
+            var repo = await PacioliRepository.CreateAsync();
+            await repo.ExecuteSetupAsync();
 
             //var version = repo.GetLatestVersion();
             //Console.WriteLine(version);

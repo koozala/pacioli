@@ -1,32 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Pacioli.Updater.AutoUpdate
 {
     public class ReleaseDownload
     {
-        string GithubApiReleaseUrl = "https://api.github.com/repos/koozala/pacioli/releases/latest/assets";
+        private const string GithubApiReleaseUrl = "https://api.github.com/repos/koozala/pacioli/releases/latest/assets";
 
-        public ReleaseDownload()
+        public async Task<string[]> DownloadLatestVersionAsync()
         {
-        }
-
-        public string[] DownloadLatestVersion()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(GithubApiReleaseUrl);
-                client.DefaultRequestHeaders.Add("User-Agent", "Pacioli-koozala");
-                var result = client.GetAsync(GithubApiReleaseUrl).Result;
-                var str = result.Content.ReadAsStringAsync().Result;
-                Console.WriteLine(str);
-                var some = JsonSerializer.Deserialize<List<AssetInfo>>(str);
-                return some.Select(x => x.browser_download_url).ToArray();
-            }
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("User-Agent", "Pacioli-koozala");
+            var response = await client.GetAsync(GithubApiReleaseUrl);
+            var json = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(json);
+            var assets = JsonSerializer.Deserialize<List<AssetInfo>>(json);
+            return assets!.Select(x => x.browser_download_url).ToArray();
         }
     }
 
