@@ -88,9 +88,9 @@ namespace Pacioli.WindowsApp.NET8.Controls
             FF_FileNameTb.Text = fileName;
 
             /* Convert to PDF and write to temp file */
-            Writer writer = new Writer(fileName, attachmentFolder, XmlDataStream);
+            InvoiceWriter writer = new InvoiceWriter(fileName, attachmentFolder, XmlDataStream);
             writer.Write(pdfPath);
-            int countAttachments = writer.GetAttachmentCount();
+            int countAttachments = writer.CountAttachments();
             string aInfo = Resources.attachmentsNone;
             if (countAttachments > 0)
             {

@@ -11,6 +11,7 @@ using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using Pacioli.Language.Resources;
+using Pacioli.Pdf.zugferd;
 using s2industries.ZUGFeRD;
 using System.IO;
 using System.Linq;
@@ -63,11 +64,8 @@ namespace Pacioli.Pdf.Invoice
         string? attachmentsTargetPath;
         string sourceFile;
 
-        /// <summary>
-        /// Initialize from an XML file
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="_attachmentsTargetPath"></param>
+        public bool IsZugferd { get; private set; }
+
         public InvoiceWriter(string fileName, string? _attachmentsTargetPath)
         {
             sourceFile = fileName;
@@ -80,6 +78,30 @@ namespace Pacioli.Pdf.Invoice
             sourceFile = source;
             descriptor = InvoiceDescriptor.Load(data);
             attachmentsTargetPath = _attachmentsTargetPath;
+        }
+
+        public InvoiceWriter(string fileName, string? _attachmentsTargetPath, Stream xmlDataStream)
+        {
+            sourceFile = fileName;
+            attachmentsTargetPath = _attachmentsTargetPath;
+
+            var zr = new ZugferdReader(fileName);
+            IsZugferd = zr.Read(out Stream? data);
+
+            if (IsZugferd)
+            {
+                descriptor = InvoiceDescriptor.Load(data!);
+                data!.Seek(0, SeekOrigin.Begin);
+                data!.CopyTo(xmlDataStream);
+                data!.Close();
+            }
+            else
+            {
+                descriptor = InvoiceDescriptor.Load(fileName);
+                using var fstream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                fstream.CopyTo(xmlDataStream);
+            }
+            xmlDataStream.Seek(0, SeekOrigin.Begin);
         }
 
         public int CountAttachments()
