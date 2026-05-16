@@ -94,12 +94,7 @@ namespace Pacioli.Pdf.Invoice
             XmlData.Seek(0, SeekOrigin.Begin);
         }
 
-        public int CountAttachments()
-        {
-            return descriptor.GetTradeLineItems().Sum(x => x.GetAdditionalReferencedDocuments().Count);
-        }
-
-        public Stream GetXml() { return XmlData; }
+        public Stream GetXml() => XmlData;
 
         public IReadOnlyList<AttachmentDescriptor> GetAttachments() => attachments;
 
