@@ -11,8 +11,10 @@ using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using Pacioli.Language.Resources;
+using Pacioli.Pdf.ERechnung;
 using Pacioli.Pdf.zugferd;
 using s2industries.ZUGFeRD;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -63,6 +65,8 @@ namespace Pacioli.Pdf.Invoice
         PdfFont bold = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
         string? attachmentsTargetPath;
         string sourceFile;
+
+        List<AttachmentDescriptor> attachments = new List<AttachmentDescriptor>();
 
         public bool IsZugferd { get; private set; }
 
@@ -361,24 +365,40 @@ namespace Pacioli.Pdf.Invoice
 
             foreach (var refdoc in descriptor.GetAdditionalReferencedDocuments())
             {
+                string fullPath = System.IO.Path.Combine(attachmentsTargetPath ?? string.Empty, refdoc.Filename);
                 if (attachmentsTargetPath != null && refdoc.AttachmentBinaryObject != null)
                 {
-                    File.WriteAllBytes(System.IO.Path.Combine(attachmentsTargetPath, refdoc.Filename), refdoc.AttachmentBinaryObject);
+                    File.WriteAllBytes(fullPath, refdoc.AttachmentBinaryObject);
                 }
                 doc.Add(new Paragraph($"{Resources.attachment}: {refdoc.Name} {refdoc.Filename}"));
+                attachments.Add(new AttachmentDescriptor
+                {
+                    FileName = refdoc.Filename,
+                    FullPath = fullPath,
+                    ReferencedDocument = refdoc
+                });
             }
 
+            int lineIndex = 0;
             foreach (var item in descriptor.GetTradeLineItems())
             {
+                lineIndex++;
                 if (item.GetAdditionalReferencedDocuments().Count > 0)
                 {
                     foreach (var refdoc in item.GetAdditionalReferencedDocuments())
                     {
+                        string fullPath = System.IO.Path.Combine(attachmentsTargetPath ?? string.Empty, $"Line-{lineIndex}-{refdoc.Filename}");
                         if (attachmentsTargetPath != null && refdoc.AttachmentBinaryObject != null)
                         {
-                            File.WriteAllBytes(System.IO.Path.Combine(attachmentsTargetPath, refdoc.Filename), refdoc.AttachmentBinaryObject);
+                            File.WriteAllBytes(fullPath, refdoc.AttachmentBinaryObject);
                         }
                         doc.Add(new Paragraph($"{Resources.attachment}: {refdoc.Name} {refdoc.Filename}"));
+                        attachments.Add(new AttachmentDescriptor
+                        {
+                            FileName = refdoc.Filename,
+                            FullPath = fullPath,
+                            ReferencedDocument = refdoc
+                        });
                     }
                 }
             }

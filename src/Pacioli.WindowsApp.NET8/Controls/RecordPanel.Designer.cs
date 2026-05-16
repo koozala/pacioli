@@ -30,14 +30,14 @@
         {
             F_TablePanel = new TableLayoutPanel();
             F_FileNameTb = new TextBox();
-            flowLayoutPanel2 = new FlowLayoutPanel();
+            F_AttachmentsPanel = new FlowLayoutPanel();
             attachmentInfoLbl = new Label();
             F_DragDropPanel = new Panel();
             F_DragDropLabel = new Label();
             FF_ButtonPanel = new FlowLayoutPanel();
             FF_ShowXmlButton = new Button();
             F_TablePanel.SuspendLayout();
-            flowLayoutPanel2.SuspendLayout();
+            F_AttachmentsPanel.SuspendLayout();
             F_DragDropPanel.SuspendLayout();
             FF_ButtonPanel.SuspendLayout();
             SuspendLayout();
@@ -53,7 +53,7 @@
             F_TablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
             F_TablePanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             F_TablePanel.Controls.Add(F_FileNameTb, 1, 3);
-            F_TablePanel.Controls.Add(flowLayoutPanel2, 4, 1);
+            F_TablePanel.Controls.Add(F_AttachmentsPanel, 4, 1);
             F_TablePanel.Controls.Add(F_DragDropPanel, 4, 2);
             F_TablePanel.Controls.Add(FF_ButtonPanel, 1, 0);
             F_TablePanel.Dock = DockStyle.Fill;
@@ -80,17 +80,17 @@
             F_FileNameTb.Size = new Size(1611, 33);
             F_FileNameTb.TabIndex = 5;
             // 
-            // flowLayoutPanel2
+            // F_AttachmentsPanel
             // 
-            flowLayoutPanel2.BorderStyle = BorderStyle.FixedSingle;
-            flowLayoutPanel2.Controls.Add(attachmentInfoLbl);
-            flowLayoutPanel2.Dock = DockStyle.Fill;
-            flowLayoutPanel2.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            flowLayoutPanel2.Location = new Point(1502, 58);
-            flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new Size(156, 527);
-            flowLayoutPanel2.TabIndex = 8;
+            F_AttachmentsPanel.BorderStyle = BorderStyle.FixedSingle;
+            F_AttachmentsPanel.Controls.Add(attachmentInfoLbl);
+            F_AttachmentsPanel.Dock = DockStyle.Fill;
+            F_AttachmentsPanel.FlowDirection = FlowDirection.TopDown;
+            F_AttachmentsPanel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            F_AttachmentsPanel.Location = new Point(1502, 58);
+            F_AttachmentsPanel.Name = "F_AttachmentsPanel";
+            F_AttachmentsPanel.Size = new Size(156, 527);
+            F_AttachmentsPanel.TabIndex = 8;
             // 
             // attachmentInfoLbl
             // 
@@ -154,8 +154,8 @@
             Size = new Size(1661, 1162);
             F_TablePanel.ResumeLayout(false);
             F_TablePanel.PerformLayout();
-            flowLayoutPanel2.ResumeLayout(false);
-            flowLayoutPanel2.PerformLayout();
+            F_AttachmentsPanel.ResumeLayout(false);
+            F_AttachmentsPanel.PerformLayout();
             F_DragDropPanel.ResumeLayout(false);
             F_DragDropPanel.PerformLayout();
             FF_ButtonPanel.ResumeLayout(false);
@@ -167,7 +167,7 @@
 
         private TableLayoutPanel F_TablePanel;
         private TextBox F_FileNameTb;
-        private FlowLayoutPanel flowLayoutPanel2;
+        private FlowLayoutPanel F_AttachmentsPanel;
         private Label attachmentInfoLbl;
         private Panel F_DragDropPanel;
         private Label F_DragDropLabel;
