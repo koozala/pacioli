@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ZUGFeRD-csharp" Version="17.4.0" />
+    <PackageReference Include="ZUGFeRD-csharp" Version="18.0.0" />
   </ItemGroup>
 
   <ItemGroup>

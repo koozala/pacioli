@@ -281,9 +281,9 @@ namespace Pacioli.Pdf.Invoice
                     {
                         s1.AppendLine($"{Resources.billingPeriod}: {item.BillingPeriodStart.Value.ToString("d")} - {item.BillingPeriodEnd.Value.ToString("d")}");
                     }
-                    if (item.UnitQuantity.HasValue && item.UnitQuantity.Value != 1m)
+                    if (item.UnitCode.HasValue)
                     {
-                        s1.AppendLine($"{Resources.unitQuantity}: {item.UnitQuantity.Value.ToString(DecimalExtensions.PrecFmt(item.UnitQuantity.Value))}");
+                        s1.AppendLine($"{Resources.unitQuantity}: {item.UnitCode.Value.ToUnit()}");
                     }
                     foreach (var attr in item.ApplicableProductCharacteristics)
                     {
@@ -333,7 +333,7 @@ namespace Pacioli.Pdf.Invoice
                         string zuschlag = charge.ChargeIndicator ? "Zuschlag" : "Abschlag";
                         s1.AppendLine($"{zuschlag}: {Fmt.ToStringWithUnit(charge.ChargePercentage, "0.0", "%")} {charge.ActualAmount.ToString("#,#0.00")} {charge.Currency.ToString()} {Fmt.ToStringWithName("Basis:", charge.BasisAmount, "#,#0.00")} {charge.Reason}");
                     }
-                    foreach (var charge in item.GetSpecifiedTradeAllowanceCharges())
+                    foreach (var charge in item.SpecifiedTradeAllowanceCharges)
                     {
                         string zuschlag = charge.ChargeIndicator ? "Zuschlag" : "Abschlag";
                         s1.AppendLine($"{zuschlag}: {Fmt.ToStringWithUnit(charge.ChargePercentage, "0.0", "%")} {charge.ActualAmount.ToString("#,#0.00")} {charge.Currency.ToString()} {Fmt.ToStringWithName("Basis:", charge.BasisAmount, "#,#0.00")} {charge.Reason}");
