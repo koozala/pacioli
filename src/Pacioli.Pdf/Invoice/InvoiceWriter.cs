@@ -337,6 +337,14 @@ namespace Pacioli.Pdf.Invoice
             }
             doc.Add(tab);
 
+            foreach (var refdoc in descriptor.GetAdditionalReferencedDocuments())
+            {
+                if (attachmentsTargetPath != null && refdoc.AttachmentBinaryObject != null)
+                {
+                    File.WriteAllBytes(System.IO.Path.Combine(attachmentsTargetPath, refdoc.Filename), refdoc.AttachmentBinaryObject);
+                }
+                doc.Add(new Paragraph($"{Resources.attachment}: {refdoc.Name} {refdoc.Filename}"));
+            }
 
             foreach (var item in descriptor.GetTradeLineItems())
             {
