@@ -43,7 +43,7 @@ namespace Pacioli.CLI.NET8.Headless
             {
                 string p1 = Args.OutputFolder ?? ".";
                 string p2 = Args.PdfName ?? "blah.pdf";
-                InvoiceWriter writer = new InvoiceWriter(Args.InputFile, null);
+                InvoiceWriter writer = new InvoiceWriter(Args.InputFile);
                 writer.Write(Path.Combine(p1, p2));
             }
 

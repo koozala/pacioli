@@ -63,31 +63,17 @@ namespace Pacioli.Pdf.Invoice
         InvoiceDescriptor descriptor;
         UnitValue full = UnitValue.CreatePercentValue(100.0f);
         PdfFont bold = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
-        string? attachmentsTargetPath;
         string sourceFile;
 
         List<AttachmentDescriptor> attachments = new List<AttachmentDescriptor>();
+        Stream XmlData = new MemoryStream();
 
         public bool IsZugferd { get; private set; }
 
-        public InvoiceWriter(string fileName, string? _attachmentsTargetPath)
+        public InvoiceWriter(string fileName)
         {
             sourceFile = fileName;
             descriptor = InvoiceDescriptor.Load(fileName);
-            attachmentsTargetPath = _attachmentsTargetPath;
-        }
-
-        public InvoiceWriter(Stream data, string? _attachmentsTargetPath, string source)
-        {
-            sourceFile = source;
-            descriptor = InvoiceDescriptor.Load(data);
-            attachmentsTargetPath = _attachmentsTargetPath;
-        }
-
-        public InvoiceWriter(string fileName, string? _attachmentsTargetPath, Stream xmlDataStream)
-        {
-            sourceFile = fileName;
-            attachmentsTargetPath = _attachmentsTargetPath;
 
             var zr = new ZugferdReader(fileName);
             IsZugferd = zr.Read(out Stream? data);
@@ -96,22 +82,26 @@ namespace Pacioli.Pdf.Invoice
             {
                 descriptor = InvoiceDescriptor.Load(data!);
                 data!.Seek(0, SeekOrigin.Begin);
-                data!.CopyTo(xmlDataStream);
+                data!.CopyTo(XmlData);
                 data!.Close();
             }
             else
             {
                 descriptor = InvoiceDescriptor.Load(fileName);
                 using var fstream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-                fstream.CopyTo(xmlDataStream);
+                fstream.CopyTo(XmlData);
             }
-            xmlDataStream.Seek(0, SeekOrigin.Begin);
+            XmlData.Seek(0, SeekOrigin.Begin);
         }
 
         public int CountAttachments()
         {
             return descriptor.GetTradeLineItems().Sum(x => x.GetAdditionalReferencedDocuments().Count);
         }
+
+        public Stream GetXml() { return XmlData; }
+
+        public IReadOnlyList<AttachmentDescriptor> GetAttachments() => attachments;
 
         public void Write(string outputFileName)
         {
@@ -365,16 +355,10 @@ namespace Pacioli.Pdf.Invoice
 
             foreach (var refdoc in descriptor.GetAdditionalReferencedDocuments())
             {
-                string fullPath = System.IO.Path.Combine(attachmentsTargetPath ?? string.Empty, refdoc.Filename);
-                if (attachmentsTargetPath != null && refdoc.AttachmentBinaryObject != null)
-                {
-                    File.WriteAllBytes(fullPath, refdoc.AttachmentBinaryObject);
-                }
                 doc.Add(new Paragraph($"{Resources.attachment}: {refdoc.Name} {refdoc.Filename}"));
                 attachments.Add(new AttachmentDescriptor
                 {
                     FileName = refdoc.Filename,
-                    FullPath = fullPath,
                     ReferencedDocument = refdoc
                 });
             }
@@ -387,16 +371,10 @@ namespace Pacioli.Pdf.Invoice
                 {
                     foreach (var refdoc in item.GetAdditionalReferencedDocuments())
                     {
-                        string fullPath = System.IO.Path.Combine(attachmentsTargetPath ?? string.Empty, $"Line-{lineIndex}-{refdoc.Filename}");
-                        if (attachmentsTargetPath != null && refdoc.AttachmentBinaryObject != null)
-                        {
-                            File.WriteAllBytes(fullPath, refdoc.AttachmentBinaryObject);
-                        }
                         doc.Add(new Paragraph($"{Resources.attachment}: {refdoc.Name} {refdoc.Filename}"));
                         attachments.Add(new AttachmentDescriptor
                         {
                             FileName = refdoc.Filename,
-                            FullPath = fullPath,
                             ReferencedDocument = refdoc
                         });
                     }

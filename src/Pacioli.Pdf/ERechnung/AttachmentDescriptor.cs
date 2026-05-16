@@ -8,7 +8,6 @@ namespace Pacioli.Pdf.ERechnung
     public class AttachmentDescriptor
     {
         public string FileName { get; set; } = "";
-        public string FullPath { get; set; } = "";
         public AdditionalReferencedDocument? ReferencedDocument { get; set; }
     }
 }

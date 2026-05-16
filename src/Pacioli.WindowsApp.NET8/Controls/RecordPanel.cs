@@ -1,17 +1,10 @@
-﻿using Pacioli.Language.Resources;
+using Pacioli.Language.Resources;
+using Pacioli.Pdf.ERechnung;
 using Pacioli.Pdf.Invoice;
 using Pacioli.Preview.ImageGeneration;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics.Contracts;
+using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
 
 namespace Pacioli.WindowsApp.NET8.Controls
 {
@@ -45,8 +38,6 @@ namespace Pacioli.WindowsApp.NET8.Controls
         public PdfToImageConverter? renderedDoc { get; set; } = null;
         public PdfToImageConverter? original { get; set; } = null;
         public string? pdfPath { get; set; } = null;
-
-        private Stream XmlDataStream = new MemoryStream();
 
         DocViewPanel? docPanelDerived = null;
         DocViewPanel? docPanelOriginal = null;
@@ -88,15 +79,10 @@ namespace Pacioli.WindowsApp.NET8.Controls
             FF_FileNameTb.Text = fileName;
 
             /* Convert to PDF and write to temp file */
-            InvoiceWriter writer = new InvoiceWriter(fileName, attachmentFolder, XmlDataStream);
+            InvoiceWriter writer = new InvoiceWriter(fileName);
             writer.Write(pdfPath);
-            int countAttachments = writer.CountAttachments();
-            string aInfo = Resources.attachmentsNone;
-            if (countAttachments > 0)
-            {
-                aInfo = string.Format(Resources.attachmentsTxt, countAttachments);
-            }
-            FF_AttachmentInfoLbl.Text = aInfo;
+
+            PopulateAttachmentsPanel(writer.GetAttachments());
 
             docPanelDerived.SetDocument(pdfPath);
 
@@ -107,10 +93,47 @@ namespace Pacioli.WindowsApp.NET8.Controls
             }
 
             /* XML View */
-            docPanelXml.LoadXml(XmlDataStream);
+            docPanelXml.LoadXml(writer.GetXml());
 
             renderedDoc = new PdfToImageConverter(pdfPath);
             UpdateImage();
+        }
+
+        private void PopulateAttachmentsPanel(IReadOnlyList<AttachmentDescriptor> attachments)
+        {
+            F_AttachmentsPanel.Controls.Clear();
+
+            attachmentInfoLbl.Text = attachments.Count == 0
+                ? Resources.attachmentsNone
+                : string.Format(Resources.attachmentsTxt, attachments.Count);
+            F_AttachmentsPanel.Controls.Add(attachmentInfoLbl);
+
+            foreach (var att in attachments)
+            {
+                string label = !string.IsNullOrWhiteSpace(att.ReferencedDocument?.Name)
+                    ? att.ReferencedDocument!.Name
+                    : att.FileName;
+                var link = new LinkLabel
+                {
+                    Text = label,
+                    AutoSize = true,
+                    //MaximumSize = new Size(F_AttachmentsPanel.Width - 10, 0),
+                    Tag = att
+                };
+                link.LinkClicked += AttachmentLink_Clicked;
+                F_AttachmentsPanel.Controls.Add(link);
+            }
+        }
+
+        private void AttachmentLink_Clicked(object? sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var att = (AttachmentDescriptor)((LinkLabel)sender!).Tag!;
+            var data = att.ReferencedDocument?.AttachmentBinaryObject;
+            if (data == null) return;
+
+            var tempPath = Path.Combine(Path.GetTempPath(), att.FileName);
+            File.WriteAllBytes(tempPath, data);
+            Process.Start(new ProcessStartInfo(tempPath) { UseShellExecute = true });
         }
 
         private void UpdateImage()
