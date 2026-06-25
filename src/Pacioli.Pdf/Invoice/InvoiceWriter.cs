@@ -73,7 +73,6 @@ namespace Pacioli.Pdf.Invoice
         public InvoiceWriter(string fileName)
         {
             sourceFile = fileName;
-            descriptor = InvoiceDescriptor.Load(fileName);
 
             var zr = new ZugferdReader(fileName);
             IsZugferd = zr.Read(out Stream? data);
