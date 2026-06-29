@@ -1,7 +1,9 @@
 
 using Microsoft.Web.WebView2.Core;
 using Pacioli.Config.Persistence;
+using Pacioli.Language.Resources;
 using Pacioli.WindowsApp.NET8.Util;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
@@ -22,10 +24,19 @@ namespace Pacioli.WindowsApp.NET8
 
             if (pref.PerformUpdateCheck)
             {
-                var check = new UpdateCheck();
+                var check = UpdateCheck.CreateAsync().Result;
                 // Safe to block here: no SynchronizationContext is installed before Application.Run,
                 // so GetAwaiter().GetResult() cannot deadlock.
-                check.ExecuteAsync(true).GetAwaiter().GetResult();
+                //check.ExecuteAsync(true).GetAwaiter().GetResult();
+
+                if (check.NewVersionAvailable().Result)
+                {
+                    var result = MessageBox.Show(string.Format(Resources.msgUpdateAsk, VersionInformation.GetVersion(), check.LatestVersion), Resources.msgUpdateAnnounce, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        check.PerformUpdate().Wait();
+                    }
+                }
             }
 
             ApplicationConfiguration.Initialize();

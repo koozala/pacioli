@@ -197,7 +197,7 @@ namespace Pacioli.WindowsApp.NET8
 
         private async void aufNeueVersionPrüfenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var check = new UpdateCheck();
+            var check = await UpdateCheck.CreateAsync();
             await check.ExecuteAsync(false);
         }
 

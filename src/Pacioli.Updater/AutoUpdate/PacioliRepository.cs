@@ -6,7 +6,7 @@ namespace Pacioli.Updater.AutoUpdate
     public class PacioliRepository
     {
         private const string GithubApiRelease = "https://api.github.com/repos/koozala/pacioli/releases/latest";
-        private const string ExecutableAsset = "paciolisetup.exe";
+        public const string ExecutableAsset = "paciolisetup.exe";
 
         public string VersionName { get; private set; } = string.Empty;
         public string DownloadUrl { get; private set; } = string.Empty;
@@ -30,10 +30,20 @@ namespace Pacioli.Updater.AutoUpdate
             {
                 if (assets[i]!["name"]!.ToString() == ExecutableAsset)
                 {
-                    repo.DownloadUrl = assets[i]!["browser_download_url"]!.ToString();
+                    //repo.DownloadUrl = assets[i]!["browser_download_url"]!.ToString();
+                    repo.DownloadUrl = "https://www.epacioli.de/FileDownload/Download?filename=paciolisetup.exe";
                 }
             }
             return repo;
+        }
+
+        public async Task DownloadLatestVersionAsync(string destinationPath)
+        {
+            using var client = new HttpClient();
+            var response = await client.GetAsync(DownloadUrl);
+            response.EnsureSuccessStatusCode();
+            using var fileStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None);
+            await response.Content.CopyToAsync(fileStream);
         }
 
         public async Task ExecuteSetupAsync()

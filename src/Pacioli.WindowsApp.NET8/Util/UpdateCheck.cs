@@ -7,6 +7,45 @@ namespace Pacioli.WindowsApp.NET8.Util
 {
     public class UpdateCheck
     {
+        PacioliRepository? pacioliRepository = null;
+
+        public string LatestVersion
+        {
+            get
+            {
+                return pacioliRepository?.VersionName ?? string.Empty;
+            }
+        }
+
+        private UpdateCheck()
+        {
+        }
+
+        public static async Task<UpdateCheck> CreateAsync()
+        {
+            UpdateCheck updateCheck = new UpdateCheck();
+            updateCheck.pacioliRepository = await PacioliRepository.CreateAsync();
+            return updateCheck;
+        }
+
+        public async Task<bool> NewVersionAvailable()
+        {
+            return IsGreaterVersion(VersionInformation.GetVersion(), pacioliRepository!.VersionName);
+        }
+
+        public async Task PerformUpdate()
+        {
+            string executablePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", PacioliRepository.ExecutableAsset);
+            await pacioliRepository!.DownloadLatestVersionAsync(executablePath);
+            var processStartInfo = new ProcessStartInfo
+            {
+                FileName = executablePath,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            Process.Start(processStartInfo);
+        }
+
         public async Task ExecuteAsync(bool silent)
         {
             try
@@ -21,15 +60,12 @@ namespace Pacioli.WindowsApp.NET8.Util
 
         async Task ExecuteGoAsync(bool silent)
         {
-            var repository = await PacioliRepository.CreateAsync();
-            if (IsGreaterVersion(VersionInformation.GetVersion(), repository.VersionName))
+            if (await NewVersionAvailable())
             {
-                var result = MessageBox.Show(string.Format(Resources.msgUpdateAsk, VersionInformation.GetVersion(), repository.VersionName), Resources.msgUpdateAnnounce, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var result = MessageBox.Show(string.Format(Resources.msgUpdateAsk, VersionInformation.GetVersion(), LatestVersion), Resources.msgUpdateAnnounce, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    await repository.ExecuteSetupAsync();
-                    Application.Exit();
-                    Process.GetCurrentProcess().Kill();
+                    await PerformUpdate();
                 }
             }
             else if (!silent)
