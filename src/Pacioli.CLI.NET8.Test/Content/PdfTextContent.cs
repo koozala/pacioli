@@ -102,8 +102,20 @@ namespace Pacioli.CLI.NET8.Test.Content
             return ContainsInTwoParts(normalized);
         }
 
-        /* The smallest length of a part in the comparison in two parts. */
-        public const int MinimumPartLength = 12;
+        /*
+         * The smallest length of a part in the comparison in two parts.
+         *
+         * A page break can come before the last word of a cell. That word can be short,
+         * for example "verdichten" with 10 characters. Thus the length of one part is
+         * small. The length of the full value gives the safety: see MinimumValueLength.
+         */
+        public const int MinimumPartLength = 6;
+
+        /*
+         * The smallest length of a value for the comparison in two parts.
+         * A short value keeps the strict comparison, thus a weak match cannot occur.
+         */
+        public const int MinimumValueLength = 24;
 
         /*
          * Looks for a value that a page break cuts into two parts.
@@ -120,7 +132,7 @@ namespace Pacioli.CLI.NET8.Test.Content
          */
         private bool ContainsInTwoParts(string normalized)
         {
-            if (normalized.Length < 2 * MinimumPartLength)
+            if (normalized.Length < MinimumValueLength)
             {
                 return false;
             }

@@ -20,6 +20,28 @@
 		<Content Include="Pacioli_64.ico" />
 	</ItemGroup>
 
+	<!--
+		Removes the WPF control of WebView2.
+
+		The file Common.targets of the package Microsoft.Web.WebView2 adds three
+		assemblies to each project of net5.0 or later: Core, WinForms, and Wpf. It does
+		not look at UseWPF. This application uses Windows Forms, thus it never uses the
+		WPF control. But the WPF assembly needs WindowsBase 5.0.0.0, and a project
+		without WPF has WindowsBase 4.0.0.0 only. The build then gives the warning
+		MSB3277 about a conflict of two versions.
+
+		The target removes the assembly that the application does not use. Thus the
+		conflict goes away. Do not use Microsoft.Web.WebView2.Wpf in this project.
+
+		The target must come after the import of the package, thus it is a target and
+		not an ItemGroup of the project.
+	-->
+	<Target Name="RemoveWebView2WpfReference" BeforeTargets="ResolveAssemblyReferences">
+		<ItemGroup>
+			<Reference Remove="@(Reference->WithMetadataValue('Filename', 'Microsoft.Web.WebView2.Wpf'))" />
+		</ItemGroup>
+	</Target>
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.8" />
 		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3967.48" />
