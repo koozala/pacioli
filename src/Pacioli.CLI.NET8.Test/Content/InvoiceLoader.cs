@@ -1,5 +1,6 @@
 using Pacioli.Pdf.ERechnung;
-using s2industries.ZUGFeRD;
+using Vit.FeRD.ExtendedDocument;
+using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.CLI.NET8.Test.Content
 {
@@ -14,16 +15,16 @@ namespace Pacioli.CLI.NET8.Test.Content
      */
     public static class InvoiceLoader
     {
-        public static InvoiceDescriptor Load(string samplePath)
+        public static CrossIndustryInvoice Load(string samplePath)
         {
             var extractor = new ZugferdExtractor(samplePath);
 
             if (extractor.IsZugferdFile && extractor.XmlDataStream != null)
             {
-                return InvoiceDescriptor.Load(extractor.XmlDataStream);
+                return FeRDInvoice.Load(extractor.XmlDataStream);
             }
 
-            return InvoiceDescriptor.Load(samplePath);
+            return FeRDInvoice.Load(samplePath);
         }
     }
 }

@@ -1,14 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <!--
+      net10.0 is necessary: the package Vit.FeRD.ExtendedDocument has a
+      lib folder for net10.0 only.
+    -->
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="itext" Version="9.6.0" />
     <PackageReference Include="itext.bouncy-castle-adapter" Version="9.6.0" />
-    <PackageReference Include="ZUGFeRD-csharp" Version="18.0.0" />
+    <PackageReference Include="Vit.FeRD.ExtendedDocument" Version="0.0.1-5" />
   </ItemGroup>
 
   <ItemGroup>

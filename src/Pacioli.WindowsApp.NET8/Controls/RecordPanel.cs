@@ -2,6 +2,7 @@ using Pacioli.Language.Resources;
 using Pacioli.Pdf.ERechnung;
 using Pacioli.Pdf.Invoice;
 using Pacioli.Preview.ImageGeneration;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -35,9 +36,14 @@ namespace Pacioli.WindowsApp.NET8.Controls
             get { return F_DragDropPanel; }
         }
 
-        public PdfToImageConverter? renderedDoc { get; set; } = null;
-        public PdfToImageConverter? original { get; set; } = null;
-        public string? pdfPath { get; set; } = null;
+        [DefaultValue(null)]
+        public PdfToImageConverter? RenderedDoc { get; set; } = null;
+
+        [DefaultValue(null)]
+        public PdfToImageConverter? Original { get; set; } = null;
+
+        [DefaultValue(null)]
+        public string? PdfPath { get; set; } = null;
 
         DocViewPanel? docPanelDerived = null;
         DocViewPanel? docPanelOriginal = null;
@@ -75,27 +81,27 @@ namespace Pacioli.WindowsApp.NET8.Controls
 
             /* Content */
 
-            pdfPath = Path.GetTempFileName();
+            PdfPath = Path.GetTempFileName();
             FF_FileNameTb.Text = fileName;
 
             /* Convert to PDF and write to temp file */
             InvoiceWriter writer = new InvoiceWriter(fileName);
-            writer.Write(pdfPath);
+            writer.Write(PdfPath);
 
             PopulateAttachmentsPanel(writer.GetAttachments());
 
-            docPanelDerived.SetDocument(pdfPath);
+            docPanelDerived.SetDocument(PdfPath);
 
             if (writer.IsZugferd)
             {
-                original = new PdfToImageConverter(fileName);
+                Original = new PdfToImageConverter(fileName);
                 docPanelOriginal.SetDocument(fileName);
             }
 
             /* XML View */
             docPanelXml.LoadXml(writer.GetXml());
 
-            renderedDoc = new PdfToImageConverter(pdfPath);
+            RenderedDoc = new PdfToImageConverter(PdfPath);
             UpdateImage();
         }
 
@@ -110,8 +116,8 @@ namespace Pacioli.WindowsApp.NET8.Controls
 
             foreach (var att in attachments)
             {
-                string label = !string.IsNullOrWhiteSpace(att.ReferencedDocument?.Name)
-                    ? att.ReferencedDocument!.Name
+                string label = !string.IsNullOrWhiteSpace(att.Name)
+                    ? att.Name!
                     : att.FileName;
                 var link = new LinkLabel
                 {
@@ -128,7 +134,7 @@ namespace Pacioli.WindowsApp.NET8.Controls
         private void AttachmentLink_Clicked(object? sender, LinkLabelLinkClickedEventArgs e)
         {
             var att = (AttachmentDescriptor)((LinkLabel)sender!).Tag!;
-            var data = att.ReferencedDocument?.AttachmentBinaryObject;
+            var data = att.Data;
             if (data == null) return;
 
             var tempPath = Path.Combine(Path.GetTempPath(), att.FileName);
@@ -138,12 +144,12 @@ namespace Pacioli.WindowsApp.NET8.Controls
 
         private void UpdateImage()
         {
-            if (renderedDoc != null)
+            if (RenderedDoc != null)
             {
                 docPanelDerived!.Visible = true;
             }
 
-            if (original != null)
+            if (Original != null)
             {
                 docPanelOriginal!.Visible = true;
             }
@@ -156,7 +162,7 @@ namespace Pacioli.WindowsApp.NET8.Controls
         public void Cleanup()
         {
             docPanelDerived!.Cleanup();
-            if (original != null)
+            if (Original != null)
             {
                 docPanelOriginal!.Cleanup();
             }

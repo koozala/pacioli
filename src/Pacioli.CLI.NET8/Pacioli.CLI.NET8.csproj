@@ -2,16 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <!-- net10.0 comes from Pacioli.Pdf. See the note in Pacioli.Pdf.csproj. -->
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>pacioli-cmd</AssemblyName>
     <Version>0.14</Version>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="ZUGFeRD-csharp" Version="18.0.0" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Pacioli.Pdf\Pacioli.Pdf.csproj" />

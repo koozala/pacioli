@@ -1,107 +1,112 @@
-﻿using Pacioli.Language.Resources;
-using s2industries.ZUGFeRD;
+using Pacioli.Language.Resources;
 
 namespace Pacioli.Pdf.Invoice
 {
+    /*
+     * Gives the name of a unit code, for example "H87" becomes "Anz.".
+     *
+     * The model of Vit.FeRD.ExtendedDocument keeps the unit code as a string. Thus this
+     * class takes a string, and not an enumeration.
+     */
     internal static class QuantityCodesExtensions
     {
-        public static string ToUnit(this QuantityCodes c)
+        public static string ToUnit(this string? code)
         {
-            switch (c)
+            switch (code?.Trim())
             {
-                case QuantityCodes.SEC:
+                case "SEC":
                     return "Sekunde(n)";
-                case QuantityCodes.MMK:
+                case "MMK":
                     return "mm^2";
-                case QuantityCodes.XTU:
+                case "XTU":
                     return "Tube(n)";
-                case QuantityCodes.XTN:
+                case "XTN":
                     return "Dose(n)";
-                case QuantityCodes.XBE:
+                case "XBE":
                     return "Bund";
-                case QuantityCodes.XRO:
+                case "XRO":
                     return "Rolle";
-                case QuantityCodes.XST:
+                case "XST":
                     return "Papierbogen";
-                case QuantityCodes.ANN:
+                case "ANN":
                     return "Jahr(e)";
-                case QuantityCodes.NAR:
+                case "NAR":
                     return "Anz.";
-                case QuantityCodes.C62:
+                case "C62":
                     return "Stk.";
-                case QuantityCodes.CMT:
+                case "CMT":
                     return "cm";
-                case QuantityCodes.DAY:
+                case "DAY":
                     return "Tag(e)";
-                case QuantityCodes.FF:
+                case "FF":
                     return "a";
-                case QuantityCodes.GRM:
+                case "GRM":
                     return "Gramm";
-                case QuantityCodes.H87:
+                case "H87":
                     return "Anz.";
-                case QuantityCodes.HUR:
+                case "HUR":
                     return "Std.";
-                case QuantityCodes.KGM:
+                case "KGM":
                     return "kg";
-                case QuantityCodes.KMT:
+                case "KMT":
                     return "km";
-                case QuantityCodes.KT:
+                case "KT":
                     return "Kit";
-                case QuantityCodes.KWH:
+                case "KWH":
                     return "kWh";
-                case QuantityCodes.KWT:
+                case "KWT":
                     return "kW";
-                case QuantityCodes.LS:
+                case "LS":
                     return "pausch.";
-                case QuantityCodes.LTR:
+                case "LTR":
                     return "l";
-                case QuantityCodes.MIN:
+                case "MIN":
                     return "min";
-                case QuantityCodes.MMT:
+                case "MMT":
                     return "mm";
-                case QuantityCodes.MON:
+                case "MON":
                     return "Monat(e)";
-                case QuantityCodes.MTK:
+                case "MTK":
                     return "m^2";
-                case QuantityCodes.MTQ:
+                case "MTQ":
                     return "m^3";
-                case QuantityCodes.MTR:
+                case "MTR":
                     return "m";
-                case QuantityCodes.P1:
+                case "P1":
                     return "%";
-                case QuantityCodes.PR:
+                case "PR":
                     return "Paar";
-                case QuantityCodes.SET:
+                case "SET":
                     return "Set(s)";
-                case QuantityCodes.T3:
+                case "T3":
                     return "Tsd.";
-                case QuantityCodes.TNE:
+                case "TNE":
                     return "t";
-                case QuantityCodes.WEE:
+                case "WEE":
                     return "Woche(n)";
-                case QuantityCodes.XBA:
+                case "XBA":
                     return "Fass";
-                case QuantityCodes.XBD:
+                case "XBD":
                     return "Tf";
-                case QuantityCodes.XBG:
+                case "XBG":
                     return "Beutel";
-                case QuantityCodes.XBJ:
+                case "XBJ":
                     return "Eimer";
-                case QuantityCodes.XBO:
+                case "XBO":
                     return "Fl";
-                case QuantityCodes.XCI:
+                case "XCI":
                     return "Kanister";
-                case QuantityCodes.XCT:
+                case "XCT":
                     return "Kt";
-                case QuantityCodes.XPK:
+                case "XPK":
                     return Resources.packaging;
-                case QuantityCodes.XPP:
+                case "XPP":
                     return "lose";
-                case QuantityCodes.XPX:
+                case "XPX":
                     return "Pal";
-                case QuantityCodes.XRD:
+                case "XRD":
                     return "Stg";
-                case QuantityCodes.XSA:
+                case "XSA":
                     return "Sack";
                 default:
                     return string.Empty;

@@ -1,9 +1,9 @@
-﻿using iText.Layout.Element;
+using iText.Layout.Element;
 using iText.Layout.Properties;
-using s2industries.ZUGFeRD;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.Pdf.Invoice
 {
@@ -23,21 +23,22 @@ namespace Pacioli.Pdf.Invoice
             tab.AddHeaderCell("Steuer");
         }
 
-        public void Add(IEnumerable<AbstractTradeAllowanceCharge> charges)
+        public void Add(IEnumerable<TradeAllowanceCharge> charges)
         {
             foreach (var charge in charges)
             {
                 var text = charge.ChargeIndicator ? "Zuschlag" : "Abschlag";
                 tab.AddCell(new ItemCell(text));
                 tab.AddCell(new ItemCell($"{charge.Reason}"));
-                tab.AddCell(new ItemCellRight($"{charge.ActualAmount.ToString("#,0.00")}"));
-                tab.AddCell(new ItemCellRight($"{charge.ChargePercentage}%"));
-                tab.AddCell(new ItemCellRight($"{charge.Amount.ToString("#,0.00")}"));
+                tab.AddCell(new ItemCellRight($"{Fmt.ToString(charge.ActualAmount?.Value, "#,0.00")}"));
+                tab.AddCell(new ItemCellRight($"{charge.CalculationPercent}%"));
+                tab.AddCell(new ItemCellRight($"{Fmt.ToString(charge.BasisAmount?.Value, "#,0.00")}"));
 
                 StringBuilder taxText = new StringBuilder();
-                if (charge.Tax != null)
+                if (charge.CategoryTradeTax != null)
                 {
-                    taxText.Append($"{charge.Tax.Percent.ToString("0.00")}% {charge.Tax.CategoryCode?.ToString() ?? string.Empty}");
+                    taxText.Append($"{charge.CategoryTradeTax.RateApplicablePercent?.ToString("0.00")}% " +
+                                   $"{charge.CategoryTradeTax.CategoryCode ?? string.Empty}");
                 }
                 tab.AddCell(taxText.ToString());
             }

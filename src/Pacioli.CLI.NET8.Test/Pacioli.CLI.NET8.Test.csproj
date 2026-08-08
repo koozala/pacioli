@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <!-- net10.0 comes from Pacioli.Pdf. See the note in Pacioli.Pdf.csproj. -->
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -25,13 +26,13 @@
 
   <!--
     The content check reads the text of the rendered PDF with iText. It reads the
-    expected values with the ZUGFeRD library. The versions must stay equal to the
+    expected values with the FeRD library. The versions must stay equal to the
     versions in Pacioli.Pdf.
   -->
   <ItemGroup>
     <PackageReference Include="itext" Version="9.6.0" />
     <PackageReference Include="itext.bouncy-castle-adapter" Version="9.6.0" />
-    <PackageReference Include="ZUGFeRD-csharp" Version="18.0.0" />
+    <PackageReference Include="Vit.FeRD.ExtendedDocument" Version="0.0.1-5" />
   </ItemGroup>
 
   <!--

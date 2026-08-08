@@ -93,6 +93,67 @@ namespace Pacioli.CLI.NET8.Test.Content
             /* The renderer can break the value after a hyphen or a slash. */
             string joined = JoinBrokenWords(normalized);
 
+            if (JoinedVisualOrderText.Contains(joined, StringComparison.Ordinal) ||
+                JoinedContentOrderText.Contains(joined, StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            return ContainsInTwoParts(normalized);
+        }
+
+        /* The smallest length of a part in the comparison in two parts. */
+        public const int MinimumPartLength = 12;
+
+        /*
+         * Looks for a value that a page break cuts into two parts.
+         *
+         * A table row can come at the end of a page. The renderer then writes the first
+         * part of the cell to that page, and the second part to the next page. Between
+         * the two parts come the other columns and the header row of the table again.
+         * Thus the value is complete on the page, but not in one part.
+         *
+         * The test therefore cuts the value at each space, and it looks for the two
+         * parts. One cut is sufficient, because one page break makes one cut. Each part
+         * must have at least MinimumPartLength characters. Thus a short value keeps the
+         * strict comparison, and a weak match cannot occur.
+         */
+        private bool ContainsInTwoParts(string normalized)
+        {
+            if (normalized.Length < 2 * MinimumPartLength)
+            {
+                return false;
+            }
+
+            for (int index = MinimumPartLength; index < normalized.Length - MinimumPartLength; index++)
+            {
+                if (normalized[index] != ' ')
+                {
+                    continue;
+                }
+
+                string head = normalized.Substring(0, index);
+                string tail = normalized.Substring(index + 1);
+
+                if (ContainsPart(head) && ContainsPart(tail))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool ContainsPart(string part)
+        {
+            if (NormalizedVisualOrderText.Contains(part, StringComparison.Ordinal) ||
+                NormalizedContentOrderText.Contains(part, StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            string joined = JoinBrokenWords(part);
+
             return JoinedVisualOrderText.Contains(joined, StringComparison.Ordinal) ||
                    JoinedContentOrderText.Contains(joined, StringComparison.Ordinal);
         }

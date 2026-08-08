@@ -1,10 +1,10 @@
-﻿using iText.IO.Font.Constants;
+using iText.IO.Font.Constants;
 using iText.Kernel.Font;
 using iText.Layout.Borders;
 using iText.Layout.Element;
-using Org.BouncyCastle.Utilities.IO;
-using s2industries.ZUGFeRD;
+using System.Linq;
 using System.Text;
+using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.Pdf.Invoice
 {
@@ -20,7 +20,7 @@ namespace Pacioli.Pdf.Invoice
             AddText(text);
         }
 
-        public PartyBox(string title, Party party)
+        public PartyBox(string title, TradeParty party)
         {
             var bold = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
             Text t1 = new Text($"{title}\n").SetFont(bold).SetFontSize(12.0f);
@@ -31,36 +31,44 @@ namespace Pacioli.Pdf.Invoice
                 AddText($"{party.Name}\n");
             }
 
-            if (!string.IsNullOrWhiteSpace(party.ContactName))
+            string? contactName = party.DefinedTradeContact
+                .Select(contact => contact.PersonName)
+                .FirstOrDefault(name => !string.IsNullOrWhiteSpace(name));
+
+            if (!string.IsNullOrWhiteSpace(contactName))
             {
-                AddText($"{party.ContactName}\n");
+                AddText($"{contactName}\n");
             }
 
-            if (!string.IsNullOrWhiteSpace(party.AddressLine3))
-            {
-                AddText($"{party.AddressLine3}");
-            }
+            TradeAddress? address = party.PostalTradeAddress;
 
-            if (!string.IsNullOrWhiteSpace(party.Street))
+            /*
+             * The Cross Industry Invoice has three address lines. The page shows each
+             * line that has a value, in the order of the document.
+             */
+            foreach (string? line in new[] { address?.LineOne, address?.LineTwo, address?.LineThree })
             {
-                AddText($"{party.Street}\n");
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    AddText($"{line}\n");
+                }
             }
 
             StringBuilder sb = new StringBuilder();
             string blank = string.Empty;
-            if (!string.IsNullOrWhiteSpace(party.Country.ToString()))
+            if (!string.IsNullOrWhiteSpace(address?.CountryId))
             {
-                sb.Append(party.Country.ToString());
-                blank = " "; 
-            }
-            if (!string.IsNullOrWhiteSpace(party.Postcode))
-            {
-                sb.Append($"{blank}{party.Postcode}");
+                sb.Append(address!.CountryId);
                 blank = " ";
             }
-            if (!string.IsNullOrWhiteSpace(party.City))
+            if (!string.IsNullOrWhiteSpace(address?.PostcodeCode?.Value))
             {
-                sb.Append($"{blank}{party.City}");
+                sb.Append($"{blank}{address!.PostcodeCode!.Value}");
+                blank = " ";
+            }
+            if (!string.IsNullOrWhiteSpace(address?.CityName))
+            {
+                sb.Append($"{blank}{address!.CityName}");
                 blank = " ";
             }
             if (sb.Length > 0)
@@ -69,9 +77,10 @@ namespace Pacioli.Pdf.Invoice
                 sb.Append("\n");
             }
 
-            if (!string.IsNullOrWhiteSpace(party.ID.ID))
+            Identifier? id = party.Id.FirstOrDefault(entry => !string.IsNullOrWhiteSpace(entry?.Value));
+            if (id != null)
             {
-                AddText($"{party.ID.ID} ({party.ID.SchemeID.ToString()})\n");
+                AddText($"{id.Value} ({id.SchemeId})\n");
             }
 
             this

@@ -1,6 +1,6 @@
 using System.Text;
 using Pacioli.CLI.NET8.Test.Content;
-using s2industries.ZUGFeRD;
+using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.CLI.NET8.Test
 {
@@ -185,7 +185,7 @@ namespace Pacioli.CLI.NET8.Test
                 Assert.Ignore($"The CLI tool could not render this sample: {rendered.Problem}");
             }
 
-            InvoiceDescriptor descriptor = InvoiceLoader.Load(sample.FullPath);
+            CrossIndustryInvoice descriptor = InvoiceLoader.Load(sample.FullPath);
             PdfTextContent page = PdfTextContent.Read(rendered.PdfPath);
 
             var results = _rules.SelectMany(rule => rule.Check(descriptor, page)).ToList();

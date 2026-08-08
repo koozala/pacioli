@@ -1,17 +1,18 @@
-﻿using s2industries.ZUGFeRD;
-
 namespace Pacioli.Pdf.Invoice
 {
+    /* Gives the name of a tax type code. The model keeps the code as a string. */
     internal static class TaxTypesExtensions
     {
-        public static string ToUnit(this TaxTypes tax)
+        public static string ToTaxTypeName(this string? taxType)
         {
-            switch (tax)
+            switch (taxType?.Trim())
             {
-                case TaxTypes.VAT:
+                case "VAT":
                     return "MwSt";
+                case null:
+                    return string.Empty;
                 default:
-                    return tax.ToString();
+                    return taxType!.Trim();
             }
         }
     }

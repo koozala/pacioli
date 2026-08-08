@@ -151,7 +151,7 @@ namespace Pacioli.WindowsApp.NET8
 
             RecordPanel rp = (RecordPanel)currentPage.Controls[0];
 
-            if (rp.renderedDoc == null)
+            if (rp.RenderedDoc == null)
             {
                 MessageBox.Show(Resources.msgNoDocumentLoaded);
                 return;
@@ -167,7 +167,7 @@ namespace Pacioli.WindowsApp.NET8
                 pref.AttachmentOutputFolder = Path.GetDirectoryName(saveFileDialog1.FileName)!;
                 cdb.SavePreferences(pref);
 
-                File.WriteAllBytes(saveFileDialog1.FileName, rp.renderedDoc.PdfData!);
+                File.WriteAllBytes(saveFileDialog1.FileName, rp.RenderedDoc.PdfData!);
 
                 if (pref.OpenAfterSave)
                 {

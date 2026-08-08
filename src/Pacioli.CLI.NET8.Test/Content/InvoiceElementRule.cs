@@ -1,4 +1,4 @@
-using s2industries.ZUGFeRD;
+using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.CLI.NET8.Test.Content
 {
@@ -13,9 +13,9 @@ namespace Pacioli.CLI.NET8.Test.Content
      */
     public sealed class InvoiceElementRule
     {
-        private readonly Func<InvoiceDescriptor, IEnumerable<ExpectedValue?>> _selector;
+        private readonly Func<CrossIndustryInvoice, IEnumerable<ExpectedValue?>> _selector;
 
-        private InvoiceElementRule(string name, Func<InvoiceDescriptor, IEnumerable<ExpectedValue?>> selector)
+        private InvoiceElementRule(string name, Func<CrossIndustryInvoice, IEnumerable<ExpectedValue?>> selector)
         {
             Name = name;
             _selector = selector;
@@ -24,25 +24,25 @@ namespace Pacioli.CLI.NET8.Test.Content
         public string Name { get; }
 
         /* Makes a rule for one or more text values. */
-        public static InvoiceElementRule Text(string name, Func<InvoiceDescriptor, IEnumerable<string?>> select)
+        public static InvoiceElementRule Text(string name, Func<CrossIndustryInvoice, IEnumerable<string?>> select)
         {
             return new InvoiceElementRule(name, descriptor => select(descriptor).Select(value => ExpectedValue.FromText(value)));
         }
 
         /* Makes a rule for one or more dates. */
-        public static InvoiceElementRule Date(string name, Func<InvoiceDescriptor, IEnumerable<DateTime?>> select)
+        public static InvoiceElementRule Date(string name, Func<CrossIndustryInvoice, IEnumerable<DateTime?>> select)
         {
             return new InvoiceElementRule(name, descriptor => select(descriptor).Select(value => ExpectedValue.FromDate(value)));
         }
 
         /* Makes a rule for one or more amounts. */
-        public static InvoiceElementRule Amount(string name, Func<InvoiceDescriptor, IEnumerable<decimal?>> select)
+        public static InvoiceElementRule Amount(string name, Func<CrossIndustryInvoice, IEnumerable<decimal?>> select)
         {
             return new InvoiceElementRule(name, descriptor => select(descriptor).Select(value => ExpectedValue.FromAmount(value)));
         }
 
         /* Makes a rule that builds its values itself. Use it for a special written form. */
-        public static InvoiceElementRule Custom(string name, Func<InvoiceDescriptor, IEnumerable<ExpectedValue?>> select)
+        public static InvoiceElementRule Custom(string name, Func<CrossIndustryInvoice, IEnumerable<ExpectedValue?>> select)
         {
             return new InvoiceElementRule(name, select);
         }
@@ -56,27 +56,26 @@ namespace Pacioli.CLI.NET8.Test.Content
          * The select function gets the line item and the position number. The position
          * number starts at 1, as on the rendered page.
          */
-        public static InvoiceElementRule LineItem(string name, Func<TradeLineItem, string, ExpectedValue?> select)
+        public static InvoiceElementRule LineItem(string name, Func<SupplyChainTradeLineItem, string, ExpectedValue?> select)
         {
-            return new InvoiceElementRule(name, descriptor => descriptor
-                .GetTradeLineItems()
+            return new InvoiceElementRule(name, invoice => LineItemsOf(invoice)
                 .Select((item, index) => select(item, $"position {index + 1}")));
         }
 
         /* Makes a rule for a text value of each line item. */
-        public static InvoiceElementRule LineItemText(string name, Func<TradeLineItem, string?> select)
+        public static InvoiceElementRule LineItemText(string name, Func<SupplyChainTradeLineItem, string?> select)
         {
             return LineItem(name, (item, label) => ExpectedValue.FromText(select(item), label));
         }
 
         /* Makes a rule for an amount of each line item. */
-        public static InvoiceElementRule LineItemAmount(string name, Func<TradeLineItem, decimal?> select)
+        public static InvoiceElementRule LineItemAmount(string name, Func<SupplyChainTradeLineItem, decimal?> select)
         {
             return LineItem(name, (item, label) => ExpectedValue.FromAmount(select(item), label));
         }
 
         /* Makes a rule for a quantity of each line item. */
-        public static InvoiceElementRule LineItemQuantity(string name, Func<TradeLineItem, decimal?> select)
+        public static InvoiceElementRule LineItemQuantity(string name, Func<SupplyChainTradeLineItem, decimal?> select)
         {
             return LineItem(name, (item, label) =>
             {
@@ -86,7 +85,7 @@ namespace Pacioli.CLI.NET8.Test.Content
         }
 
         /* Makes a rule for a tax rate of each line item. */
-        public static InvoiceElementRule LineItemPercent(string name, Func<TradeLineItem, decimal?> select)
+        public static InvoiceElementRule LineItemPercent(string name, Func<SupplyChainTradeLineItem, decimal?> select)
         {
             return LineItem(name, (item, label) =>
             {
@@ -95,7 +94,14 @@ namespace Pacioli.CLI.NET8.Test.Content
             });
         }
 
-        public IReadOnlyList<ElementCheckResult> Check(InvoiceDescriptor descriptor, PdfTextContent page)
+        /* The positions of an invoice, or an empty list if the invoice has none. */
+        public static IEnumerable<SupplyChainTradeLineItem> LineItemsOf(CrossIndustryInvoice invoice)
+        {
+            return invoice.SupplyChainTradeTransaction?.IncludedSupplyChainTradeLineItem
+                   ?? (IEnumerable<SupplyChainTradeLineItem>)Array.Empty<SupplyChainTradeLineItem>();
+        }
+
+        public IReadOnlyList<ElementCheckResult> Check(CrossIndustryInvoice descriptor, PdfTextContent page)
         {
             List<ExpectedValue?> values;
 

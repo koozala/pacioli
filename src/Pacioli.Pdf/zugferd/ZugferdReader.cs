@@ -1,10 +1,9 @@
-﻿using iText.Kernel.Pdf;
-using Org.BouncyCastle.Crypto.Generators;
-using s2industries.ZUGFeRD;
+using iText.Kernel.Pdf;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Vit.FeRD.ExtendedDocument;
 
 namespace Pacioli.Pdf.zugferd
 {
@@ -51,10 +50,10 @@ namespace Pacioli.Pdf.zugferd
 
                         try
                         {
-                            /* If this doesn't raise an exception, it is most probably the attachment we are looking for... 
+                            /* If this doesn't raise an exception, it is most probably the attachment we are looking for...
                              * There may be better ways to get access to the attachment. TODO: Find out.
                              */
-                            var desc = InvoiceDescriptor.Load(xmlStream);
+                            var invoice = FeRDInvoice.Load(xmlStream);
                             xmlStream.Seek(0, SeekOrigin.Begin);
                             return true;
                         }
@@ -75,4 +74,3 @@ namespace Pacioli.Pdf.zugferd
 
     }
 }
-

@@ -140,10 +140,6 @@ namespace Pacioli.CLI.NET8.Test.Content
             new("/ApplicableTradeTax/LineTotalBasisAmount", ExclusionKind.KnownGap,
                 "The basis amount of a tax rate, from the positions."),
 
-            new("/ApplicableHeaderTradeSettlement/SpecifiedTradeAllowanceCharge/BasisAmount",
-                ExclusionKind.KnownGap,
-                "The basis amount of an allowance or of a charge of the document."),
-
             new("/ApplicableTradePaymentDiscountTerms/", ExclusionKind.KnownGap,
                 "The discount terms (Skonto): the days, the percentage, and the amount."),
 
@@ -209,12 +205,6 @@ namespace Pacioli.CLI.NET8.Test.Content
             new("/SpecifiedTradeSettlementHeaderMonetarySummation/TaxTotalAmount",
                 ExclusionKind.KnownGap,
                 "With a foreign currency, the XML holds two tax amounts. The page shows one of them."),
-
-            new("/SpecifiedTradePaymentTerms/Description", ExclusionKind.KnownGap,
-                "If a document has more than one payment term, the page does not show all of them."),
-
-            new("/AssociatedDocumentLineDocument/IncludedNote/Content", ExclusionKind.KnownGap,
-                "If a position has a long note, the page does not always show it."),
         };
 
         public static XmlValueExclusion? Find(XmlValue value)
