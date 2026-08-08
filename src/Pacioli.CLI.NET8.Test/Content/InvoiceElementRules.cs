@@ -53,8 +53,32 @@ namespace Pacioli.CLI.NET8.Test.Content
             InvoiceElementRule.Amount("Payable amount",
                 descriptor => new[] { descriptor.DuePayableAmount }),
 
-            InvoiceElementRule.Text("Line item name",
-                descriptor => descriptor.GetTradeLineItems().Select(item => item.Name)),
+            /*
+             * The data of each position of the invoice. The renderer writes these values
+             * to the item table. A rule adds the position number to each value, thus the
+             * report tells you which position has the problem.
+             */
+
+            InvoiceElementRule.LineItemText("Line item name",
+                item => item.Name),
+
+            InvoiceElementRule.LineItemText("Line item seller assigned ID",
+                item => item.SellerAssignedID),
+
+            InvoiceElementRule.LineItemQuantity("Line item quantity",
+                item => item.BilledQuantity),
+
+            InvoiceElementRule.LineItemPercent("Line item tax rate",
+                item => item.TaxPercent),
+
+            InvoiceElementRule.LineItemAmount("Line item net unit price",
+                item => item.NetUnitPrice),
+
+            InvoiceElementRule.LineItemAmount("Line item gross unit price",
+                item => item.GrossUnitPrice),
+
+            InvoiceElementRule.LineItemAmount("Line item total amount",
+                item => item.LineTotalAmount),
         };
 
         /* Gives the rules with the given names. An empty selection gives all rules. */
@@ -67,6 +91,20 @@ namespace Pacioli.CLI.NET8.Test.Content
 
             return All
                 .Where(rule => names.Any(name => string.Equals(name, rule.Name, StringComparison.OrdinalIgnoreCase)))
+                .ToList();
+        }
+
+        /*
+         * Gives the names that do not agree with a rule.
+         *
+         * A name with a spelling error would remove its rule without a message. Then the
+         * content check could pass because it checks nothing. Thus the test reports these
+         * names as a failure.
+         */
+        public static IReadOnlyList<string> FindUnknownNames(IReadOnlyList<string> names)
+        {
+            return names
+                .Where(name => !All.Any(rule => string.Equals(name, rule.Name, StringComparison.OrdinalIgnoreCase)))
                 .ToList();
         }
 

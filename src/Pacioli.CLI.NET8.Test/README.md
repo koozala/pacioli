@@ -42,7 +42,9 @@ The key elements of the invoice must be visible on the rendered PDF. The test re
 invoice data from the sample, and it reads the text from the rendered PDF. Then it looks
 for each element.
 
-These elements are the default set:
+These elements are the default set.
+
+Data of the document:
 
 | Element            | Source                                    |
 |--------------------|-------------------------------------------|
@@ -55,11 +57,31 @@ These elements are the default set:
 | Tax total amount   | `TaxTotalAmount`                          |
 | Grand total amount | `GrandTotalAmount`                        |
 | Payable amount     | `DuePayableAmount`                        |
-| Line item name     | `Name` of each trade line item            |
+
+Data of each position. The renderer writes these values to the item table:
+
+| Element                      | Source                        |
+|------------------------------|-------------------------------|
+| Line item name               | `Name`                        |
+| Line item seller assigned ID | `SellerAssignedID`            |
+| Line item quantity           | `BilledQuantity`              |
+| Line item tax rate           | `TaxPercent`                  |
+| Line item net unit price     | `NetUnitPrice`                |
+| Line item gross unit price   | `GrossUnitPrice`              |
+| Line item total amount       | `LineTotalAmount`             |
+
+A position rule gives one value for each position of the invoice. It adds the position
+number to the label of each value. Thus the report tells you which position has the
+problem, for example:
+
+```
+  - Line item total amount: "position 2: 1.150,00" (accepted forms: "1.150,00" | "1,150.00")
+```
 
 If the invoice has no data for an element, the test does not check that element, and the
 test case does not fail. Thus the same rules apply to a profile with few data fields, for
-example MINIMUM, and to a profile with many data fields, for example EXTENDED.
+example MINIMUM, and to a profile with many data fields, for example EXTENDED. The number
+of checked elements goes from 9, for a MINIMUM sample, to 171, for a large EXTENDED sample.
 
 If the CLI tool cannot render the sample, this test case gives the result "skipped". The
 test case `Sample_RendersToPdf` reports the cause.
@@ -72,12 +94,24 @@ the accepted written forms.
 Add one entry to the list `All` in `Content\InvoiceElementRules.cs`. Use one of these
 factory methods:
 
+For a value of the document:
+
 | Method                      | Function                                                     |
 |-----------------------------|--------------------------------------------------------------|
 | `InvoiceElementRule.Text`   | A text value.                                                |
 | `InvoiceElementRule.Date`   | A date. It accepts the forms of more than one culture.       |
 | `InvoiceElementRule.Amount` | An amount. It uses the format of the renderer.               |
 | `InvoiceElementRule.Custom` | A value with a special written form.                         |
+
+For a value of each position:
+
+| Method                                | Function                                           |
+|---------------------------------------|----------------------------------------------------|
+| `InvoiceElementRule.LineItemText`     | A text value.                                      |
+| `InvoiceElementRule.LineItemAmount`   | An amount, in the format `#,0.00`.                 |
+| `InvoiceElementRule.LineItemQuantity` | A quantity. The renderer selects the decimal places. |
+| `InvoiceElementRule.LineItemPercent`  | A tax rate, with a percent sign.                   |
+| `InvoiceElementRule.LineItem`         | A value with a special written form.               |
 
 Example: to check the order number, add this entry:
 
@@ -86,8 +120,15 @@ InvoiceElementRule.Text("Order number",
     descriptor => new[] { descriptor.OrderNo }),
 ```
 
-A rule can give more than one value. The rule then looks for each value. The rule
-"Line item name" is an example. A rule that gives no value is not applied.
+Example: to check the description of each position, add this entry:
+
+```csharp
+InvoiceElementRule.LineItemText("Line item description",
+    item => item.Description),
+```
+
+A rule can give more than one value. The rule then looks for each value. Each position
+rule is an example. A rule that gives no value is not applied.
 
 A rule must only expect data that the renderer writes to the page. See `InvoiceWriter.Write`
 in the project `Pacioli.Pdf`.
@@ -139,6 +180,11 @@ to the output directory.
 | `excludeDirectories`| `[ "attachments" ]`                                     | Directory names to ignore.                                |
 | `timeoutSeconds`    | `120`                                                   | The maximum time for one call of the CLI tool.            |
 | `checkedElements`   | `[]` (all elements)                                     | The elements of the content check, by name.               |
+
+A name in `checkedElements` must agree with a rule. If it does not, the test case
+`CheckedElements_AreKnown` fails and shows the names that exist. Without this test case,
+a name with a spelling error would remove its rule without a message, and the content
+check could pass because it checks nothing.
 
 The directory `attachments` holds enclosures of an invoice. These files are not invoices.
 Thus the default configuration ignores them.

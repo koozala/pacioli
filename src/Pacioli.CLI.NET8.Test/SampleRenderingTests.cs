@@ -116,6 +116,23 @@ namespace Pacioli.CLI.NET8.Test
                 $"with the patterns {string.Join(", ", Settings.IncludePatterns)}.");
         }
 
+        /*
+         * Reports a name of the setting checkedElements that does not agree with a rule.
+         * Without this test case, a name with a spelling error would remove its rule
+         * without a message, and the content check could pass because it checks nothing.
+         */
+        [Test, Order(1)]
+        public void CheckedElements_AreKnown()
+        {
+            var unknown = InvoiceElementRules.FindUnknownNames(Settings.CheckedElements);
+
+            Assert.That(unknown, Is.Empty,
+                $"The setting checkedElements holds a name without a rule: {string.Join(", ", unknown)}. " +
+                $"These names exist: {string.Join(", ", InvoiceElementRules.All.Select(rule => rule.Name))}.");
+
+            Assert.That(_rules, Is.Not.Empty, "The content check has no rule.");
+        }
+
         [TestCaseSource(nameof(SampleCases)), Order(2)]
         public void Sample_RendersToPdf(SampleFile sample)
         {

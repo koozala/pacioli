@@ -26,13 +26,13 @@ namespace Pacioli.CLI.NET8.Test.Content
         /* Makes a rule for one or more text values. */
         public static InvoiceElementRule Text(string name, Func<InvoiceDescriptor, IEnumerable<string?>> select)
         {
-            return new InvoiceElementRule(name, descriptor => select(descriptor).Select(ExpectedValue.FromText));
+            return new InvoiceElementRule(name, descriptor => select(descriptor).Select(value => ExpectedValue.FromText(value)));
         }
 
         /* Makes a rule for one or more dates. */
         public static InvoiceElementRule Date(string name, Func<InvoiceDescriptor, IEnumerable<DateTime?>> select)
         {
-            return new InvoiceElementRule(name, descriptor => select(descriptor).Select(ExpectedValue.FromDate));
+            return new InvoiceElementRule(name, descriptor => select(descriptor).Select(value => ExpectedValue.FromDate(value)));
         }
 
         /* Makes a rule for one or more amounts. */
@@ -45,6 +45,54 @@ namespace Pacioli.CLI.NET8.Test.Content
         public static InvoiceElementRule Custom(string name, Func<InvoiceDescriptor, IEnumerable<ExpectedValue?>> select)
         {
             return new InvoiceElementRule(name, select);
+        }
+
+        /*
+         * Makes a rule for one value of each line item.
+         *
+         * The rule adds the position number to the label of each value. Thus the report
+         * tells you which position of the invoice has the problem.
+         *
+         * The select function gets the line item and the position number. The position
+         * number starts at 1, as on the rendered page.
+         */
+        public static InvoiceElementRule LineItem(string name, Func<TradeLineItem, string, ExpectedValue?> select)
+        {
+            return new InvoiceElementRule(name, descriptor => descriptor
+                .GetTradeLineItems()
+                .Select((item, index) => select(item, $"position {index + 1}")));
+        }
+
+        /* Makes a rule for a text value of each line item. */
+        public static InvoiceElementRule LineItemText(string name, Func<TradeLineItem, string?> select)
+        {
+            return LineItem(name, (item, label) => ExpectedValue.FromText(select(item), label));
+        }
+
+        /* Makes a rule for an amount of each line item. */
+        public static InvoiceElementRule LineItemAmount(string name, Func<TradeLineItem, decimal?> select)
+        {
+            return LineItem(name, (item, label) => ExpectedValue.FromAmount(select(item), label));
+        }
+
+        /* Makes a rule for a quantity of each line item. */
+        public static InvoiceElementRule LineItemQuantity(string name, Func<TradeLineItem, decimal?> select)
+        {
+            return LineItem(name, (item, label) =>
+            {
+                decimal? value = select(item);
+                return value.HasValue ? ExpectedValue.FromQuantity(value.Value, label) : null;
+            });
+        }
+
+        /* Makes a rule for a tax rate of each line item. */
+        public static InvoiceElementRule LineItemPercent(string name, Func<TradeLineItem, decimal?> select)
+        {
+            return LineItem(name, (item, label) =>
+            {
+                decimal? value = select(item);
+                return value.HasValue ? ExpectedValue.FromPercent(value.Value, label) : null;
+            });
         }
 
         public IReadOnlyList<ElementCheckResult> Check(InvoiceDescriptor descriptor, PdfTextContent page)
