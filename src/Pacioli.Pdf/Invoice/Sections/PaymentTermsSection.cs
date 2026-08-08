@@ -1,0 +1,38 @@
+using iText.Layout;
+using Pacioli.Language.Resources;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Vit.FeRD.ExtendedDocument.Model;
+
+namespace Pacioli.Pdf.Invoice.Sections
+{
+    /*
+     * The payment terms: the text, the due date, and the number of days.
+     * A document can hold more than one term. Each term gets its own box.
+     */
+    internal sealed class PaymentTermsSection : IInvoiceSection
+    {
+        public string Name => "Payment terms";
+
+        public void Write(Document doc, InvoiceContext context)
+        {
+            foreach (var pt in context.Settlement?.SpecifiedTradePaymentTerms ?? new List<TradePaymentTerms>())
+            {
+                StringBuilder sb = new StringBuilder();
+                if (!string.IsNullOrWhiteSpace(pt.Description)) sb.Append(pt.Description);
+
+                DateOnly? dueDate = InvoiceText.DateOf(pt.DueDateDateTime);
+                if (dueDate != null) sb.Append($"\n{Resources.dueDate}: {dueDate.Value.ToString("d")}");
+
+                Measure? dueDays = pt.ApplicableTradePaymentDiscountTerms?.BasisPeriodMeasure;
+                if (dueDays != null) sb.Append($"\n{Resources.dueDate}: {dueDays.Value} {Resources.days}");
+
+                if (sb.Length > 0)
+                {
+                    doc.Add(new PartyBox($"{Resources.dueDate}", sb.ToString()));
+                }
+            }
+        }
+    }
+}

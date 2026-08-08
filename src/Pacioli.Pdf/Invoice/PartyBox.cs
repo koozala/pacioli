@@ -83,6 +83,23 @@ namespace Pacioli.Pdf.Invoice
                 AddText($"{id.Value} ({id.SchemeId})\n");
             }
 
+            // Steuer-ID und USt-Idnr
+            foreach (var reg in party.SpecifiedTaxRegistration)
+            {
+                if (!string.IsNullOrWhiteSpace(reg?.Id?.Value))
+                {
+                    AddText($"{reg!.Id!.SchemeId}: {reg!.Id!.Value}\n");
+                } 
+            }
+
+            foreach (var gid in party.GlobalId)
+            {
+                if (!string.IsNullOrWhiteSpace(gid?.Value))
+                {
+                    AddText($"{gid!.SchemeId}: {gid!.Value}\n");
+                }
+            }
+
             this
                 .SetPadding(5.0f)
                 .SetBorder(new SolidBorder(2.0f));
