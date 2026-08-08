@@ -6,5 +6,8 @@
   "timeoutSeconds": 120,
 
   "//checkedElements": "The elements of the content check. An empty list checks all elements. See InvoiceElementRules.All.",
-  "checkedElements": []
+  "checkedElements": [],
+
+  "//reportFile": "The file for the report of the XML value coverage. Empty puts it in TestResults beside the solution file.",
+  "reportFile": ""
 }

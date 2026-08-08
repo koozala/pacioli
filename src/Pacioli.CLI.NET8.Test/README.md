@@ -18,7 +18,8 @@ element on the rendered page.
 
    The CLI tool runs one time for each sample. The two test cases use the same PDF file.
 
-5. It deletes the rendered PDF files at the end of the run.
+5. It writes the result of the XML value check to a report file.
+6. It deletes the rendered PDF files at the end of the run.
 
 ## The test cases
 
@@ -134,19 +135,43 @@ show it in an other sample. Thus the count of the gaps stays correct. If the ren
 starts to show a value, the gap goes away without a change of this test, and the summary
 reports the entry as one that you can remove.
 
-At the end of the run, the test writes a summary of the gaps. It shows how many values the
-renderer does not show, and why:
-
-```
-  Known gaps of the renderer: 465 value(s) in 43 element(s)
-      113  /SpecifiedTaxRegistration/ID  (The tax number and the VAT ID of a party. ...)
-       41  /AssociatedDocumentLineDocument/LineID  (The position number from the XML. ...)
-       37  /SellerTradeParty/GlobalID  (The global ID of the seller.)
-       ...
-```
-
 To make the check stronger, remove an entry from `XmlValueExclusions.All` and start the
 test. The report then tells you which samples hold the value.
+
+## The report file
+
+At the end of the run, the test writes the result of `XmlSample_AllValuesAreVisible` to a
+file, for a review. The default position is beside the solution file:
+
+```
+src\TestResults\xml-value-report.md
+```
+
+The file is in Markdown form. It has these parts:
+
+| Part | Content |
+|---|---|
+| Summary | How many values are on the page, how many the renderer does not write by design, how many are a known gap, and how many make the test fail. |
+| Values that are missing, and that have no entry | The failures, with the line number in the XML, the path, and the value. |
+| Known gaps of the renderer | Each gap, with the number of values, the number of samples, and the reason. Then examples with the sample and the line number. |
+| Entries of kind KnownGap without a hit | Entries that you can remove. |
+| Each sample | One row for each sample, with its counts. |
+
+The test also writes a short form of the gaps to the console.
+
+**A run with a filter writes no file.** If no XML sample runs, the test keeps the file as
+it is. Thus a run of one test case does not replace a complete report with an empty one.
+
+The folder `TestResults` is in `.gitignore`. Thus the report does not go into the
+repository.
+
+To put the report in an other place, use the setting `reportFile`, the test parameter
+`ReportFile`, or the environment variable `PACIOLI_REPORT_FILE`:
+
+```
+$env:PACIOLI_REPORT_FILE = "D:\reports\pacioli.md"
+dotnet test src\Pacioli.CLI.NET8.Test\Pacioli.CLI.NET8.Test.csproj
+```
 
 ## How to check more elements
 
@@ -239,6 +264,7 @@ to the output directory.
 | `excludeDirectories`| `[ "attachments" ]`                                     | Directory names to ignore.                                |
 | `timeoutSeconds`    | `120`                                                   | The maximum time for one call of the CLI tool.            |
 | `checkedElements`   | `[]` (all elements)                                     | The elements of the content check, by name.               |
+| `reportFile`        | `TestResults\xml-value-report.md` beside the solution   | The file for the report of the XML value coverage.        |
 
 A name in `checkedElements` must agree with a rule. If it does not, the test case
 `CheckedElements_AreKnown` fails and shows the names that exist. Without this test case,
@@ -268,6 +294,7 @@ You can override each value. The order of precedence is:
 | `excludeDirectories` | `ExcludeDirectories`  | `PACIOLI_SAMPLE_EXCLUDE_DIRS`   |
 | `timeoutSeconds`     | `TimeoutSeconds`      | `PACIOLI_CLI_TIMEOUT`           |
 | `checkedElements`    | `CheckedElements`     | `PACIOLI_CHECKED_ELEMENTS`      |
+| `reportFile`         | `ReportFile`          | `PACIOLI_REPORT_FILE`           |
 
 For a list, a semicolon separates the entries.
 

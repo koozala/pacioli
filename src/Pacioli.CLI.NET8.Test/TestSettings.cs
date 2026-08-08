@@ -25,6 +25,10 @@ namespace Pacioli.CLI.NET8.Test
         /* The names of the elements of the content check. An empty list checks all elements. */
         public IReadOnlyList<string> CheckedElements { get; }
 
+        /* The file for the report of the XML value coverage. */
+        public string ReportFile { get; }
+        public string ReportFileSource { get; }
+
         /* Tells where the samples directory value comes from. The test report shows this text. */
         public string SamplesDirectorySource { get; }
         public string CliExecutableSource { get; }
@@ -57,6 +61,19 @@ namespace Pacioli.CLI.NET8.Test
             CheckedElements = ReadList("CheckedElements", "PACIOLI_CHECKED_ELEMENTS", file.CheckedElements,
                 Array.Empty<string>());
 
+            (string report, string reportSource) = ReadValue("ReportFile", "PACIOLI_REPORT_FILE", file.ReportFile);
+
+            if (string.IsNullOrWhiteSpace(report))
+            {
+                ReportFile = DefaultReportFile();
+                ReportFileSource = "default value";
+            }
+            else
+            {
+                ReportFile = Path.GetFullPath(report);
+                ReportFileSource = reportSource;
+            }
+
             (string timeout, _) = ReadValue("TimeoutSeconds", "PACIOLI_CLI_TIMEOUT", file.TimeoutSeconds?.ToString());
             TimeoutSeconds = int.TryParse(timeout, out int seconds) && seconds > 0 ? seconds : 120;
         }
@@ -74,6 +91,21 @@ namespace Pacioli.CLI.NET8.Test
             }
 
             return new TestSettings(file);
+        }
+
+        /*
+         * The report goes to the folder TestResults beside the solution file. There a
+         * reader finds it without a search. If the solution is not there, the report goes
+         * to the output folder of the test.
+         */
+        private static string DefaultReportFile()
+        {
+            string? solution = CliLocator.FindSolutionDirectory(AppContext.BaseDirectory);
+            string folder = solution == null
+                ? AppContext.BaseDirectory
+                : Path.Combine(solution, "TestResults");
+
+            return Path.Combine(folder, "xml-value-report.md");
         }
 
         private static (string value, string source) ReadValue(string parameterName, string environmentName, string? fileValue)
@@ -142,6 +174,9 @@ namespace Pacioli.CLI.NET8.Test
 
             [JsonPropertyName("checkedElements")]
             public string[]? CheckedElements { get; set; }
+
+            [JsonPropertyName("reportFile")]
+            public string? ReportFile { get; set; }
         }
     }
 }

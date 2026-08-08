@@ -39,6 +39,7 @@ namespace Pacioli.CLI.NET8.Test
         private readonly List<string> _renderProblems = new List<string>();
         private readonly List<string> _contentProblems = new List<string>();
         private readonly Dictionary<string, int> _knownGapHits = new Dictionary<string, int>();
+        private readonly XmlCoverageReport _report = new XmlCoverageReport();
         private readonly object _lock = new object();
 
         private IReadOnlyList<InvoiceElementRule> _rules = Array.Empty<InvoiceElementRule>();
@@ -68,6 +69,7 @@ namespace Pacioli.CLI.NET8.Test
         public void RemoveTemporaryDirectory()
         {
             WriteSummary();
+            WriteReportFile();
 
             try
             {
@@ -283,11 +285,14 @@ namespace Pacioli.CLI.NET8.Test
                     {
                         _knownGapHits[exclusion.Pattern] = _knownGapHits.GetValueOrDefault(exclusion.Pattern) + 1;
                     }
+                    _report.AddKnownGap(sample.RelativePath, exclusion, value);
                     continue;
                 }
 
                 missing.Add(value);
             }
+
+            _report.AddSample(sample.RelativePath, found, notRendered, knownGap, missing);
 
             if (missing.Count == 0)
             {
@@ -426,6 +431,37 @@ namespace Pacioli.CLI.NET8.Test
             }
 
             WriteKnownGaps();
+        }
+
+        /*
+         * Writes the result of XmlSample_AllValuesAreVisible to a file for a review.
+         *
+         * If no XML sample ran, the method writes no file. A run with a filter must not
+         * replace a complete report with an empty one.
+         */
+        private void WriteReportFile()
+        {
+            if (_report.SampleCount == 0)
+            {
+                TestContext.Progress.WriteLine(
+                    "  No XML sample ran. The test keeps the report file as it is.");
+                return;
+            }
+
+            _report.SamplesDirectory = Settings.SamplesDirectory;
+            _report.CliExecutable = Settings.CliExecutable;
+
+            try
+            {
+                _report.WriteTo(Settings.ReportFile);
+                TestContext.Progress.WriteLine($"  Report: {Settings.ReportFile}");
+            }
+            catch (Exception error) when (error is IOException or UnauthorizedAccessException)
+            {
+                /* A report that the test cannot write must not make the test run fail. */
+                TestContext.Progress.WriteLine(
+                    $"  Warning: the test could not write the report to {Settings.ReportFile} ({error.Message})");
+            }
         }
 
         /*
