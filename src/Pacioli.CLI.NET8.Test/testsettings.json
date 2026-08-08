@@ -3,5 +3,8 @@
   "cliExecutable": "",
   "includePatterns": [ "*.xml", "*.pdf" ],
   "excludeDirectories": [ "attachments" ],
-  "timeoutSeconds": 120
+  "timeoutSeconds": 120,
+
+  "//checkedElements": "The elements of the content check. An empty list checks all elements. See InvoiceElementRules.All.",
+  "checkedElements": []
 }

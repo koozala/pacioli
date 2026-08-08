@@ -22,6 +22,9 @@ namespace Pacioli.CLI.NET8.Test
         public IReadOnlyList<string> ExcludeDirectories { get; }
         public int TimeoutSeconds { get; }
 
+        /* The names of the elements of the content check. An empty list checks all elements. */
+        public IReadOnlyList<string> CheckedElements { get; }
+
         /* Tells where the samples directory value comes from. The test report shows this text. */
         public string SamplesDirectorySource { get; }
         public string CliExecutableSource { get; }
@@ -50,6 +53,9 @@ namespace Pacioli.CLI.NET8.Test
 
             ExcludeDirectories = ReadList("ExcludeDirectories", "PACIOLI_SAMPLE_EXCLUDE_DIRS", file.ExcludeDirectories,
                 new[] { "attachments" });
+
+            CheckedElements = ReadList("CheckedElements", "PACIOLI_CHECKED_ELEMENTS", file.CheckedElements,
+                Array.Empty<string>());
 
             (string timeout, _) = ReadValue("TimeoutSeconds", "PACIOLI_CLI_TIMEOUT", file.TimeoutSeconds?.ToString());
             TimeoutSeconds = int.TryParse(timeout, out int seconds) && seconds > 0 ? seconds : 120;
@@ -133,6 +139,9 @@ namespace Pacioli.CLI.NET8.Test
 
             [JsonPropertyName("timeoutSeconds")]
             public int? TimeoutSeconds { get; set; }
+
+            [JsonPropertyName("checkedElements")]
+            public string[]? CheckedElements { get; set; }
         }
     }
 }

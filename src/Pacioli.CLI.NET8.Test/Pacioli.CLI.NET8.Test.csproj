@@ -24,6 +24,17 @@
   </ItemGroup>
 
   <!--
+    The content check reads the text of the rendered PDF with iText. It reads the
+    expected values with the ZUGFeRD library. The versions must stay equal to the
+    versions in Pacioli.Pdf.
+  -->
+  <ItemGroup>
+    <PackageReference Include="itext" Version="9.6.0" />
+    <PackageReference Include="itext.bouncy-castle-adapter" Version="9.6.0" />
+    <PackageReference Include="ZUGFeRD-csharp" Version="18.0.0" />
+  </ItemGroup>
+
+  <!--
     The test starts pacioli-cmd.exe as a separate process.
     ReferenceOutputAssembly is false. The reference only makes sure that the CLI
     is built before the test runs. It does not add the CLI assembly to the test.
@@ -32,6 +43,11 @@
     <ProjectReference Include="..\Pacioli.CLI.NET8\Pacioli.CLI.NET8.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+
+  <!-- The content check reads the sample data with the ZUGFeRD reader of Pacioli.Pdf. -->
+  <ItemGroup>
+    <ProjectReference Include="..\Pacioli.Pdf\Pacioli.Pdf.csproj" />
   </ItemGroup>
 
   <ItemGroup>

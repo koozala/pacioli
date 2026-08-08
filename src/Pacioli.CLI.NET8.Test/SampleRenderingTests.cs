@@ -1,15 +1,28 @@
 using System.Text;
+using Pacioli.CLI.NET8.Test.Content;
+using s2industries.ZUGFeRD;
 
 namespace Pacioli.CLI.NET8.Test
 {
     /*
-     * Renders each sample document with the CLI tool pacioli-cmd.
+     * Renders each sample document with the CLI tool pacioli-cmd, and checks the result.
      *
-     * One test case exists for each sample. A test case fails if:
-     *   - the CLI tool stops with an error code,
-     *   - the CLI tool writes to the error stream,
-     *   - the CLI tool does not stop before the timeout,
-     *   - the CLI tool writes no PDF file, or an incomplete PDF file.
+     * Each sample has two test cases:
+     *
+     *   Sample_RendersToPdf
+     *     The CLI tool must make a good PDF file. The case fails if:
+     *       - the CLI tool stops with an error code,
+     *       - the CLI tool writes to the error stream,
+     *       - the CLI tool does not stop before the timeout,
+     *       - the CLI tool writes no PDF file, or an incomplete PDF file.
+     *
+     *   Sample_RenderedPdf_ShowsKeyElements
+     *     The key elements of the invoice must be visible on the rendered PDF.
+     *     The class InvoiceElementRules holds the set of elements. To check more
+     *     elements, add a rule to that class.
+     *
+     * The CLI tool renders each sample one time only. The two test cases use the same
+     * PDF file.
      *
      * The PDF files go to a temporary directory. The test deletes this directory
      * at the end of the run.
@@ -21,8 +34,13 @@ namespace Pacioli.CLI.NET8.Test
     {
         private static readonly TestSettings Settings = TestSettings.Load();
         private static readonly IReadOnlyList<SampleFile> Samples = SampleLocator.Find(Settings);
-        private static readonly List<string> Problems = new List<string>();
 
+        private readonly Dictionary<int, RenderedSample> _renders = new Dictionary<int, RenderedSample>();
+        private readonly List<string> _renderProblems = new List<string>();
+        private readonly List<string> _contentProblems = new List<string>();
+        private readonly object _lock = new object();
+
+        private IReadOnlyList<InvoiceElementRule> _rules = Array.Empty<InvoiceElementRule>();
         private string _temporaryDirectory = string.Empty;
         private CliRunner _runner = null!;
 
@@ -36,10 +54,12 @@ namespace Pacioli.CLI.NET8.Test
 
             Directory.CreateDirectory(_temporaryDirectory);
             _runner = new CliRunner(Settings.CliExecutable, Settings.TimeoutSeconds);
+            _rules = InvoiceElementRules.Select(Settings.CheckedElements);
 
             TestContext.Progress.WriteLine($"CLI tool         : {Settings.CliExecutable} ({Settings.CliExecutableSource})");
             TestContext.Progress.WriteLine($"Samples directory: {Settings.SamplesDirectory} ({Settings.SamplesDirectorySource})");
             TestContext.Progress.WriteLine($"Samples found    : {Samples.Count}");
+            TestContext.Progress.WriteLine($"Checked elements : {string.Join(", ", _rules.Select(rule => rule.Name))}");
             TestContext.Progress.WriteLine($"Output directory : {_temporaryDirectory} (deleted at the end)");
         }
 
@@ -99,46 +119,125 @@ namespace Pacioli.CLI.NET8.Test
         [TestCaseSource(nameof(SampleCases)), Order(2)]
         public void Sample_RendersToPdf(SampleFile sample)
         {
-            string outputFolder = Path.Combine(_temporaryDirectory, $"case_{sample.Index:D4}");
-            Directory.CreateDirectory(outputFolder);
+            RenderedSample rendered = EnsureRendered(sample);
 
-            string pdfName = Path.GetFileNameWithoutExtension(sample.FullPath) + ".pdf";
-            string pdfPath = Path.Combine(outputFolder, pdfName);
-
-            CliResult result = _runner.Render(sample.FullPath, outputFolder, pdfName);
-
-            string? problem = DescribeProblem(result, pdfPath);
-
-            if (problem == null)
+            if (rendered.Problem == null)
             {
                 TestContext.Out.WriteLine(
-                    $"OK: {sample.RelativePath} -> {new FileInfo(pdfPath).Length} bytes " +
-                    $"in {result.Duration.TotalMilliseconds:F0} ms");
+                    $"OK: {sample.RelativePath} -> {new FileInfo(rendered.PdfPath).Length} bytes " +
+                    $"in {rendered.Result.Duration.TotalMilliseconds:F0} ms");
                 return;
             }
 
             var message = new StringBuilder();
             message.AppendLine($"The CLI tool could not render the sample: {sample.RelativePath}");
-            message.AppendLine($"Problem     : {problem}");
-            message.AppendLine($"Command     : {result.CommandLine}");
-            message.AppendLine($"Exit code   : {result.ExitCode}");
-            message.AppendLine($"Duration    : {result.Duration.TotalMilliseconds:F0} ms");
+            message.AppendLine($"Problem     : {rendered.Problem}");
+            message.AppendLine($"Command     : {rendered.Result.CommandLine}");
+            message.AppendLine($"Exit code   : {rendered.Result.ExitCode}");
+            message.AppendLine($"Duration    : {rendered.Result.Duration.TotalMilliseconds:F0} ms");
 
-            if (result.StandardOutput.Length > 0)
+            if (rendered.Result.StandardOutput.Length > 0)
             {
-                message.AppendLine($"Standard out:{Environment.NewLine}{result.StandardOutput}");
+                message.AppendLine($"Standard out:{Environment.NewLine}{rendered.Result.StandardOutput}");
             }
-            if (result.StandardError.Length > 0)
+            if (rendered.Result.StandardError.Length > 0)
             {
-                message.AppendLine($"Error out   :{Environment.NewLine}{result.StandardError}");
+                message.AppendLine($"Error out   :{Environment.NewLine}{rendered.Result.StandardError}");
             }
 
-            lock (Problems)
+            lock (_lock)
             {
-                Problems.Add($"{sample.RelativePath}: {problem}");
+                _renderProblems.Add($"{sample.RelativePath}: {rendered.Problem}");
             }
 
             Assert.Fail(message.ToString());
+        }
+
+        [TestCaseSource(nameof(SampleCases)), Order(3)]
+        public void Sample_RenderedPdf_ShowsKeyElements(SampleFile sample)
+        {
+            RenderedSample rendered = EnsureRendered(sample);
+
+            if (rendered.Problem != null)
+            {
+                /* Without a good PDF file, no content check is possible.
+                 * The test case Sample_RendersToPdf reports the cause. */
+                Assert.Ignore($"The CLI tool could not render this sample: {rendered.Problem}");
+            }
+
+            InvoiceDescriptor descriptor = InvoiceLoader.Load(sample.FullPath);
+            PdfTextContent page = PdfTextContent.Read(rendered.PdfPath);
+
+            var results = _rules.SelectMany(rule => rule.Check(descriptor, page)).ToList();
+            var failures = results.Where(result => result.IsFailure).ToList();
+
+            int checkedCount = results.Count(result => result.Outcome == ElementCheckOutcome.Found);
+            int skippedCount = results.Count(result => result.Outcome == ElementCheckOutcome.NotApplicable);
+
+            if (failures.Count == 0)
+            {
+                TestContext.Out.WriteLine(
+                    $"OK: {sample.RelativePath} -> {checkedCount} elements found, " +
+                    $"{skippedCount} elements without data, {page.PageCount} pages");
+                return;
+            }
+
+            var message = new StringBuilder();
+            message.AppendLine($"The rendered PDF does not show all key elements: {sample.RelativePath}");
+            message.AppendLine($"Missing  : {failures.Count} of {failures.Count + checkedCount} elements");
+            message.AppendLine($"Pages    : {page.PageCount}");
+            message.AppendLine("Elements :");
+
+            foreach (var failure in failures.Take(MaximumReportedFailures))
+            {
+                message.AppendLine($"  - {failure.Describe()}");
+            }
+
+            if (failures.Count > MaximumReportedFailures)
+            {
+                message.AppendLine($"  - ... and {failures.Count - MaximumReportedFailures} more");
+            }
+
+            lock (_lock)
+            {
+                _contentProblems.Add(
+                    $"{sample.RelativePath}: {failures.Count} element(s) missing " +
+                    $"({string.Join(", ", failures.Take(MaximumReportedFailures).Select(f => f.RuleName).Distinct())})");
+            }
+
+            Assert.Fail(message.ToString());
+        }
+
+        private const int MaximumReportedFailures = 10;
+
+        /* Renders one sample. The result stays in the memory, so that the CLI runs one time only. */
+        private RenderedSample EnsureRendered(SampleFile sample)
+        {
+            lock (_lock)
+            {
+                if (_renders.TryGetValue(sample.Index, out RenderedSample? existing))
+                {
+                    return existing;
+                }
+
+                string outputFolder = Path.Combine(_temporaryDirectory, $"case_{sample.Index:D4}");
+                Directory.CreateDirectory(outputFolder);
+
+                string pdfName = Path.GetFileNameWithoutExtension(sample.FullPath) + ".pdf";
+                string pdfPath = Path.Combine(outputFolder, pdfName);
+
+                CliResult result = _runner.Render(sample.FullPath, outputFolder, pdfName);
+
+                var rendered = new RenderedSample
+                {
+                    PdfPath = pdfPath,
+                    Result = result,
+                    Problem = DescribeProblem(result, pdfPath)
+                };
+
+                _renders[sample.Index] = rendered;
+                return rendered;
+            }
         }
 
         /* Gives the reason of the failure, or null if the render is good. */
@@ -171,17 +270,34 @@ namespace Pacioli.CLI.NET8.Test
             }
         }
 
-        private static void WriteSummary()
+        private void WriteSummary()
         {
             TestContext.Progress.WriteLine(string.Empty);
-            TestContext.Progress.WriteLine("Summary of the sample rendering:");
-            TestContext.Progress.WriteLine($"  Samples : {Samples.Count}");
-            TestContext.Progress.WriteLine($"  Problems: {Problems.Count}");
+            TestContext.Progress.WriteLine("Summary:");
+            TestContext.Progress.WriteLine($"  Samples         : {Samples.Count}");
+            TestContext.Progress.WriteLine($"  Render problems : {_renderProblems.Count}");
 
-            foreach (string problem in Problems)
+            foreach (string problem in _renderProblems)
             {
-                TestContext.Progress.WriteLine($"  - {problem}");
+                TestContext.Progress.WriteLine($"    - {problem}");
             }
+
+            TestContext.Progress.WriteLine($"  Content problems: {_contentProblems.Count}");
+
+            foreach (string problem in _contentProblems)
+            {
+                TestContext.Progress.WriteLine($"    - {problem}");
+            }
+        }
+
+        /* Holds the rendered PDF of one sample. */
+        private sealed class RenderedSample
+        {
+            public required string PdfPath { get; init; }
+            public required CliResult Result { get; init; }
+
+            /* The reason of the failure, or null if the render is good. */
+            public required string? Problem { get; init; }
         }
     }
 }
