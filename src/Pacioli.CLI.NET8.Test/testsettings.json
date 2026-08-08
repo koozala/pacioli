@@ -1,0 +1,7 @@
+{
+  "samplesDirectory": "E:\\_wrk\\Projekte\\E-Rechnungsdruck_AS400_PDF\\FeRD Spezifikation\\Version-2.5.2\\Beispiele",
+  "cliExecutable": "",
+  "includePatterns": [ "*.xml", "*.pdf" ],
+  "excludeDirectories": [ "attachments" ],
+  "timeoutSeconds": 120
+}

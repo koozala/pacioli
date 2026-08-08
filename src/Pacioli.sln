@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacioli.Updater", "Pacioli.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacioli.Updater.Test", "Pacioli.Updater.Test\Pacioli.Updater.Test.csproj", "{28AC4C08-B87F-447F-8AB0-B17A08E52977}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pacioli.CLI.NET8.Test", "Pacioli.CLI.NET8.Test\Pacioli.CLI.NET8.Test.csproj", "{8E2C4DC0-69F3-49FC-B0D8-8AF1E9EE9756}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{28AC4C08-B87F-447F-8AB0-B17A08E52977}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28AC4C08-B87F-447F-8AB0-B17A08E52977}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28AC4C08-B87F-447F-8AB0-B17A08E52977}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E2C4DC0-69F3-49FC-B0D8-8AF1E9EE9756}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E2C4DC0-69F3-49FC-B0D8-8AF1E9EE9756}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E2C4DC0-69F3-49FC-B0D8-8AF1E9EE9756}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E2C4DC0-69F3-49FC-B0D8-8AF1E9EE9756}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
