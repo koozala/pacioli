@@ -38,6 +38,7 @@ namespace Pacioli.CLI.NET8.Test
         private readonly Dictionary<int, RenderedSample> _renders = new Dictionary<int, RenderedSample>();
         private readonly List<string> _renderProblems = new List<string>();
         private readonly List<string> _contentProblems = new List<string>();
+        private readonly Dictionary<string, int> _knownGapHits = new Dictionary<string, int>();
         private readonly object _lock = new object();
 
         private IReadOnlyList<InvoiceElementRule> _rules = Array.Empty<InvoiceElementRule>();
@@ -225,6 +226,110 @@ namespace Pacioli.CLI.NET8.Test
             Assert.Fail(message.ToString());
         }
 
+        /*
+         * Looks for each value of the XML input on the rendered PDF.
+         *
+         * This test case uses the XML samples only. A ZUGFeRD PDF sample holds the same
+         * XML data as an attachment, thus it would give the same result a second time.
+         *
+         * The class XmlValueExclusions holds the values that the test does not look for.
+         * It has two kinds of entry: a value that the renderer must not write in this
+         * form, for example a code; and a value that the renderer does not show yet.
+         */
+        [TestCaseSource(nameof(XmlSampleCases)), Order(4)]
+        public void XmlSample_AllValuesAreVisible(SampleFile sample)
+        {
+            RenderedSample rendered = EnsureRendered(sample);
+
+            if (rendered.Problem != null)
+            {
+                Assert.Ignore($"The CLI tool could not render this sample: {rendered.Problem}");
+            }
+
+            PdfTextContent page = PdfTextContent.Read(rendered.PdfPath);
+            var values = XmlValueExtractor.Extract(sample.FullPath);
+
+            var missing = new List<XmlValue>();
+            int found = 0;
+            int notRendered = 0;
+            int knownGap = 0;
+
+            foreach (XmlValue value in values)
+            {
+                XmlValueExclusion? exclusion = XmlValueExclusions.Find(value);
+
+                if (exclusion?.Kind == ExclusionKind.NotRendered)
+                {
+                    notRendered++;
+                    continue;
+                }
+
+                /*
+                 * A known gap also gets the test. The renderer can show a value in one
+                 * sample and not show it in an other sample. Thus the count of the gaps
+                 * stays correct, and a gap that the renderer closes goes away without
+                 * a change of this test.
+                 */
+                if (XmlValueMatcher.IsVisible(value.Value, page))
+                {
+                    found++;
+                    continue;
+                }
+
+                if (exclusion != null)
+                {
+                    knownGap++;
+                    lock (_lock)
+                    {
+                        _knownGapHits[exclusion.Pattern] = _knownGapHits.GetValueOrDefault(exclusion.Pattern) + 1;
+                    }
+                    continue;
+                }
+
+                missing.Add(value);
+            }
+
+            if (missing.Count == 0)
+            {
+                TestContext.Out.WriteLine(
+                    $"OK: {sample.RelativePath} -> {found} of {found + notRendered + knownGap} XML values found, " +
+                    $"{notRendered} not rendered by design, {knownGap} known gaps");
+                return;
+            }
+
+            var message = new StringBuilder();
+            message.AppendLine($"The rendered PDF does not show all values of the XML input: {sample.RelativePath}");
+            message.AppendLine($"Missing : {missing.Count} of {found + missing.Count} checked values");
+            message.AppendLine("Values  :");
+
+            foreach (XmlValue value in missing.Take(MaximumReportedFailures))
+            {
+                message.AppendLine($"  - line {value.LineNumber} {value.Path}");
+                message.AppendLine($"    value: \"{Shorten(value.Value)}\"");
+            }
+
+            if (missing.Count > MaximumReportedFailures)
+            {
+                message.AppendLine($"  - ... and {missing.Count - MaximumReportedFailures} more");
+            }
+
+            message.AppendLine(
+                "If the renderer must not show a value, add an entry to XmlValueExclusions.All.");
+
+            lock (_lock)
+            {
+                _contentProblems.Add($"{sample.RelativePath}: {missing.Count} XML value(s) missing");
+            }
+
+            Assert.Fail(message.ToString());
+        }
+
+        private static string Shorten(string value)
+        {
+            string text = PdfTextContent.Normalize(value);
+            return text.Length <= 80 ? text : text[..80] + "...";
+        }
+
         private const int MaximumReportedFailures = 10;
 
         /* Renders one sample. The result stays in the memory, so that the CLI runs one time only. */
@@ -287,6 +392,20 @@ namespace Pacioli.CLI.NET8.Test
             }
         }
 
+        /* Makes one test case for each XML sample. */
+        public static IEnumerable<TestCaseData> XmlSampleCases()
+        {
+            foreach (SampleFile sample in Samples.Where(IsXml))
+            {
+                yield return new TestCaseData(sample).SetArgDisplayNames(sample.RelativePath);
+            }
+        }
+
+        private static bool IsXml(SampleFile sample)
+        {
+            return Path.GetExtension(sample.FullPath).Equals(".xml", StringComparison.OrdinalIgnoreCase);
+        }
+
         private void WriteSummary()
         {
             TestContext.Progress.WriteLine(string.Empty);
@@ -304,6 +423,50 @@ namespace Pacioli.CLI.NET8.Test
             foreach (string problem in _contentProblems)
             {
                 TestContext.Progress.WriteLine($"    - {problem}");
+            }
+
+            WriteKnownGaps();
+        }
+
+        /*
+         * Shows how many values of the XML input the renderer does not show.
+         * Each line is a task for the renderer. If the renderer starts to show a value,
+         * remove the entry from XmlValueExclusions.All.
+         */
+        private void WriteKnownGaps()
+        {
+            if (_knownGapHits.Count == 0)
+            {
+                return;
+            }
+
+            TestContext.Progress.WriteLine(
+                $"  Known gaps of the renderer: {_knownGapHits.Values.Sum()} value(s) " +
+                $"in {_knownGapHits.Count} element(s)");
+
+            foreach (var entry in _knownGapHits.OrderByDescending(item => item.Value))
+            {
+                string reason = XmlValueExclusions.All
+                    .First(exclusion => exclusion.Pattern == entry.Key).Reason;
+                TestContext.Progress.WriteLine($"    {entry.Value,5}  {entry.Key}  ({reason})");
+            }
+
+            /* An entry without a hit is not necessary. You can remove it. */
+            var unused = XmlValueExclusions.All
+                .Where(exclusion => exclusion.Kind == ExclusionKind.KnownGap)
+                .Select(exclusion => exclusion.Pattern)
+                .Where(pattern => !_knownGapHits.ContainsKey(pattern))
+                .ToList();
+
+            if (unused.Count > 0)
+            {
+                TestContext.Progress.WriteLine(
+                    $"  Entries of kind KnownGap without a hit ({unused.Count}). You can remove them:");
+
+                foreach (string pattern in unused)
+                {
+                    TestContext.Progress.WriteLine($"           {pattern}");
+                }
             }
         }
 

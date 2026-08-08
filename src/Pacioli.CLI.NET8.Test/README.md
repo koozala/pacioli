@@ -8,7 +8,8 @@ element on the rendered page.
 
 1. It finds the CLI tool `pacioli-cmd`.
 2. It finds the sample documents in the samples directory.
-3. It makes two test cases for each sample document.
+3. It makes two test cases for each sample document, and a third test case for each XML
+   sample.
 4. For each sample, it starts the CLI tool with these arguments:
 
    ```
@@ -19,7 +20,7 @@ element on the rendered page.
 
 5. It deletes the rendered PDF files at the end of the run.
 
-## The two test cases
+## The test cases
 
 ### Sample_RendersToPdf
 
@@ -88,6 +89,64 @@ test case `Sample_RendersToPdf` reports the cause.
 
 The failure message shows each element that is not on the page, with the value and with
 the accepted written forms.
+
+### XmlSample_AllValuesAreVisible
+
+This test case uses the **XML samples only**. A ZUGFeRD PDF sample holds the same XML data
+as an attachment, thus it would give the same result a second time.
+
+The test reads each value of the XML input: the text of each element that has no child
+element, and the value of each attribute. Then it looks for each value on the rendered PDF.
+The two other test cases check a fixed set of elements; this test case checks everything.
+
+The renderer does not always write a value in the form of the XML. Thus the test makes the
+forms that the renderer can use:
+
+| In the XML | On the page  | Rule                                          |
+|------------|--------------|-----------------------------------------------|
+| `20200305` | `05.03.2020` | 8 digits are a date. It accepts more cultures. |
+| `198.00`   | `198,00`     | A number gets the amount format `#,0.00`.     |
+| `20.0000`  | `20`         | A number also gets the quantity forms.        |
+
+The class `Content\XmlValueExclusions.cs` holds the values that the test does **not** look
+for. Each entry has a pattern, a kind, and a reason. Keep the two kinds apart, because they
+have a different meaning:
+
+| Kind          | Meaning                                                                     |
+|---------------|-----------------------------------------------------------------------------|
+| `NotRendered` | The renderer must not write this value in this form. A code is an example: the XML holds `H87`, and the page shows `Anz.`. These entries stay. |
+| `KnownGap`    | The renderer does not show this value, but a reader of the invoice needs it. Each entry is a task for the renderer. |
+
+A pattern has four forms:
+
+| Pattern  | Meaning                                        |
+|----------|------------------------------------------------|
+| `@name`  | The attribute with this name.                  |
+| `/a/b/`  | Each value whose path holds this part.         |
+| `/a/b`   | Each value whose path ends with this part.     |
+| `name`   | The element with this name.                    |
+
+A test case fails if a value is not on the page and no entry applies to it. The message
+shows the line number in the XML, the path, and the value.
+
+**A known gap also gets the test.** The renderer can show a value in one sample and not
+show it in an other sample. Thus the count of the gaps stays correct. If the renderer
+starts to show a value, the gap goes away without a change of this test, and the summary
+reports the entry as one that you can remove.
+
+At the end of the run, the test writes a summary of the gaps. It shows how many values the
+renderer does not show, and why:
+
+```
+  Known gaps of the renderer: 465 value(s) in 43 element(s)
+      113  /SpecifiedTaxRegistration/ID  (The tax number and the VAT ID of a party. ...)
+       41  /AssociatedDocumentLineDocument/LineID  (The position number from the XML. ...)
+       37  /SellerTradeParty/GlobalID  (The global ID of the seller.)
+       ...
+```
+
+To make the check stronger, remove an entry from `XmlValueExclusions.All` and start the
+test. The report then tells you which samples hold the value.
 
 ## How to check more elements
 
@@ -245,4 +304,11 @@ Run the render test only, or the content test only:
 ```
 dotnet test src\Pacioli.CLI.NET8.Test\Pacioli.CLI.NET8.Test.csproj --filter "Name~Sample_RendersToPdf"
 dotnet test src\Pacioli.CLI.NET8.Test\Pacioli.CLI.NET8.Test.csproj --filter "Name~ShowsKeyElements"
+dotnet test src\Pacioli.CLI.NET8.Test\Pacioli.CLI.NET8.Test.csproj --filter "Name~AllValuesAreVisible"
+```
+
+Show the summary of the gaps of the renderer:
+
+```
+dotnet test src\Pacioli.CLI.NET8.Test\Pacioli.CLI.NET8.Test.csproj -l "console;verbosity=detailed"
 ```
