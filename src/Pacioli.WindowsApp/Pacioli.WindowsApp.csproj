@@ -43,9 +43,9 @@
 	</Target>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.8" />
-		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3967.48" />
-		<PackageReference Include="PDFtoImage" Version="5.2.1" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.10" />
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4129.50" />
+		<PackageReference Include="PDFtoImage" Version="5.3.0" />
 		<PackageReference Include="Vit.FeRD.ExtendedDocument" Version="0.0.1-7" />
 	</ItemGroup>
 
