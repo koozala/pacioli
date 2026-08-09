@@ -78,7 +78,7 @@ namespace Pacioli.Pdf.Invoice
             {
                 if (gid != null)
                 {
-                    AddText($"{Resources.GlobalId}: ({gid.SchemeId}) {gid.Value}\n");
+                    AddText($"{Resources.GlobalId}: ({CodeText.Name(CodeLists.IdentifierScheme, gid.SchemeId)}) {gid.Value}\n");
                 }
             }
 

@@ -43,7 +43,7 @@ namespace Pacioli.Pdf.Invoice.Sections
                 doc.Add(new Paragraph(Resources.WeitereUnterlagen));
                 if (exchangeDoc.Name != null) doc.Add(new Paragraph(exchangeDoc.Name));
                 doc.Add(new Paragraph($"{Resources.Dokumentendatum}: {InvoiceText.DateOf(exchangeDoc.IssueDateTime).ToString()}"));
-                doc.Add(new Paragraph($"{Resources.Code}: {exchangeDoc.TypeCode}"));
+                doc.Add(new Paragraph($"{Resources.Code}: {CodeText.Name(CodeLists.DocumentType, exchangeDoc.TypeCode)}"));
                 doc.Add(tab);
             }
         }

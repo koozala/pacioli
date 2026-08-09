@@ -1,24 +1,35 @@
 using Pacioli.Language.Resources;
+using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.Pdf.Invoice
 {
     /*
      * Gives the name of a tax type code. The model keeps the code as a string.
-     * "VAT" becomes "MwSt" in German and "VAT" in English.
+     *
+     * "VAT" keeps the short form from the resources, because it stands in a column of
+     * the item table: "MwSt" in German and "VAT" in English. The code list of the
+     * specification gives "Umsatzsteuer", and that text is too wide for the column.
+     *
+     * Each other code takes its name from the code list, thus the page shows a text and
+     * not a code.
      */
     internal static class TaxTypesExtensions
     {
         public static string ToTaxTypeName(this string? taxType)
         {
-            switch (taxType?.Trim())
+            string code = (taxType ?? string.Empty).Trim();
+
+            if (code.Length == 0)
             {
-                case "VAT":
-                    return Resources.MwSt;
-                case null:
-                    return string.Empty;
-                default:
-                    return taxType!.Trim();
+                return string.Empty;
             }
+
+            if (code == "VAT")
+            {
+                return Resources.MwSt;
+            }
+
+            return CodeText.Name(CodeLists.TaxType, code);
         }
     }
 }

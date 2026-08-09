@@ -54,7 +54,7 @@ namespace Pacioli.Pdf.Invoice.Sections
             {
                 delivery.RelatedSupplyChainConsignment.SpecifiedLogisticsTransportMovement.ForEach(movement =>
                 {
-                    AddItem($"{Resources.Transportart}: {movement.ModeCode}");
+                    AddItem($"{Resources.Transportart}: {CodeText.Name(CodeLists.TransportMode, movement.ModeCode)}");
                 });
             }
 

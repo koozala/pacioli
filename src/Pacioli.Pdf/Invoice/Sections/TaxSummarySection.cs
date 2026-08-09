@@ -35,7 +35,7 @@ namespace Pacioli.Pdf.Invoice.Sections
                     $"{tax.BasisAmount?.Value}",
                     tax.LineTotalBasisAmount == null ? null : $"({Resources.Positionen}: {tax.LineTotalBasisAmount.Value})")));
                 taxTab.AddCell(new ItemCellRight($"{tax.CalculatedAmount?.Value}"));
-                taxTab.AddCell(new ItemCellRight($"{tax.ExemptionReason} {tax.ExemptionReasonCode?.Value}"));
+                taxTab.AddCell(new ItemCellRight($"{tax.ExemptionReason} {CodeText.Name(CodeLists.TaxExemptionReason, tax.ExemptionReasonCode)}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.AllowanceChargeBasisAmount?.Value}"));
             }
 

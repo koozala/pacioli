@@ -117,7 +117,7 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             if (!string.IsNullOrWhiteSpace(product?.GlobalId?.Value))
             {
-                s1.AppendLine($"{product!.GlobalId!.SchemeId} {product.GlobalId.Value}");
+                s1.AppendLine($"{CodeText.Name(CodeLists.IdentifierScheme, product!.GlobalId!.SchemeId)} {product.GlobalId.Value}");
             }
 
             SpecifiedPeriod? billingPeriod = lineSettlement?.BillingSpecifiedPeriod;
@@ -176,7 +176,7 @@ namespace Pacioli.Pdf.Invoice.Sections
             }
             foreach (var note in item.AssociatedDocumentLineDocument?.IncludedNote ?? new List<Note>())
             {
-                s1.AppendLine($"{note.SubjectCode?.Value} {note.ContentCode?.Value} {note.Content}");
+                s1.AppendLine($"{CodeText.Describe(CodeLists.NoteSubject, note.SubjectCode)} {CodeText.Describe(CodeLists.NoteSubject, note.ContentCode)} {note.Content}");
             }
             InvoiceText.AppendReference(s1, Resources.refOrderDocument, lineAgreement?.BuyerOrderReferencedDocument);
             InvoiceText.AppendReference(s1, Resources.refContractdocument, lineAgreement?.ContractReferencedDocument);

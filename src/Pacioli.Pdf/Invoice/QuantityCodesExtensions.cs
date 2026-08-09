@@ -1,4 +1,5 @@
 using Pacioli.Language.Resources;
+using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.Pdf.Invoice
 {
@@ -29,7 +30,22 @@ namespace Pacioli.Pdf.Invoice
                 return Resources.packaging;
             }
 
-            return Resources.ResourceManager.GetString(ResourcePrefix + key, Resources.Culture) ?? string.Empty;
+            /*
+             * The resource holds the short form that fits in a column of the item table,
+             * for example "m^2" and "Anz.".
+             */
+            string? shortForm = Resources.ResourceManager.GetString(ResourcePrefix + key, Resources.Culture);
+            if (!string.IsNullOrWhiteSpace(shortForm))
+            {
+                return shortForm!;
+            }
+
+            /*
+             * A unit without a short form takes the name from the code list of the
+             * specification. That list knows 2162 units, thus no unit stays without a
+             * name. Before, a unit without a resource left an empty place on the page.
+             */
+            return CodeText.Name(CodeLists.UnitOfMeasure, key);
         }
     }
 }

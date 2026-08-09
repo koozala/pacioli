@@ -135,7 +135,7 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             foreach (Identifier? id in party.GlobalId)
             {
-                Add(FormatGroup(id?.SchemeId, Text(id)));
+                Add(FormatGroup(CodeText.Name(CodeLists.IdentifierScheme, id?.SchemeId), Text(id)));
             }
 
             if (party.PostalTradeAddress != null)
@@ -251,7 +251,7 @@ namespace Pacioli.Pdf.Invoice.Sections
             if (doc.Name != null) sb.AppendLine($"{doc.Name}");
             if (doc.FormattedIssueDateTime != null) sb.AppendLine($"{Resources.docDate}: {InvoiceText.DateOf(doc.FormattedIssueDateTime)?.ToString("d")}");
             if (doc.UriId != null) sb.AppendLine($"URI: {InvoiceText.Text(doc.UriId)}");
-            if (doc.ReferenceTypeCode != null) sb.AppendLine($"{Resources.Typ}: {doc.ReferenceTypeCode}");
+            if (doc.ReferenceTypeCode != null) sb.AppendLine($"{Resources.Typ}: {CodeText.Name(CodeLists.ReferenceType, doc.ReferenceTypeCode)}");
             if (doc.LineId != null) sb.AppendLine($"{Resources.Position}: {InvoiceText.Text(doc.LineId)}");
 
             return sb.ToString();
@@ -262,7 +262,7 @@ namespace Pacioli.Pdf.Invoice.Sections
             if (!string.IsNullOrWhiteSpace(code?.Value))
             {
                 if (sb.Length > 0) sb.Append(", ");
-                sb.Append($"{Resources.Inhaltscodierung}: {code!.Value}");
+                sb.Append($"{Resources.Inhaltscodierung}: {CodeText.Describe(CodeLists.NoteSubject, code)}");
             }
         }
 
@@ -271,7 +271,7 @@ namespace Pacioli.Pdf.Invoice.Sections
             if (!string.IsNullOrWhiteSpace(code?.Value))
             {
                 if (sb.Length > 0) sb.Append(", ");
-                sb.Append($"{Resources.Betreffcodierung}: {code!.Value}");
+                sb.Append($"{Resources.Betreffcodierung}: {CodeText.Describe(CodeLists.NoteSubject, code)}");
             }
         }
 
