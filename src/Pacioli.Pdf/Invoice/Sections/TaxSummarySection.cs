@@ -27,13 +27,33 @@ namespace Pacioli.Pdf.Invoice.Sections
             {
                 taxTab.AddCell(new ItemCellRight($"{tax.RateApplicablePercent?.ToString("0.00")}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.TypeCode.ToTaxTypeName()} {tax.CategoryCode.ToTaxCategoryName()}"));
-                taxTab.AddCell(new ItemCellRight($"{tax.BasisAmount?.Value}"));
+                /*
+                 * The basis of the tax, and below it the part that comes from the
+                 * positions. The second value exists only in some documents.
+                 */
+                taxTab.AddCell(new ItemCellRight(InvoiceText.FormatGroup(
+                    $"{tax.BasisAmount?.Value}",
+                    tax.LineTotalBasisAmount == null ? null : $"(Positionen: {tax.LineTotalBasisAmount.Value})")));
                 taxTab.AddCell(new ItemCellRight($"{tax.CalculatedAmount?.Value}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.ExemptionReason} {tax.ExemptionReasonCode?.Value}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.AllowanceChargeBasisAmount?.Value}"));
             }
 
             doc.Add(taxTab);
+
+            /*
+             * The exchange rate for the tax. A document with a foreign currency gives
+             * the rate between the currency of the invoice and the currency of the tax.
+             */
+            TradeCurrencyExchange? exchange = context.Settlement?.TaxApplicableTradeCurrencyExchange;
+            if (exchange != null)
+            {
+                doc.Add(new Paragraph(InvoiceText.FormatGroup(
+                    "Umrechnungskurs:",
+                    exchange.ConversionRate.ToString("0.#####"),
+                    InvoiceText.FormatGroup(exchange.SourceCurrencyCode, "->", exchange.TargetCurrencyCode),
+                    InvoiceText.DateOf(exchange.ConversionRateDateTime)?.ToString("d"))).SetFontSize(12));
+            }
         }
     }
 }

@@ -25,8 +25,32 @@ namespace Pacioli.Pdf.Invoice.Sections
                 DateOnly? dueDate = InvoiceText.DateOf(pt.DueDateDateTime);
                 if (dueDate != null) sb.Append($"\n{Resources.dueDate}: {dueDate.Value.ToString("d")}");
 
-                Measure? dueDays = pt.ApplicableTradePaymentDiscountTerms?.BasisPeriodMeasure;
-                if (dueDays != null) sb.Append($"\n{Resources.dueDate}: {dueDays.Value} {Resources.days}");
+                /*
+                 * The discount terms (Skonto): the percentage, the amount of the
+                 * discount, the amount that it applies to, the number of days, and the
+                 * day from which the days count.
+                 */
+                TradePaymentDiscountTerms? discount = pt.ApplicableTradePaymentDiscountTerms;
+                if (discount != null)
+                {
+                    string terms = InvoiceText.FormatGroup(
+                        discount.CalculationPercent.HasValue
+                            ? discount.CalculationPercent.Value.ToString("0.00") + "%"
+                            : null,
+                        InvoiceText.FormatAmount(discount.ActualDiscountAmount),
+                        discount.BasisAmount == null
+                            ? null
+                            : $"{Resources.basis}: {InvoiceText.FormatAmount(discount.BasisAmount)}",
+                        discount.BasisPeriodMeasure == null
+                            ? null
+                            : $"{discount.BasisPeriodMeasure.Value} {Resources.days}",
+                        InvoiceText.DateOf(discount.BasisDateTime)?.ToString("d"));
+
+                    if (terms.Length > 0)
+                    {
+                        sb.Append($"\nSkonto: {terms}");
+                    }
+                }
 
                 if (sb.Length > 0)
                 {
