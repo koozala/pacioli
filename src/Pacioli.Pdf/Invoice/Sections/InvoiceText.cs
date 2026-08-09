@@ -173,6 +173,66 @@ namespace Pacioli.Pdf.Invoice.Sections
             return sb.ToString().TrimEnd();
         }
 
+        /* "4.284,00 EUR" for an amount, or an empty text. */
+        public static string FormatAmount(Amount? amount)
+        {
+            if (amount == null)
+            {
+                return string.Empty;
+            }
+
+            return FormatGroup(amount.Value.ToString("#,0.00"), amount.CurrencyId);
+        }
+
+        /*
+         * A payment that the buyer made before this invoice: the amount, the day of the
+         * payment, the tax in the amount, and the invoice of the payment.
+         *
+         * The caller writes this text as one item without a caption. Thus the text names
+         * each part itself. The text has no empty line at its end.
+         */
+        public static string FormatAdvancePayment(AdvancePayment advancePayment)
+        {
+            StringBuilder s1 = new StringBuilder();
+
+            string paid = FormatAmount(advancePayment.PaidAmount);
+            s1.AppendLine(paid.Length > 0 ? $"Anzahlung: {paid}" : "Anzahlung:");
+
+            DateOnly? received = DateOf(advancePayment.FormattedReceivedDateTime);
+            if (received != null)
+            {
+                s1.AppendLine($"Erhalten am: {received.Value.ToString("d")}");
+            }
+
+            foreach (TradeTax? tax in advancePayment.IncludedTradeTax)
+            {
+                if (tax == null)
+                {
+                    continue;
+                }
+
+                s1.AppendLine(FormatGroup(
+                    "Enthaltene Steuer:",
+                    tax.RateApplicablePercent.HasValue ? tax.RateApplicablePercent.Value.ToString("0.00") + "%" : null,
+                    tax.TypeCode.ToTaxTypeName(),
+                    tax.CategoryCode.ToTaxCategoryName(),
+                    FormatAmount(tax.CalculatedAmount),
+                    tax.BasisAmount == null ? null : "Basis: " + FormatAmount(tax.BasisAmount)));
+            }
+
+            ReferencedDocument? invoice = advancePayment.InvoiceSpecifiedReferencedDocument;
+            if (invoice != null)
+            {
+                s1.AppendLine(FormatGroup(
+                    "Rechnung der Anzahlung:",
+                    Text(invoice.IssuerAssignedId),
+                    invoice.Name,
+                    DateOf(invoice.FormattedIssueDateTime)?.ToString("d")));
+            }
+
+            return s1.ToString().TrimEnd();
+        }
+
         public static string FormatLegalOrg(LegalOrganization org)
         {
             StringBuilder sb = new StringBuilder();
