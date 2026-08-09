@@ -21,6 +21,17 @@
 	</ItemGroup>
 
 	<!--
+		The logo of the start screen.
+
+		The picture is part of the assembly, thus the application needs no other file at
+		the side of the program. LogicalName gives a name that does not change if the
+		name of the file changes. The class LogoPanel reads the picture under that name.
+	-->
+	<ItemGroup>
+		<EmbeddedResource Include="Assets\Pacilio-Logo-Cut.svg" LogicalName="Pacioli.WindowsApp.Assets.Logo.svg" />
+	</ItemGroup>
+
+	<!--
 		Removes the WPF control of WebView2.
 
 		The file Common.targets of the package Microsoft.Web.WebView2 adds three

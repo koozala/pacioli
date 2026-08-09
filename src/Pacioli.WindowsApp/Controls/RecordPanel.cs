@@ -12,9 +12,17 @@ namespace Pacioli.WindowsApp.Controls
 {
     public partial class RecordPanel : UserControl
     {
+        /* Tells the parent that the user wants to close this document. */
+        public event EventHandler? CloseRequested;
+
+        private readonly ToolTip closeButtonTip = new ToolTip();
+
         public RecordPanel()
         {
             InitializeComponent();
+
+            FF_CloseButton.Text = Resources.Schliessen;
+            closeButtonTip.SetToolTip(FF_CloseButton, Resources.DokumentSchliessen);
         }
 
         public TableLayoutPanel FF_TablePanel
@@ -52,6 +60,9 @@ namespace Pacioli.WindowsApp.Controls
 
         bool ShowXml = false;
 
+        /* The part of the width of one view. Each view that is open gets the same part. */
+        private const float ColumnWidth = 30.0f;
+
         public DocViewPanel? DocPanelDerived { get { return docPanelDerived; } }
         public DocViewPanel? DocPanelOriginal { get { return docPanelOriginal; } }
 
@@ -78,8 +89,6 @@ namespace Pacioli.WindowsApp.Controls
             FF_TablePanel.SetRowSpan(docPanelXml, 2);
             docPanelXml.Dock = DockStyle.Fill;
 
-            FF_TablePanel.ColumnStyles[3].Width = 0; // Hide XML view by default
-
             /* Content */
 
             PdfPath = Path.GetTempFileName();
@@ -104,6 +113,28 @@ namespace Pacioli.WindowsApp.Controls
 
             RenderedDoc = new PdfToImageConverter(PdfPath);
             UpdateImage();
+            UpdateColumns();
+        }
+
+        /*
+         * Gives each view its part of the width.
+         *
+         * The panel has one column for the rendered document, one for the original PDF,
+         * and one for the XML. A document in XML form has no original PDF, thus that
+         * column stays empty: the rendered document then takes the width of both columns.
+         * If the user asks for the XML, the XML takes the second part, and the rendered
+         * document and the XML get the same width.
+         */
+        private void UpdateColumns()
+        {
+            bool hasOriginal = Original != null;
+
+            FF_TablePanel.ColumnStyles[1].Width = hasOriginal || ShowXml
+                ? ColumnWidth
+                : ColumnWidth * 2.0f;
+
+            FF_TablePanel.ColumnStyles[2].Width = hasOriginal ? ColumnWidth : 0.0f;
+            FF_TablePanel.ColumnStyles[3].Width = ShowXml ? ColumnWidth : 0.0f;
         }
 
         private void PopulateAttachmentsPanel(IReadOnlyList<AttachmentDescriptor> attachments)
@@ -206,18 +237,20 @@ namespace Pacioli.WindowsApp.Controls
             }
         }
 
+        /*
+         * The panel does not close itself, because the tab page that holds it belongs to
+         * the main window. Thus the panel gives the wish to the main window only.
+         */
+        private void FF_CloseButton_Click(object sender, EventArgs e)
+        {
+            CloseRequested?.Invoke(this, EventArgs.Empty);
+        }
+
         private void FF_ShowXmlButton_Click(object sender, EventArgs e)
         {
             ShowXml = !ShowXml;
 
-            if (ShowXml)
-            {
-                FF_TablePanel.ColumnStyles[3].Width = 33; // Show XML view
-            }
-            else
-            {
-                FF_TablePanel.ColumnStyles[3].Width = 0; // Hide XML view by default
-            }
+            UpdateColumns();
         }
     }
 }

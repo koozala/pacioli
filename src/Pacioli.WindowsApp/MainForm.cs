@@ -21,6 +21,14 @@ namespace Pacioli.WindowsApp
         ConfigDb cdb;
         UserPreferences preferences = UserPreferences.LoadPreferences();
 
+        /*
+         * The place of the tab control in the table, and the two things that it holds: the
+         * tab control with the open documents, and the logo of the start screen. Only one
+         * of the two is visible.
+         */
+        private readonly Panel contentHost = new Panel();
+        private readonly LogoPanel logoPanel = new LogoPanel();
+
         public MainForm()
         {
             InitializeComponent();
@@ -62,6 +70,64 @@ namespace Pacioli.WindowsApp
             F_TabControl.AllowDrop = true;
             F_TabControl.DragEnter += MainForm_DragEnter;
             F_TabControl.DragDrop += MainForm_DragDrop;
+
+            /* The cross at the right side of each tab header closes that document. */
+            TabCloseIcon closeIcons = new TabCloseIcon(F_TabControl);
+            closeIcons.CloseRequested += (sender, page) => CloseDocument(page);
+
+            InitializeStartScreen();
+        }
+
+        /*
+         * Puts the logo on the screen that the user sees at the start.
+         *
+         * The tab control holds no page before the user opens the first document, thus the
+         * screen is empty. A host panel takes the place of the tab control in the table,
+         * and holds both the tab control and the logo. The application shows the logo while
+         * no document is open, and the tab control after that.
+         *
+         * The logo takes the drag and drop of the tab control, because the user drops a
+         * document on the start screen too.
+         */
+        private void InitializeStartScreen()
+        {
+            TableLayoutPanelCellPosition cell = tableLayoutPanel1.GetCellPosition(F_TabControl);
+
+            contentHost.Dock = DockStyle.Fill;
+            contentHost.Margin = F_TabControl.Margin;
+
+            tableLayoutPanel1.Controls.Remove(F_TabControl);
+
+            F_TabControl.Dock = DockStyle.Fill;
+            logoPanel.Dock = DockStyle.Fill;
+
+            logoPanel.AllowDrop = true;
+            logoPanel.DragEnter += MainForm_DragEnter;
+            logoPanel.DragDrop += MainForm_DragDrop;
+
+            contentHost.Controls.Add(F_TabControl);
+            contentHost.Controls.Add(logoPanel);
+
+            tableLayoutPanel1.Controls.Add(contentHost, cell.Column, cell.Row);
+
+            F_TabControl.ControlAdded += (sender, e) => UpdateStartScreen();
+
+            /*
+             * At the moment of ControlRemoved, the tab control still counts the page that
+             * goes away. Thus the check waits for the end of the removal.
+             */
+            F_TabControl.ControlRemoved += (sender, e) => BeginInvoke(new Action(UpdateStartScreen));
+
+            UpdateStartScreen();
+        }
+
+        /* Shows the logo while no document is open, and the documents after that. */
+        private void UpdateStartScreen()
+        {
+            bool empty = F_TabControl.TabCount == 0;
+
+            logoPanel.Visible = empty;
+            F_TabControl.Visible = !empty;
         }
 
         private void öffnenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -106,6 +172,8 @@ namespace Pacioli.WindowsApp
                 F_TabControl.Controls.Add(page);
                 F_TabControl.SelectedTab = page;
 
+                rp.CloseRequested += (sender, args) => CloseDocument(page);
+
                 rp.AllowDrop = true;
                 rp.DragEnter += MainForm_DragEnter;
                 rp.DragDrop += MainForm_DragDrop;
@@ -130,6 +198,59 @@ namespace Pacioli.WindowsApp
             {
                 MessageBox.Show(string.Format(Resources.errorFileReadMessage, fileName, ex.Message));
                 return;
+            }
+        }
+
+        /*
+         * Closes one document. The other documents stay open.
+         *
+         * The panel of the document gives its files and its browser free before the page
+         * goes away, because the application keeps a rendered document in a file of the
+         * temporary folder. The tab control then shows the page at the side, and the start
+         * screen comes back if this page was the last one.
+         */
+        private void CloseDocument(TabPage page)
+        {
+            string? temporaryPdf = null;
+
+            foreach (Control control in page.Controls)
+            {
+                if (control is RecordPanel rp)
+                {
+                    temporaryPdf = rp.PdfPath;
+                    rp.Cleanup();
+                }
+            }
+
+            F_TabControl.Controls.Remove(page);
+            page.Dispose();
+
+            DeleteTemporaryFile(temporaryPdf);
+        }
+
+        /*
+         * Gives the temporary file of a rendered document free.
+         *
+         * The application writes the PDF of each document into a file of the temporary
+         * folder. The browser of the panel can still hold that file at this moment, thus a
+         * failure is of no importance.
+         */
+        private static void DeleteTemporaryFile(string? path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+
+            try
+            {
+                File.Delete(path);
+            }
+            catch (IOException)
+            {
+            }
+            catch (UnauthorizedAccessException)
+            {
             }
         }
 

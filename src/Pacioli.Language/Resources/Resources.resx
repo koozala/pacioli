@@ -842,4 +842,10 @@ Mehr Informationen im Internet: https://github.com/koozala/pacioli</value>
   <data name="unitXSA" xml:space="preserve">
     <value>Sack</value>
   </data>
+  <data name="Schliessen" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="DokumentSchliessen" xml:space="preserve">
+    <value>Dieses Dokument schließen. Die anderen Dokumente bleiben offen.</value>
+  </data>
 </root>

@@ -61,6 +61,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abschlag.
+        /// </summary>
+        public static string Abschlag {
+            get {
+                return ResourceManager.GetString("Abschlag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Konto.
         /// </summary>
         public static string account {
@@ -106,6 +115,60 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Angebot.
+        /// </summary>
+        public static string Angebot {
+            get {
+                return ResourceManager.GetString("Angebot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Angebotsnummer.
+        /// </summary>
+        public static string Angebotsnummer {
+            get {
+                return ResourceManager.GetString("Angebotsnummer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anlage.
+        /// </summary>
+        public static string Anlage {
+            get {
+                return ResourceManager.GetString("Anlage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die Anlage kann nicht geöffnet werden..
+        /// </summary>
+        public static string AnlageNichtGeoeffnet {
+            get {
+                return ResourceManager.GetString("AnlageNichtGeoeffnet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anteil.
+        /// </summary>
+        public static string Anteil {
+            get {
+                return ResourceManager.GetString("Anteil", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anzahlung.
+        /// </summary>
+        public static string Anzahlung {
+            get {
+                return ResourceManager.GetString("Anzahlung", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Anhang.
         /// </summary>
         public static string attachment {
@@ -133,6 +196,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auftragsnummer.
+        /// </summary>
+        public static string Auftragsnummer {
+            get {
+                return ResourceManager.GetString("Auftragsnummer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bankverbindung.
         /// </summary>
         public static string bankverbindung {
@@ -151,11 +223,56 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Basis der Positionen.
+        /// </summary>
+        public static string BasisDerPositionen {
+            get {
+                return ResourceManager.GetString("BasisDerPositionen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Basis der Zu- und Abschläge.
+        /// </summary>
+        public static string BasisDerZuschlaegeUndAbschlaege {
+            get {
+                return ResourceManager.GetString("BasisDerZuschlaegeUndAbschlaege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bestellnummer.
+        /// </summary>
+        public static string Bestellnummer {
+            get {
+                return ResourceManager.GetString("Bestellnummer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Betreffcodierung.
+        /// </summary>
+        public static string Betreffcodierung {
+            get {
+                return ResourceManager.GetString("Betreffcodierung", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Abrechnungszeitraum.
         /// </summary>
         public static string billingPeriod {
             get {
                 return ResourceManager.GetString("billingPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buchungsreferenz.
+        /// </summary>
+        public static string Buchungsreferenz {
+            get {
+                return ResourceManager.GetString("Buchungsreferenz", resourceCulture);
             }
         }
         
@@ -192,6 +309,15 @@ namespace Pacioli.Language.Resources {
         public static string charge {
             get {
                 return ResourceManager.GetString("charge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        public static string Code {
+            get {
+                return ResourceManager.GetString("Code", resourceCulture);
             }
         }
         
@@ -268,11 +394,65 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dokumente.
+        /// </summary>
+        public static string Dokumente {
+            get {
+                return ResourceManager.GetString("Dokumente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dokumentendatum.
+        /// </summary>
+        public static string Dokumentendatum {
+            get {
+                return ResourceManager.GetString("Dokumentendatum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dieses Dokument schließen. Die anderen Dokumente bleiben offen..
+        /// </summary>
+        public static string DokumentSchliessen {
+            get {
+                return ResourceManager.GetString("DokumentSchliessen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fälligkeit.
         /// </summary>
         public static string dueDate {
             get {
                 return ResourceManager.GetString("dueDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enthaltenes Produkt.
+        /// </summary>
+        public static string EnthaltenesProdukt {
+            get {
+                return ResourceManager.GetString("EnthaltenesProdukt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enthaltene Steuer.
+        /// </summary>
+        public static string EnthalteneSteuer {
+            get {
+                return ResourceManager.GetString("EnthalteneSteuer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erhalten am.
+        /// </summary>
+        public static string ErhaltenAm {
+            get {
+                return ResourceManager.GetString("ErhaltenAm", resourceCulture);
             }
         }
         
@@ -313,6 +493,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Global-ID.
+        /// </summary>
+        public static string GlobalId {
+            get {
+                return ResourceManager.GetString("GlobalId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Einzelpreis (brutto).
         /// </summary>
         public static string grossUnitPrice {
@@ -322,11 +511,29 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Grund.
+        /// </summary>
+        public static string Grund {
+            get {
+                return ResourceManager.GetString("Grund", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dieses Dokument stellt den Inhalt einer E-Rechnung dar. Die Originaldatei ist {0}..
         /// </summary>
         public static string infoText1 {
             get {
                 return ResourceManager.GetString("infoText1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inhaltscodierung.
+        /// </summary>
+        public static string Inhaltscodierung {
+            get {
+                return ResourceManager.GetString("Inhaltscodierung", resourceCulture);
             }
         }
         
@@ -354,6 +561,24 @@ namespace Pacioli.Language.Resources {
         public static string invoiceNo {
             get {
                 return ResourceManager.GetString("invoiceNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ist-Betrag.
+        /// </summary>
+        public static string IstBetrag {
+            get {
+                return ResourceManager.GetString("IstBetrag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ja.
+        /// </summary>
+        public static string Ja {
+            get {
+                return ResourceManager.GetString("Ja", resourceCulture);
             }
         }
         
@@ -471,11 +696,47 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MwSt.
+        /// </summary>
+        public static string MwSt {
+            get {
+                return ResourceManager.GetString("MwSt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name der Organisation.
+        /// </summary>
+        public static string NameDerOrganisation {
+            get {
+                return ResourceManager.GetString("NameDerOrganisation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nein.
+        /// </summary>
+        public static string Nein {
+            get {
+                return ResourceManager.GetString("Nein", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Einzelpreis (netto).
         /// </summary>
         public static string netUnitPrice {
             get {
                 return ResourceManager.GetString("netUnitPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nur Verweis, keine Datei.
+        /// </summary>
+        public static string NurVerweis {
+            get {
+                return ResourceManager.GetString("NurVerweis", resourceCulture);
             }
         }
         
@@ -552,6 +813,33 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Position.
+        /// </summary>
+        public static string Position {
+            get {
+                return ResourceManager.GetString("Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Positionen.
+        /// </summary>
+        public static string Positionen {
+            get {
+                return ResourceManager.GetString("Positionen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Positionssumme.
+        /// </summary>
+        public static string Positionssumme {
+            get {
+                return ResourceManager.GetString("Positionssumme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vorauszahlung.
         /// </summary>
         public static string prepaid {
@@ -570,6 +858,51 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Projekt.
+        /// </summary>
+        public static string Projekt {
+            get {
+                return ResourceManager.GetString("Projekt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rabatte und Zuschläge.
+        /// </summary>
+        public static string RabatteUndZuschlaege {
+            get {
+                return ResourceManager.GetString("RabatteUndZuschlaege", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnung der Anzahlung.
+        /// </summary>
+        public static string RechnungDerAnzahlung {
+            get {
+                return ResourceManager.GetString("RechnungDerAnzahlung", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnungsreferenz.
+        /// </summary>
+        public static string Rechnungsreferenz {
+            get {
+                return ResourceManager.GetString("Rechnungsreferenz", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechnungsreferenzen.
+        /// </summary>
+        public static string Rechnungsreferenzen {
+            get {
+                return ResourceManager.GetString("Rechnungsreferenzen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Referenz Vertrag.
         /// </summary>
         public static string refContractdocument {
@@ -584,6 +917,15 @@ namespace Pacioli.Language.Resources {
         public static string refDeliveryNote {
             get {
                 return ResourceManager.GetString("refDeliveryNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Referenz.
+        /// </summary>
+        public static string Referenz {
+            get {
+                return ResourceManager.GetString("Referenz", resourceCulture);
             }
         }
         
@@ -633,6 +975,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Schließen.
+        /// </summary>
+        public static string Schliessen {
+            get {
+                return ResourceManager.GetString("Schliessen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Verkäufer.
         /// </summary>
         public static string seller {
@@ -660,6 +1011,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Seriennummer.
+        /// </summary>
+        public static string Seriennummer {
+            get {
+                return ResourceManager.GetString("Seriennummer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lieferung durch.
         /// </summary>
         public static string shipFrom {
@@ -674,6 +1034,33 @@ namespace Pacioli.Language.Resources {
         public static string shipTo {
             get {
                 return ResourceManager.GetString("shipTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skonto.
+        /// </summary>
+        public static string Skonto {
+            get {
+                return ResourceManager.GetString("Skonto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steuer-ID.
+        /// </summary>
+        public static string SteuerId {
+            get {
+                return ResourceManager.GetString("SteuerId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steuervertreter.
+        /// </summary>
+        public static string Steuervertreter {
+            get {
+                return ResourceManager.GetString("Steuervertreter", resourceCulture);
             }
         }
         
@@ -782,6 +1169,15 @@ namespace Pacioli.Language.Resources {
         public static string Transportart {
             get {
                 return ResourceManager.GetString("Transportart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Typ.
+        /// </summary>
+        public static string Typ {
+            get {
+                return ResourceManager.GetString("Typ", resourceCulture);
             }
         }
         
@@ -1344,6 +1740,240 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Umrechnungskurs.
+        /// </summary>
+        public static string Umrechnungskurs {
+            get {
+                return ResourceManager.GetString("Umrechnungskurs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jahr(e).
+        /// </summary>
+        public static string unitANN {
+            get {
+                return ResourceManager.GetString("unitANN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stk..
+        /// </summary>
+        public static string unitC62 {
+            get {
+                return ResourceManager.GetString("unitC62", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cm.
+        /// </summary>
+        public static string unitCMT {
+            get {
+                return ResourceManager.GetString("unitCMT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tag(e).
+        /// </summary>
+        public static string unitDAY {
+            get {
+                return ResourceManager.GetString("unitDAY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to a.
+        /// </summary>
+        public static string unitFF {
+            get {
+                return ResourceManager.GetString("unitFF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gramm.
+        /// </summary>
+        public static string unitGRM {
+            get {
+                return ResourceManager.GetString("unitGRM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anz..
+        /// </summary>
+        public static string unitH87 {
+            get {
+                return ResourceManager.GetString("unitH87", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Std..
+        /// </summary>
+        public static string unitHUR {
+            get {
+                return ResourceManager.GetString("unitHUR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to kg.
+        /// </summary>
+        public static string unitKGM {
+            get {
+                return ResourceManager.GetString("unitKGM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to km.
+        /// </summary>
+        public static string unitKMT {
+            get {
+                return ResourceManager.GetString("unitKMT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kit.
+        /// </summary>
+        public static string unitKT {
+            get {
+                return ResourceManager.GetString("unitKT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to kWh.
+        /// </summary>
+        public static string unitKWH {
+            get {
+                return ResourceManager.GetString("unitKWH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to kW.
+        /// </summary>
+        public static string unitKWT {
+            get {
+                return ResourceManager.GetString("unitKWT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pausch..
+        /// </summary>
+        public static string unitLS {
+            get {
+                return ResourceManager.GetString("unitLS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to l.
+        /// </summary>
+        public static string unitLTR {
+            get {
+                return ResourceManager.GetString("unitLTR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to min.
+        /// </summary>
+        public static string unitMIN {
+            get {
+                return ResourceManager.GetString("unitMIN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mm^2.
+        /// </summary>
+        public static string unitMMK {
+            get {
+                return ResourceManager.GetString("unitMMK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mm.
+        /// </summary>
+        public static string unitMMT {
+            get {
+                return ResourceManager.GetString("unitMMT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monat(e).
+        /// </summary>
+        public static string unitMON {
+            get {
+                return ResourceManager.GetString("unitMON", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to m^2.
+        /// </summary>
+        public static string unitMTK {
+            get {
+                return ResourceManager.GetString("unitMTK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to m^3.
+        /// </summary>
+        public static string unitMTQ {
+            get {
+                return ResourceManager.GetString("unitMTQ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to m.
+        /// </summary>
+        public static string unitMTR {
+            get {
+                return ResourceManager.GetString("unitMTR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anz..
+        /// </summary>
+        public static string unitNAR {
+            get {
+                return ResourceManager.GetString("unitNAR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to %.
+        /// </summary>
+        public static string unitP1 {
+            get {
+                return ResourceManager.GetString("unitP1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paar.
+        /// </summary>
+        public static string unitPR {
+            get {
+                return ResourceManager.GetString("unitPR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Einheit.
         /// </summary>
         public static string unitQuantity {
@@ -1353,361 +1983,191 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Versandhinweis.
+        ///   Looks up a localized string similar to Sekunde(n).
         /// </summary>
-        public static string Versandhinweis {
+        public static string unitSEC {
             get {
-                return ResourceManager.GetString("Versandhinweis", resourceCulture);
-            }
-        }
-        /// <summary>
-        ///   Looks up a localized string similar to Vertragsnummer.
-        /// </summary>
-        public static string Vertragsnummer {
-            get {
-                return ResourceManager.GetString("Vertragsnummer", resourceCulture);
+                return ResourceManager.GetString("unitSEC", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bestellnummer.
+        ///   Looks up a localized string similar to Set(s).
         /// </summary>
-        public static string Bestellnummer {
+        public static string unitSET {
             get {
-                return ResourceManager.GetString("Bestellnummer", resourceCulture);
+                return ResourceManager.GetString("unitSET", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Angebotsnummer.
+        ///   Looks up a localized string similar to Tsd..
         /// </summary>
-        public static string Angebotsnummer {
+        public static string unitT3 {
             get {
-                return ResourceManager.GetString("Angebotsnummer", resourceCulture);
+                return ResourceManager.GetString("unitT3", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auftragsnummer.
+        ///   Looks up a localized string similar to t.
         /// </summary>
-        public static string Auftragsnummer {
+        public static string unitTNE {
             get {
-                return ResourceManager.GetString("Auftragsnummer", resourceCulture);
+                return ResourceManager.GetString("unitTNE", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Projekt.
+        ///   Looks up a localized string similar to Woche(n).
         /// </summary>
-        public static string Projekt {
+        public static string unitWEE {
             get {
-                return ResourceManager.GetString("Projekt", resourceCulture);
+                return ResourceManager.GetString("unitWEE", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Steuervertreter.
+        ///   Looks up a localized string similar to Fass.
         /// </summary>
-        public static string Steuervertreter {
+        public static string unitXBA {
             get {
-                return ResourceManager.GetString("Steuervertreter", resourceCulture);
+                return ResourceManager.GetString("unitXBA", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Steuer-ID.
+        ///   Looks up a localized string similar to Tf.
         /// </summary>
-        public static string SteuerId {
+        public static string unitXBD {
             get {
-                return ResourceManager.GetString("SteuerId", resourceCulture);
+                return ResourceManager.GetString("unitXBD", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Global-ID.
+        ///   Looks up a localized string similar to Bund.
         /// </summary>
-        public static string GlobalId {
+        public static string unitXBE {
             get {
-                return ResourceManager.GetString("GlobalId", resourceCulture);
+                return ResourceManager.GetString("unitXBE", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name der Organisation.
+        ///   Looks up a localized string similar to Beutel.
         /// </summary>
-        public static string NameDerOrganisation {
+        public static string unitXBG {
             get {
-                return ResourceManager.GetString("NameDerOrganisation", resourceCulture);
+                return ResourceManager.GetString("unitXBG", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dokumente.
+        ///   Looks up a localized string similar to Eimer.
         /// </summary>
-        public static string Dokumente {
+        public static string unitXBJ {
             get {
-                return ResourceManager.GetString("Dokumente", resourceCulture);
+                return ResourceManager.GetString("unitXBJ", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rechnungsreferenzen.
+        ///   Looks up a localized string similar to Fl.
         /// </summary>
-        public static string Rechnungsreferenzen {
+        public static string unitXBO {
             get {
-                return ResourceManager.GetString("Rechnungsreferenzen", resourceCulture);
+                return ResourceManager.GetString("unitXBO", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rechnungsreferenz.
+        ///   Looks up a localized string similar to Kanister.
         /// </summary>
-        public static string Rechnungsreferenz {
+        public static string unitXCI {
             get {
-                return ResourceManager.GetString("Rechnungsreferenz", resourceCulture);
+                return ResourceManager.GetString("unitXCI", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Buchungsreferenz.
+        ///   Looks up a localized string similar to Kt.
         /// </summary>
-        public static string Buchungsreferenz {
+        public static string unitXCT {
             get {
-                return ResourceManager.GetString("Buchungsreferenz", resourceCulture);
+                return ResourceManager.GetString("unitXCT", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Zahlungsreferenz.
+        ///   Looks up a localized string similar to lose.
         /// </summary>
-        public static string Zahlungsreferenz {
+        public static string unitXPP {
             get {
-                return ResourceManager.GetString("Zahlungsreferenz", resourceCulture);
+                return ResourceManager.GetString("unitXPP", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Verzugszinsen.
+        ///   Looks up a localized string similar to Pal.
         /// </summary>
-        public static string Verzugszinsen {
+        public static string unitXPX {
             get {
-                return ResourceManager.GetString("Verzugszinsen", resourceCulture);
+                return ResourceManager.GetString("unitXPX", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Skonto.
+        ///   Looks up a localized string similar to Stg.
         /// </summary>
-        public static string Skonto {
+        public static string unitXRD {
             get {
-                return ResourceManager.GetString("Skonto", resourceCulture);
+                return ResourceManager.GetString("unitXRD", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Anzahlung.
+        ///   Looks up a localized string similar to Rolle.
         /// </summary>
-        public static string Anzahlung {
+        public static string unitXRO {
             get {
-                return ResourceManager.GetString("Anzahlung", resourceCulture);
+                return ResourceManager.GetString("unitXRO", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Erhalten am.
+        ///   Looks up a localized string similar to Sack.
         /// </summary>
-        public static string ErhaltenAm {
+        public static string unitXSA {
             get {
-                return ResourceManager.GetString("ErhaltenAm", resourceCulture);
+                return ResourceManager.GetString("unitXSA", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enthaltene Steuer.
+        ///   Looks up a localized string similar to Papierbogen.
         /// </summary>
-        public static string EnthalteneSteuer {
+        public static string unitXST {
             get {
-                return ResourceManager.GetString("EnthalteneSteuer", resourceCulture);
+                return ResourceManager.GetString("unitXST", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rechnung der Anzahlung.
+        ///   Looks up a localized string similar to Dose(n).
         /// </summary>
-        public static string RechnungDerAnzahlung {
+        public static string unitXTN {
             get {
-                return ResourceManager.GetString("RechnungDerAnzahlung", resourceCulture);
+                return ResourceManager.GetString("unitXTN", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Referenz.
+        ///   Looks up a localized string similar to Tube(n).
         /// </summary>
-        public static string Referenz {
+        public static string unitXTU {
             get {
-                return ResourceManager.GetString("Referenz", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ja.
-        /// </summary>
-        public static string Ja {
-            get {
-                return ResourceManager.GetString("Ja", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Nein.
-        /// </summary>
-        public static string Nein {
-            get {
-                return ResourceManager.GetString("Nein", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Typ.
-        /// </summary>
-        public static string Typ {
-            get {
-                return ResourceManager.GetString("Typ", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Position.
-        /// </summary>
-        public static string Position {
-            get {
-                return ResourceManager.GetString("Position", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inhaltscodierung.
-        /// </summary>
-        public static string Inhaltscodierung {
-            get {
-                return ResourceManager.GetString("Inhaltscodierung", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Betreffcodierung.
-        /// </summary>
-        public static string Betreffcodierung {
-            get {
-                return ResourceManager.GetString("Betreffcodierung", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Basis der Positionen.
-        /// </summary>
-        public static string BasisDerPositionen {
-            get {
-                return ResourceManager.GetString("BasisDerPositionen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Basis der Zu- und Abschläge.
-        /// </summary>
-        public static string BasisDerZuschlaegeUndAbschlaege {
-            get {
-                return ResourceManager.GetString("BasisDerZuschlaegeUndAbschlaege", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Zuschlag.
-        /// </summary>
-        public static string Zuschlag {
-            get {
-                return ResourceManager.GetString("Zuschlag", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Abschlag.
-        /// </summary>
-        public static string Abschlag {
-            get {
-                return ResourceManager.GetString("Abschlag", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rabatte und Zuschläge.
-        /// </summary>
-        public static string RabatteUndZuschlaege {
-            get {
-                return ResourceManager.GetString("RabatteUndZuschlaege", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Seriennummer.
-        /// </summary>
-        public static string Seriennummer {
-            get {
-                return ResourceManager.GetString("Seriennummer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enthaltenes Produkt.
-        /// </summary>
-        public static string EnthaltenesProdukt {
-            get {
-                return ResourceManager.GetString("EnthaltenesProdukt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Angebot.
-        /// </summary>
-        public static string Angebot {
-            get {
-                return ResourceManager.GetString("Angebot", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Zusätzliches Dokument.
-        /// </summary>
-        public static string ZusaetzlichesDokument {
-            get {
-                return ResourceManager.GetString("ZusaetzlichesDokument", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Weitere Unterlagen.
-        /// </summary>
-        public static string WeitereUnterlagen {
-            get {
-                return ResourceManager.GetString("WeitereUnterlagen", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dokumentendatum.
-        /// </summary>
-        public static string Dokumentendatum {
-            get {
-                return ResourceManager.GetString("Dokumentendatum", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Code.
-        /// </summary>
-        public static string Code {
-            get {
-                return ResourceManager.GetString("Code", resourceCulture);
+                return ResourceManager.GetString("unitXTU", resourceCulture);
             }
         }
         
@@ -1721,94 +2181,66 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Positionssumme.
+        ///   Looks up a localized string similar to Versandhinweis.
         /// </summary>
-        public static string Positionssumme {
+        public static string Versandhinweis {
             get {
-                return ResourceManager.GetString("Positionssumme", resourceCulture);
+                return ResourceManager.GetString("Versandhinweis", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Umrechnungskurs.
+        ///   Looks up a localized string similar to Vertragsnummer.
         /// </summary>
-        public static string Umrechnungskurs {
+        public static string Vertragsnummer {
             get {
-                return ResourceManager.GetString("Umrechnungskurs", resourceCulture);
+                return ResourceManager.GetString("Vertragsnummer", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Positionen.
+        ///   Looks up a localized string similar to Verzugszinsen.
         /// </summary>
-        public static string Positionen {
+        public static string Verzugszinsen {
             get {
-                return ResourceManager.GetString("Positionen", resourceCulture);
+                return ResourceManager.GetString("Verzugszinsen", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Grund.
+        ///   Looks up a localized string similar to Weitere Unterlagen.
         /// </summary>
-        public static string Grund {
+        public static string WeitereUnterlagen {
             get {
-                return ResourceManager.GetString("Grund", resourceCulture);
+                return ResourceManager.GetString("WeitereUnterlagen", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Anteil.
+        ///   Looks up a localized string similar to Zahlungsreferenz.
         /// </summary>
-        public static string Anteil {
+        public static string Zahlungsreferenz {
             get {
-                return ResourceManager.GetString("Anteil", resourceCulture);
+                return ResourceManager.GetString("Zahlungsreferenz", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ist-Betrag.
+        ///   Looks up a localized string similar to Zusätzliches Dokument.
         /// </summary>
-        public static string IstBetrag {
+        public static string ZusaetzlichesDokument {
             get {
-                return ResourceManager.GetString("IstBetrag", resourceCulture);
+                return ResourceManager.GetString("ZusaetzlichesDokument", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MwSt.
+        ///   Looks up a localized string similar to Zuschlag.
         /// </summary>
-        public static string MwSt {
+        public static string Zuschlag {
             get {
-                return ResourceManager.GetString("MwSt", resourceCulture);
+                return ResourceManager.GetString("Zuschlag", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Anlage.
-        /// </summary>
-        public static string Anlage {
-            get {
-                return ResourceManager.GetString("Anlage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to nur Verweis, keine Datei.
-        /// </summary>
-        public static string NurVerweis {
-            get {
-                return ResourceManager.GetString("NurVerweis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Die Anlage kann nicht geöffnet werden..
-        /// </summary>
-        public static string AnlageNichtGeoeffnet {
-            get {
-                return ResourceManager.GetString("AnlageNichtGeoeffnet", resourceCulture);
-            }
-        }
-        
     }
 }

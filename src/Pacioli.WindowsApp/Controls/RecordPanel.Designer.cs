@@ -36,6 +36,7 @@
             F_DragDropLabel = new Label();
             FF_ButtonPanel = new FlowLayoutPanel();
             FF_ShowXmlButton = new Button();
+            FF_CloseButton = new Button();
             F_TablePanel.SuspendLayout();
             F_AttachmentsPanel.SuspendLayout();
             F_DragDropPanel.SuspendLayout();
@@ -127,6 +128,7 @@
             // FF_ButtonPanel
             // 
             FF_ButtonPanel.Controls.Add(FF_ShowXmlButton);
+            FF_ButtonPanel.Controls.Add(FF_CloseButton);
             FF_ButtonPanel.Dock = DockStyle.Fill;
             FF_ButtonPanel.Location = new Point(47, 3);
             FF_ButtonPanel.Name = "FF_ButtonPanel";
@@ -144,9 +146,24 @@
             FF_ShowXmlButton.Text = "XML";
             FF_ShowXmlButton.UseVisualStyleBackColor = false;
             FF_ShowXmlButton.Click += FF_ShowXmlButton_Click;
-            // 
+            //
+            // FF_CloseButton
+            //
+            // The text comes from the resources, thus the constructor gives it.
+            FF_CloseButton.AutoSize = true;
+            FF_CloseButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            FF_CloseButton.BackColor = Color.SlateGray;
+            FF_CloseButton.ForeColor = Color.White;
+            FF_CloseButton.Location = new Point(121, 3);
+            FF_CloseButton.MinimumSize = new Size(112, 46);
+            FF_CloseButton.Name = "FF_CloseButton";
+            FF_CloseButton.Size = new Size(112, 46);
+            FF_CloseButton.TabIndex = 1;
+            FF_CloseButton.UseVisualStyleBackColor = false;
+            FF_CloseButton.Click += FF_CloseButton_Click;
+            //
             // RecordPanel
-            // 
+            //
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(F_TablePanel);
@@ -173,5 +190,6 @@
         private Label F_DragDropLabel;
         private FlowLayoutPanel FF_ButtonPanel;
         private Button FF_ShowXmlButton;
+        private Button FF_CloseButton;
     }
 }
