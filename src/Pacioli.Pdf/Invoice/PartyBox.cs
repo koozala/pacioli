@@ -2,6 +2,7 @@ using iText.IO.Font.Constants;
 using iText.Kernel.Font;
 using iText.Layout.Borders;
 using iText.Layout.Element;
+using Pacioli.Pdf.Invoice.Sections;
 using System.Linq;
 using System.Text;
 using Vit.FeRD.ExtendedDocument.Model;
@@ -31,56 +32,35 @@ namespace Pacioli.Pdf.Invoice
                 AddText($"{party.Name}\n");
             }
 
-            string? contactName = party.DefinedTradeContact
-                .Select(contact => contact.PersonName)
-                .FirstOrDefault(name => !string.IsNullOrWhiteSpace(name));
-
-            if (!string.IsNullOrWhiteSpace(contactName))
-            {
-                AddText($"{contactName}\n");
-            }
-
-            TradeAddress? address = party.PostalTradeAddress;
-
             /*
-             * The Cross Industry Invoice has three address lines. The page shows each
-             * line that has a value, in the order of the document.
+             * The full data of each contact person: the name, the department, the mail
+             * address, the telephone, and the fax. Before, the box showed the name of
+             * the first person only, thus the other data of a contact was not on the
+             * page. FormatTradeContact ends each line with a line break.
              */
-            foreach (string? line in new[] { address?.LineOne, address?.LineTwo, address?.LineThree })
+            foreach (TradeContact? contact in party.DefinedTradeContact)
             {
-                if (!string.IsNullOrWhiteSpace(line))
+                if (contact != null)
                 {
-                    AddText($"{line}\n");
+                    AddText(InvoiceText.FormatTradeContact(contact));
                 }
             }
 
-            StringBuilder sb = new StringBuilder();
-            string blank = string.Empty;
-            if (!string.IsNullOrWhiteSpace(address?.CountryId))
+            if (!string.IsNullOrWhiteSpace(party.Description))
             {
-                sb.Append(address!.CountryId);
-                blank = " ";
+                AddText($"{party.Description}\n");
             }
-            if (!string.IsNullOrWhiteSpace(address?.PostcodeCode?.Value))
+
+            if (party.PostalTradeAddress != null)
             {
-                sb.Append($"{blank}{address!.PostcodeCode!.Value}");
-                blank = " ";
-            }
-            if (!string.IsNullOrWhiteSpace(address?.CityName))
-            {
-                sb.Append($"{blank}{address!.CityName}");
-                blank = " ";
-            }
-            if (sb.Length > 0)
-            {
-                AddText(sb.ToString());
-                sb.Append("\n");
+                AddText(InvoiceText.FormatAddress(party.PostalTradeAddress) + "\n");
             }
 
             Identifier? id = party.Id.FirstOrDefault(entry => !string.IsNullOrWhiteSpace(entry?.Value));
             if (id != null)
             {
-                AddText($"{id.Value} ({id.SchemeId})\n");
+                string s = id.SchemeId != null ? $"({id.SchemeId})" : string.Empty;
+                AddText($"ID: {id.Value} {s}\n");
             }
 
             // Steuer-ID und USt-Idnr
@@ -88,15 +68,33 @@ namespace Pacioli.Pdf.Invoice
             {
                 if (!string.IsNullOrWhiteSpace(reg?.Id?.Value))
                 {
-                    AddText($"{reg!.Id!.SchemeId}: {reg!.Id!.Value}\n");
-                } 
+                    AddText($"Steuer-ID: {reg!.Id!.SchemeId}: {reg!.Id!.Value}\n");
+                }
             }
 
             foreach (var gid in party.GlobalId)
             {
                 if (!string.IsNullOrWhiteSpace(gid?.Value))
                 {
-                    AddText($"{gid!.SchemeId}: {gid!.Value}\n");
+                    AddText($"Global-ID: {gid!.SchemeId}: {gid!.Value}\n");
+                }
+            }
+
+            if (party.UriUniversalCommunication?.UriId != null)
+            {
+                AddLine(party.UriUniversalCommunication?.UriId?.Value ?? string.Empty);
+            }
+
+            if (party.SpecifiedLegalOrganization != null)
+            {
+                if (party.SpecifiedLegalOrganization.TradingBusinessName != null)
+                {
+                    AddText($"Name der Organisation: {party.SpecifiedLegalOrganization.TradingBusinessName}\n");
+                }
+                AddText($"ID: {InvoiceText.Text(party.SpecifiedLegalOrganization.Id)}\n");
+                if (party.SpecifiedLegalOrganization.PostalTradeAddress != null)
+                {
+                    AddText(InvoiceText.FormatAddress(party.SpecifiedLegalOrganization.PostalTradeAddress) + "\n");
                 }
             }
 
@@ -109,6 +107,11 @@ namespace Pacioli.Pdf.Invoice
         {
             Text t = new Text(text).SetFontSize(10f);
             this.Add(t);
+        }
+
+        void AddLine(string text)
+        {
+            this.Add(new Text(text + "\n").SetFontSize(10f));
         }
     }
 }
