@@ -18,34 +18,35 @@ namespace Pacioli.Pdf.Invoice.Sections
     {
         public string Name => "Notes";
 
+        
         public void Write(Document doc, InvoiceContext context)
         {
-            var notes = context.Document?.IncludedNote ?? new List<Note>();
+            var exchangeDoc = context.Invoice.ExchangedDocument;
 
-            if (notes.Count == 0)
+            Table tab = new Table(3);
+            int count = 0;
+
+
+            foreach (var note in exchangeDoc.IncludedNote)
             {
-                return;
+                if (note != null)
+                {
+                    tab.AddCell(new ItemCell(note.SubjectCode?.Value ?? string.Empty));
+                    tab.AddCell(new ItemCell(note.ContentCode?.Value ?? string.Empty));
+                    tab.AddCell(new ItemCell(note.Content ?? string.Empty));
+                    count++;
+                }
             }
 
-            doc.Add(new Paragraph($"{Resources.remarks}")
-                .SetFont(context.Bold).SetFontSize(12.0f).SetMarginTop(20.0f));
-
-            foreach (var note in notes)
+            if (count > 0)
             {
-                StringBuilder sb = new StringBuilder();
-                InvoiceText.AddContentCodeLine(sb, note.ContentCode);
-                InvoiceText.AddSubjectCodeLine(sb, note.SubjectCode);
-                if (sb.Length > 0)
-                {
-                    Paragraph codeLine = new Paragraph(sb.ToString()).SetFontSize(11f);
-                    codeLine.SetBackgroundColor(ColorConstants.CYAN);
-                    doc.Add(codeLine);
-                }
-
-                Paragraph line = new Paragraph($"{note.Content}").SetFontSize(11f);
-                line.SetBackgroundColor(ColorConstants.LIGHT_GRAY);
-                doc.Add(line);
+                doc.Add(new Paragraph(Resources.WeitereUnterlagen));
+                if (exchangeDoc.Name != null) doc.Add(new Paragraph(exchangeDoc.Name));
+                doc.Add(new Paragraph($"{Resources.Dokumentendatum}: {InvoiceText.DateOf(exchangeDoc.IssueDateTime).ToString()}"));
+                doc.Add(new Paragraph($"{Resources.Code}: {exchangeDoc.TypeCode}"));
+                doc.Add(tab);
             }
         }
     }
+
 }

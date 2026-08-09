@@ -1,5 +1,6 @@
 using iText.Layout;
 using iText.Layout.Element;
+using Pacioli.Language.Resources;
 using System.Collections.Generic;
 using Vit.FeRD.ExtendedDocument.Model;
 
@@ -23,7 +24,7 @@ namespace Pacioli.Pdf.Invoice.Sections
                 return;
             }
 
-            doc.Add(new Paragraph($"Rabatte und Zuschläge").SetMarginTop(20.0f));
+            doc.Add(new Paragraph(Resources.RabatteUndZuschlaege).SetMarginTop(20.0f));
 
             if (headerCharges.Count > 0)
             {

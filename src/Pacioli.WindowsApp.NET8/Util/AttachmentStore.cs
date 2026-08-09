@@ -1,3 +1,4 @@
+using Pacioli.Language.Resources;
 using Pacioli.Pdf.ERechnung;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -78,7 +79,7 @@ namespace Pacioli.WindowsApp.NET8.Util
         {
             if (!HasContent(attachment))
             {
-                throw new InvalidOperationException("Die Anlage hält keine Daten einer Datei.");
+                throw new InvalidOperationException(Resources.NurVerweis);
             }
 
             string folder = GetDownloadFolder();
@@ -105,12 +106,12 @@ namespace Pacioli.WindowsApp.NET8.Util
          */
         public static string BuildFileName(AttachmentDescriptor attachment)
         {
-            string name = FirstWithText(attachment.FileName, attachment.Name, "Anlage");
+            string name = FirstWithText(attachment.FileName, attachment.Name, Resources.Anlage);
             name = RemoveBadCharacters(name);
 
             if (name.Length == 0)
             {
-                name = "Anlage";
+                name = Resources.Anlage;
             }
 
             if (Path.GetExtension(name).Length == 0)

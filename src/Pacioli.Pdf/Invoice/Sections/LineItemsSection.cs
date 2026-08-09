@@ -153,7 +153,7 @@ namespace Pacioli.Pdf.Invoice.Sections
                     InvoiceText.Text(instance.SupplierAssignedSerialId), InvoiceText.Text(instance.BatchId));
                 if (text.Length > 0)
                 {
-                    s1.AppendLine($"Seriennummer: {text}");
+                    s1.AppendLine($"{Resources.Seriennummer}: {text}");
                 }
             }
 
@@ -171,7 +171,7 @@ namespace Pacioli.Pdf.Invoice.Sections
                                             included.UnitQuantity?.UnitCode.ToUnit()));
                 if (text.Length > 0)
                 {
-                    s1.AppendLine($"Enthaltenes Produkt: {text}");
+                    s1.AppendLine($"{Resources.EnthaltenesProdukt}: {text}");
                 }
             }
             foreach (var note in item.AssociatedDocumentLineDocument?.IncludedNote ?? new List<Note>())
@@ -181,12 +181,12 @@ namespace Pacioli.Pdf.Invoice.Sections
             InvoiceText.AppendReference(s1, Resources.refOrderDocument, lineAgreement?.BuyerOrderReferencedDocument);
             InvoiceText.AppendReference(s1, Resources.refContractdocument, lineAgreement?.ContractReferencedDocument);
             InvoiceText.AppendReference(s1, Resources.refDeliveryNote, lineDelivery?.DeliveryNoteReferencedDocument);
-            InvoiceText.AppendReference(s1, "Angebot", lineAgreement?.QuotationReferencedDocument);
+            InvoiceText.AppendReference(s1, Resources.Angebot, lineAgreement?.QuotationReferencedDocument);
             if (lineDelivery?.ShipToTradeParty != null)
             {
                 s1.AppendLine($"{Resources.shipTo}: {InvoiceText.FormatTradeParty(lineDelivery.ShipToTradeParty)}");
             }
-            lineAgreement?.AdditionalReferencedDocument?.ForEach(doc => InvoiceText.AppendReference(s1, "Zusätzliches Dokument", doc));
+            lineAgreement?.AdditionalReferencedDocument?.ForEach(doc => InvoiceText.AppendReference(s1, Resources.ZusaetzlichesDokument, doc));
 
             if (!string.IsNullOrWhiteSpace(product?.BuyerAssignedId?.Value))
             {
@@ -201,7 +201,8 @@ namespace Pacioli.Pdf.Invoice.Sections
                 InvoiceText.AppendAllowanceCharge(s1, charge);
             }
 
-            lineSettlement?.AdditionalReferencedDocument?.ForEach(doc => InvoiceText.AppendReference(s1, "Zusätzliches Dokument", doc));
+            lineSettlement?.AdditionalReferencedDocument?.ForEach(doc => InvoiceText.AppendReference(s1, Resources.ZusaetzlichesDokument, doc));
+            lineSettlement?.ApplicableTradeTax.ForEach(tax => s1.Append(InvoiceText.FormatTradeTax(tax)));
 
             foreach (var charge in lineAgreement?.GrossPriceProductTradePrice?.AppliedTradeAllowanceCharge ?? new List<TradeAllowanceCharge>())
             {

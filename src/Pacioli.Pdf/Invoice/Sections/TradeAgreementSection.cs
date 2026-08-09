@@ -39,7 +39,7 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             if (delivery.DeliveryNoteReferencedDocument != null)
             {
-                AddItem($"Lieferschein: {InvoiceText.FormatGroup(InvoiceText.Text(delivery.DeliveryNoteReferencedDocument.IssuerAssignedId),
+                AddItem($"{Resources.Lieferschein}: {InvoiceText.FormatGroup(InvoiceText.Text(delivery.DeliveryNoteReferencedDocument.IssuerAssignedId),
                     delivery.DeliveryNoteReferencedDocument.Name,
                     InvoiceText.Text(delivery.DeliveryNoteReferencedDocument.UriId),
                     InvoiceText.DateOf(delivery.DeliveryNoteReferencedDocument.FormattedIssueDateTime).ToString())}");
@@ -47,25 +47,25 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             if (delivery.ActualDeliverySupplyChainEvent != null)
             {
-                AddItem($"Lieferdatum: {InvoiceText.DateOf(delivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime)}");
+                AddItem($"{Resources.Lieferdatum}: {InvoiceText.DateOf(delivery.ActualDeliverySupplyChainEvent.OccurrenceDateTime)}");
             }
 
             if (delivery.RelatedSupplyChainConsignment != null)
             {
                 delivery.RelatedSupplyChainConsignment.SpecifiedLogisticsTransportMovement.ForEach(movement =>
                 {
-                    AddItem($"Transportart: {movement.ModeCode}");
+                    AddItem($"{Resources.Transportart}: {movement.ModeCode}");
                 });
             }
 
             if (delivery.ShipFromTradeParty != null)
             {
-                AddItem($"Lieferung ab: {delivery.ShipFromTradeParty.Name}");
+                AddItem($"{Resources.LieferungAb}: {delivery.ShipFromTradeParty.Name}");
             }
 
             if (delivery.DespatchAdviceReferencedDocument != null)
             {
-                AddItem($"Versandhinweis: {InvoiceText.FormatGroup(InvoiceText.Text(delivery.DespatchAdviceReferencedDocument.IssuerAssignedId),
+                AddItem($"{Resources.Versandhinweis}: {InvoiceText.FormatGroup(InvoiceText.Text(delivery.DespatchAdviceReferencedDocument.IssuerAssignedId),
                     delivery.DespatchAdviceReferencedDocument.Name,
                     InvoiceText.Text(delivery.DespatchAdviceReferencedDocument.UriId),
                     InvoiceText.DateOf(delivery.DespatchAdviceReferencedDocument.FormattedIssueDateTime).ToString())}");
@@ -92,7 +92,7 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             if (agreement.AdditionalReferencedDocument.Count > 0)
             {
-                AddReference("Dokumente:");
+                AddReference($"{Resources.Dokumente}:");
                 foreach (var addDoc in agreement.AdditionalReferencedDocument)
                 {
                     Table tab = new Table(6);
@@ -102,7 +102,7 @@ namespace Pacioli.Pdf.Invoice.Sections
                     tab.AddCell(new Cell().Add(new Paragraph($"{addDoc.Name}")).SetBorder(Border.NO_BORDER));
                     tab.AddCell(new Cell().Add(new Paragraph($"{InvoiceText.DateOf(addDoc.FormattedIssueDateTime)}")).SetBorder(Border.NO_BORDER));
                     tab.AddCell(new Cell().Add(new Paragraph($"{InvoiceText.Text(addDoc.UriId)}")).SetBorder(Border.NO_BORDER));
-                    tab.AddCell(new Cell().Add(new Paragraph($"Pos. {InvoiceText.Text(addDoc.LineId)}")).SetBorder(Border.NO_BORDER));
+                    tab.AddCell(new Cell().Add(new Paragraph($"{Resources.pos} {InvoiceText.Text(addDoc.LineId)}")).SetBorder(Border.NO_BORDER));
                     agreementGroup.Add(tab);
                     count++;
                 }
@@ -113,23 +113,23 @@ namespace Pacioli.Pdf.Invoice.Sections
                 var contract = agreement.ContractReferencedDocument;
                 if (contract.IssuerAssignedId != null)
                 {
-                    AddReference($"Vertragsnummer: {contract.IssuerAssignedId}");
+                    AddReference($"{Resources.Vertragsnummer}: {contract.IssuerAssignedId}");
                 }
             }
 
             if (agreement.BuyerReference != null)
             {
-                AddReference($"Bestellnummer: {agreement.BuyerReference}");
+                AddReference($"{Resources.Bestellnummer}: {agreement.BuyerReference}");
             }
 
             if (agreement.QuotationReferencedDocument != null)
             {
-                AddReference($"Angebotsnummer: {agreement.QuotationReferencedDocument.IssuerAssignedId}");
+                AddReference($"{Resources.Angebotsnummer}: {agreement.QuotationReferencedDocument.IssuerAssignedId}");
             }
 
             if (agreement.SellerOrderReferencedDocument != null)
             {
-                AddReference($"Auftragsnummer: {agreement.SellerOrderReferencedDocument.IssuerAssignedId}");
+                AddReference($"{Resources.Auftragsnummer}: {agreement.SellerOrderReferencedDocument.IssuerAssignedId}");
             }
 
             if (agreement.SpecifiedProcuringProject != null)
@@ -137,14 +137,14 @@ namespace Pacioli.Pdf.Invoice.Sections
                 var project = agreement.SpecifiedProcuringProject;
                 if (!string.IsNullOrWhiteSpace(project.Name) || !string.IsNullOrWhiteSpace(project.Id?.Value))
                 {
-                    AddReference($"Projekt: {project.Name} {project.Id?.Value}");
+                    AddReference($"{Resources.Projekt}: {project.Name} {project.Id?.Value}");
                 }
             }
 
             if (agreement.SellerTaxRepresentativeTradeParty != null)
             {
                 var taxRep = agreement.SellerTaxRepresentativeTradeParty;
-                var p = new Paragraph("Steuervertreter:\n");
+                var p = new Paragraph($"{Resources.Steuervertreter}:\n");
                 if (taxRep.Description != null)
                 {
                     p.Add(taxRep.Description+ "\n");
@@ -163,7 +163,7 @@ namespace Pacioli.Pdf.Invoice.Sections
                 }
                 foreach (var reg in taxRep.SpecifiedTaxRegistration)
                 {
-                    p.Add($"Steuer-ID: {InvoiceText.Text(reg.Id)}\n");
+                    p.Add($"{Resources.SteuerId}: {InvoiceText.Text(reg.Id)}\n");
                 }
                 if (taxRep.SpecifiedLegalOrganization != null)
                 {
@@ -209,31 +209,31 @@ namespace Pacioli.Pdf.Invoice.Sections
                 {
                     string startDate = InvoiceText.DateOf(period.StartDateTime)?.ToString("d") ?? "";
                     string endDate = InvoiceText.DateOf(period.EndDateTime)?.ToString("d") ?? "";
-                    AddItem($"Abrechnungszeitraum: {Resources.billingPeriod}: {startDate} - {endDate}");
+                    AddItem($"{Resources.billingPeriod}: {startDate} - {endDate}");
                 }
                 else
                 {
                     string completeDate = InvoiceText.DateOf(period.CompleteDateTime)?.ToString("d") ?? "";
-                    AddItem($"Abrechnungszeitraum: {Resources.billingPeriod}: {completeDate}");
+                    AddItem($"{Resources.billingPeriod}: {completeDate}");
                 }
             }
 
 
             if (settlement.PaymentReference != null)
             {
-                AddItem($"Zahlungsreferenz: {settlement.PaymentReference}");
+                AddItem($"{Resources.Zahlungsreferenz}: {settlement.PaymentReference}");
                 count++;
             }
 
             foreach (var account in settlement.ReceivableSpecifiedTradeAccountingAccount)
             {
-                AddItem($"Buchungsreferenz: {InvoiceText.Text(account.Id)} {account.TypeCode ?? string.Empty}");
+                AddItem($"{Resources.Buchungsreferenz}: {InvoiceText.Text(account.Id)} {account.TypeCode ?? string.Empty}");
                 count++;
             }
 
             if (settlement.InvoiceReferencedDocument.Count > 0)
             {
-                AddItem("Rechnungsreferenzen:");
+                AddItem($"{Resources.Rechnungsreferenzen}:");
                 foreach (var invDoc in settlement.InvoiceReferencedDocument)
                 {
                     AddItem(InvoiceText.FormatReferencedDocument(invDoc));
@@ -256,7 +256,7 @@ namespace Pacioli.Pdf.Invoice.Sections
                 string penalty = FormatPenaltyTerms(terms?.ApplicableTradePaymentPenaltyTerms);
                 if (penalty.Length > 0)
                 {
-                    AddItem($"Verzugszinsen: {penalty}");
+                    AddItem($"{Resources.Verzugszinsen}: {penalty}");
                 }
             }
 

@@ -48,7 +48,7 @@ namespace Pacioli.Pdf.Invoice.Sections
 
                     if (terms.Length > 0)
                     {
-                        sb.Append($"\nSkonto: {terms}");
+                        sb.Append($"\n{Resources.Skonto}: {terms}");
                     }
                 }
 

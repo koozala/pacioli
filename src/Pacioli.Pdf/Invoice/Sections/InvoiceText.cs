@@ -60,11 +60,11 @@ namespace Pacioli.Pdf.Invoice.Sections
 
         public static void AppendAllowanceCharge(StringBuilder sb, TradeAllowanceCharge charge)
         {
-            string zuschlag = charge.ChargeIndicator ? "Zuschlag" : "Abschlag";
+            string zuschlag = charge.ChargeIndicator ? Resources.Zuschlag : Resources.Abschlag;
             sb.AppendLine(
                 $"{zuschlag}: {Fmt.ToStringWithUnit(charge.CalculationPercent, "0.0", "%")} " +
                 $"{Fmt.ToString(charge.ActualAmount?.Value, "#,#0.00")} {charge.ActualAmount?.CurrencyId} " +
-                $"{Fmt.ToStringWithName("Basis:", charge.BasisAmount?.Value, "#,#0.00")} {charge.Reason}");
+                $"{Fmt.ToStringWithName($"{Resources.basis}:", charge.BasisAmount?.Value, "#,#0.00")} {charge.Reason}");
         }
 
         public static void AppendContact(StringBuilder sb, TradeContact contact)
@@ -196,12 +196,12 @@ namespace Pacioli.Pdf.Invoice.Sections
             StringBuilder s1 = new StringBuilder();
 
             string paid = FormatAmount(advancePayment.PaidAmount);
-            s1.AppendLine(paid.Length > 0 ? $"Anzahlung: {paid}" : "Anzahlung:");
+            s1.AppendLine(paid.Length > 0 ? $"{Resources.Anzahlung}: {paid}" : $"{Resources.Anzahlung}:");
 
             DateOnly? received = DateOf(advancePayment.FormattedReceivedDateTime);
             if (received != null)
             {
-                s1.AppendLine($"Erhalten am: {received.Value.ToString("d")}");
+                s1.AppendLine($"{Resources.ErhaltenAm}: {received.Value.ToString("d")}");
             }
 
             foreach (TradeTax? tax in advancePayment.IncludedTradeTax)
@@ -212,19 +212,19 @@ namespace Pacioli.Pdf.Invoice.Sections
                 }
 
                 s1.AppendLine(FormatGroup(
-                    "Enthaltene Steuer:",
+                    $"{Resources.EnthalteneSteuer}:",
                     tax.RateApplicablePercent.HasValue ? tax.RateApplicablePercent.Value.ToString("0.00") + "%" : null,
                     tax.TypeCode.ToTaxTypeName(),
                     tax.CategoryCode.ToTaxCategoryName(),
                     FormatAmount(tax.CalculatedAmount),
-                    tax.BasisAmount == null ? null : "Basis: " + FormatAmount(tax.BasisAmount)));
+                    tax.BasisAmount == null ? null : $"{Resources.basis}: " + FormatAmount(tax.BasisAmount)));
             }
 
             ReferencedDocument? invoice = advancePayment.InvoiceSpecifiedReferencedDocument;
             if (invoice != null)
             {
                 s1.AppendLine(FormatGroup(
-                    "Rechnung der Anzahlung:",
+                    $"{Resources.RechnungDerAnzahlung}:",
                     Text(invoice.IssuerAssignedId),
                     invoice.Name,
                     DateOf(invoice.FormattedIssueDateTime)?.ToString("d")));
@@ -246,13 +246,13 @@ namespace Pacioli.Pdf.Invoice.Sections
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine($"Referenz: {InvoiceText.Text(doc.IssuerAssignedId)}");
-            sb.AppendLine($"Anhang: {(doc.AttachmentBinaryObject == null ? "Nein" : "Ja")}");
+            sb.AppendLine($"{Resources.Referenz}: {InvoiceText.Text(doc.IssuerAssignedId)}");
+            sb.AppendLine($"{Resources.attachment}: {(doc.AttachmentBinaryObject == null ? Resources.Nein : Resources.Ja)}");
             if (doc.Name != null) sb.AppendLine($"{doc.Name}");
-            if (doc.FormattedIssueDateTime != null) sb.AppendLine($"Datum: {InvoiceText.DateOf(doc.FormattedIssueDateTime)?.ToString("d")}");
+            if (doc.FormattedIssueDateTime != null) sb.AppendLine($"{Resources.docDate}: {InvoiceText.DateOf(doc.FormattedIssueDateTime)?.ToString("d")}");
             if (doc.UriId != null) sb.AppendLine($"URI: {InvoiceText.Text(doc.UriId)}");
-            if (doc.ReferenceTypeCode != null) sb.AppendLine($"Typ: {doc.ReferenceTypeCode}");
-            if (doc.LineId != null) sb.AppendLine($"Position: {InvoiceText.Text(doc.LineId)}");
+            if (doc.ReferenceTypeCode != null) sb.AppendLine($"{Resources.Typ}: {doc.ReferenceTypeCode}");
+            if (doc.LineId != null) sb.AppendLine($"{Resources.Position}: {InvoiceText.Text(doc.LineId)}");
 
             return sb.ToString();
         }
@@ -262,7 +262,7 @@ namespace Pacioli.Pdf.Invoice.Sections
             if (!string.IsNullOrWhiteSpace(code?.Value))
             {
                 if (sb.Length > 0) sb.Append(", ");
-                sb.Append($"Inhaltscodierung: {code!.Value}");
+                sb.Append($"{Resources.Inhaltscodierung}: {code!.Value}");
             }
         }
 
@@ -271,7 +271,7 @@ namespace Pacioli.Pdf.Invoice.Sections
             if (!string.IsNullOrWhiteSpace(code?.Value))
             {
                 if (sb.Length > 0) sb.Append(", ");
-                sb.Append($"Betreffcodierung: {code!.Value}");
+                sb.Append($"{Resources.Betreffcodierung}: {code!.Value}");
             }
         }
 
@@ -299,14 +299,14 @@ namespace Pacioli.Pdf.Invoice.Sections
                 tax.CategoryCode.ToTaxCategoryName());
 
             string details = FormatGroup(
-                tax.CalculatedAmount == null ? null : $"Betrag: {FormatAmount(tax.CalculatedAmount)}",
+                tax.CalculatedAmount == null ? null : $"{Resources.money}: {FormatAmount(tax.CalculatedAmount)}",
                 tax.BasisAmount == null ? null : $"{Resources.basis}: {FormatAmount(tax.BasisAmount)}",
                 tax.LineTotalBasisAmount == null
                     ? null
-                    : $"Basis der Positionen: {FormatAmount(tax.LineTotalBasisAmount)}",
+                    : $"{Resources.BasisDerPositionen}: {FormatAmount(tax.LineTotalBasisAmount)}",
                 tax.AllowanceChargeBasisAmount == null
                     ? null
-                    : $"Basis der Zu- und Abschläge: {FormatAmount(tax.AllowanceChargeBasisAmount)}",
+                    : $"{Resources.BasisDerZuschlaegeUndAbschlaege}: {FormatAmount(tax.AllowanceChargeBasisAmount)}",
                 FormatGroup(tax.ExemptionReason, tax.ExemptionReasonCode?.Value),
                 DateOf(tax.TaxPointDate)?.ToString("d"));
 

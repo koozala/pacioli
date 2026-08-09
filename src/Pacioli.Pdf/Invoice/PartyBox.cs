@@ -2,6 +2,8 @@ using iText.IO.Font.Constants;
 using iText.Kernel.Font;
 using iText.Layout.Borders;
 using iText.Layout.Element;
+using iText.StyledXmlParser.Css.Resolve.Shorthand.Impl;
+using Pacioli.Language.Resources;
 using Pacioli.Pdf.Invoice.Sections;
 using System.Linq;
 using System.Text;
@@ -68,15 +70,15 @@ namespace Pacioli.Pdf.Invoice
             {
                 if (!string.IsNullOrWhiteSpace(reg?.Id?.Value))
                 {
-                    AddText($"Steuer-ID: {reg!.Id!.SchemeId}: {reg!.Id!.Value}\n");
+                    AddText($"{Resources.SteuerId}: {reg!.Id!.SchemeId}: {reg!.Id!.Value}\n");
                 }
             }
 
             foreach (var gid in party.GlobalId)
             {
-                if (!string.IsNullOrWhiteSpace(gid?.Value))
+                if (gid != null)
                 {
-                    AddText($"Global-ID: {gid!.SchemeId}: {gid!.Value}\n");
+                    AddText($"{Resources.GlobalId}: ({gid.SchemeId}) {gid.Value}\n");
                 }
             }
 
@@ -89,7 +91,7 @@ namespace Pacioli.Pdf.Invoice
             {
                 if (party.SpecifiedLegalOrganization.TradingBusinessName != null)
                 {
-                    AddText($"Name der Organisation: {party.SpecifiedLegalOrganization.TradingBusinessName}\n");
+                    AddText($"{Resources.NameDerOrganisation}: {party.SpecifiedLegalOrganization.TradingBusinessName}\n");
                 }
                 AddText($"ID: {InvoiceText.Text(party.SpecifiedLegalOrganization.Id)}\n");
                 if (party.SpecifiedLegalOrganization.PostalTradeAddress != null)

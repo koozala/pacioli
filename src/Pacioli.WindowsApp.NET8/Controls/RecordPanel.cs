@@ -138,7 +138,7 @@ namespace Pacioli.WindowsApp.NET8.Controls
                 {
                     F_AttachmentsPanel.Controls.Add(new Label
                     {
-                        Text = $"{BuildAttachmentLabel(att)} (nur Verweis, keine Datei)",
+                        Text = $"{BuildAttachmentLabel(att)} ({Resources.NurVerweis})",
                         AutoSize = true
                     });
                 }
@@ -159,7 +159,7 @@ namespace Pacioli.WindowsApp.NET8.Controls
                 name = $"{name} ({att.ReferenceId})";
             }
 
-            return string.IsNullOrWhiteSpace(name) ? "Anlage" : name;
+            return string.IsNullOrWhiteSpace(name) ? Resources.Anlage : name;
         }
 
         private void AttachmentLink_Clicked(object? sender, LinkLabelLinkClickedEventArgs e)
@@ -175,8 +175,8 @@ namespace Pacioli.WindowsApp.NET8.Controls
             {
                 /* A file that the system cannot open must not stop the application. */
                 MessageBox.Show(
-                    $"Die Anlage kann nicht geöffnet werden.{Environment.NewLine}{Environment.NewLine}{ex.Message}",
-                    "Pacioli", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    $"{Resources.AnlageNichtGeoeffnet}{Environment.NewLine}{Environment.NewLine}{ex.Message}",
+                    Resources.invoice, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

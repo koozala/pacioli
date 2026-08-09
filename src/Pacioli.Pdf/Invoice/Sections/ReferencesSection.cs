@@ -60,6 +60,11 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             doc.Add(new Paragraph($"{Resources.currencyNote} {context.Settlement?.InvoiceCurrencyCode}")
                 .SetFont(context.Bold));
+
+            if (context.Agreement?.SellerOrderReferencedDocument != null)
+            {
+                doc.Add(new Paragraph($"{Resources.UnsereBestellnummer}: {context.Agreement.SellerOrderReferencedDocument.Name ?? "--"}"));
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 using iText.Layout.Element;
 using iText.Layout.Properties;
+using Pacioli.Language.Resources;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,18 +17,18 @@ namespace Pacioli.Pdf.Invoice
         {
             tab = new Table(6).SetWidth(full);
             tab.AddHeaderCell("");
-            tab.AddHeaderCell("Grund");
-            tab.AddHeaderCell("Act. Amount");
-            tab.AddHeaderCell("Anteil");
-            tab.AddHeaderCell("Betrag");
-            tab.AddHeaderCell("Steuer");
+            tab.AddHeaderCell(Resources.Grund);
+            tab.AddHeaderCell(Resources.IstBetrag);
+            tab.AddHeaderCell(Resources.Anteil);
+            tab.AddHeaderCell(Resources.money);
+            tab.AddHeaderCell(Resources.tax);
         }
 
         public void Add(IEnumerable<TradeAllowanceCharge> charges)
         {
             foreach (var charge in charges)
             {
-                var text = charge.ChargeIndicator ? "Zuschlag" : "Abschlag";
+                var text = charge.ChargeIndicator ? Resources.Zuschlag : Resources.Abschlag;
                 tab.AddCell(new ItemCell(text));
                 tab.AddCell(new ItemCell($"{charge.Reason}"));
                 tab.AddCell(new ItemCellRight($"{Fmt.ToString(charge.ActualAmount?.Value, "#,0.00")}"));

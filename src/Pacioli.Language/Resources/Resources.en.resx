@@ -530,10 +530,316 @@ More information on the Internet: https://github.com/koozala/pacioli</value>
   <data name="type877" xml:space="preserve">
     <value>Final Construction Invoice</value>
   </data>
+  <data name="type878" xml:space="preserve">
+    <value>Order Reference</value>
+  </data>
   <data name="title_Content" xml:space="preserve">
     <value>E-Invoice Content</value>
   </data>
   <data name="title_XmlView" xml:space="preserve">
     <value>XML View</value>
+  </data>
+  <data name="Lieferdatum" xml:space="preserve">
+    <value>Shipment date</value>
+  </data>
+  <data name="Transportart" xml:space="preserve">
+    <value>Transport type</value>
+  </data>
+  <data name="LieferungAb" xml:space="preserve">
+    <value>Delivery from</value>
+  </data>
+  <data name="Versandhinweis" xml:space="preserve">
+    <value>Delivery note</value>
+  </data>
+  <data name="Lieferschein" xml:space="preserve">
+    <value>Delivery note</value>
+  </data>
+  <data name="Vertragsnummer" xml:space="preserve">
+    <value>Contract number</value>
+  </data>
+  <data name="Bestellnummer" xml:space="preserve">
+    <value>Order number</value>
+  </data>
+  <data name="Angebotsnummer" xml:space="preserve">
+    <value>Quotation number</value>
+  </data>
+  <data name="Auftragsnummer" xml:space="preserve">
+    <value>Order number of the seller</value>
+  </data>
+  <data name="Projekt" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="Steuervertreter" xml:space="preserve">
+    <value>Tax representative</value>
+  </data>
+  <data name="SteuerId" xml:space="preserve">
+    <value>Tax ID</value>
+  </data>
+  <data name="GlobalId" xml:space="preserve">
+    <value>Global ID</value>
+  </data>
+  <data name="NameDerOrganisation" xml:space="preserve">
+    <value>Name of the organisation</value>
+  </data>
+  <data name="Dokumente" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="Rechnungsreferenzen" xml:space="preserve">
+    <value>Invoice references</value>
+  </data>
+  <data name="Rechnungsreferenz" xml:space="preserve">
+    <value>Invoice reference</value>
+  </data>
+  <data name="Buchungsreferenz" xml:space="preserve">
+    <value>Accounting reference</value>
+  </data>
+  <data name="Zahlungsreferenz" xml:space="preserve">
+    <value>Payment reference</value>
+  </data>
+  <data name="Verzugszinsen" xml:space="preserve">
+    <value>Late payment interest</value>
+  </data>
+  <data name="Skonto" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="Anzahlung" xml:space="preserve">
+    <value>Advance payment</value>
+  </data>
+  <data name="ErhaltenAm" xml:space="preserve">
+    <value>Received on</value>
+  </data>
+  <data name="EnthalteneSteuer" xml:space="preserve">
+    <value>Included tax</value>
+  </data>
+  <data name="RechnungDerAnzahlung" xml:space="preserve">
+    <value>Invoice of the advance payment</value>
+  </data>
+  <data name="Referenz" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="Ja" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Nein" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Typ" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="Inhaltscodierung" xml:space="preserve">
+    <value>Content code</value>
+  </data>
+  <data name="Betreffcodierung" xml:space="preserve">
+    <value>Subject code</value>
+  </data>
+  <data name="BasisDerPositionen" xml:space="preserve">
+    <value>Basis from the line items</value>
+  </data>
+  <data name="BasisDerZuschlaegeUndAbschlaege" xml:space="preserve">
+    <value>Basis of allowances and charges</value>
+  </data>
+  <data name="Zuschlag" xml:space="preserve">
+    <value>Charge</value>
+  </data>
+  <data name="Abschlag" xml:space="preserve">
+    <value>Allowance</value>
+  </data>
+  <data name="RabatteUndZuschlaege" xml:space="preserve">
+    <value>Allowances and charges</value>
+  </data>
+  <data name="Seriennummer" xml:space="preserve">
+    <value>Serial number</value>
+  </data>
+  <data name="EnthaltenesProdukt" xml:space="preserve">
+    <value>Included product</value>
+  </data>
+  <data name="Angebot" xml:space="preserve">
+    <value>Quotation</value>
+  </data>
+  <data name="ZusaetzlichesDokument" xml:space="preserve">
+    <value>Additional document</value>
+  </data>
+  <data name="WeitereUnterlagen" xml:space="preserve">
+    <value>Further documents</value>
+  </data>
+  <data name="Dokumentendatum" xml:space="preserve">
+    <value>Document date</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="UnsereBestellnummer" xml:space="preserve">
+    <value>Our order number</value>
+  </data>
+  <data name="Positionssumme" xml:space="preserve">
+    <value>Line total</value>
+  </data>
+  <data name="Umrechnungskurs" xml:space="preserve">
+    <value>Conversion rate</value>
+  </data>
+  <data name="Positionen" xml:space="preserve">
+    <value>Line items</value>
+  </data>
+  <data name="Grund" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="Anteil" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="IstBetrag" xml:space="preserve">
+    <value>Actual amount</value>
+  </data>
+  <data name="MwSt" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="Anlage" xml:space="preserve">
+    <value>Attachment</value>
+  </data>
+  <data name="NurVerweis" xml:space="preserve">
+    <value>reference only, no file</value>
+  </data>
+  <data name="AnlageNichtGeoeffnet" xml:space="preserve">
+    <value>The attachment cannot be opened.</value>
+  </data>
+  <data name="unitSEC" xml:space="preserve">
+    <value>second(s)</value>
+  </data>
+  <data name="unitMMK" xml:space="preserve">
+    <value>mm^2</value>
+  </data>
+  <data name="unitXTU" xml:space="preserve">
+    <value>tube(s)</value>
+  </data>
+  <data name="unitXTN" xml:space="preserve">
+    <value>can(s)</value>
+  </data>
+  <data name="unitXBE" xml:space="preserve">
+    <value>bundle</value>
+  </data>
+  <data name="unitXRO" xml:space="preserve">
+    <value>roll</value>
+  </data>
+  <data name="unitXST" xml:space="preserve">
+    <value>sheet</value>
+  </data>
+  <data name="unitANN" xml:space="preserve">
+    <value>year(s)</value>
+  </data>
+  <data name="unitNAR" xml:space="preserve">
+    <value>pcs</value>
+  </data>
+  <data name="unitC62" xml:space="preserve">
+    <value>pcs</value>
+  </data>
+  <data name="unitCMT" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="unitDAY" xml:space="preserve">
+    <value>day(s)</value>
+  </data>
+  <data name="unitFF" xml:space="preserve">
+    <value>a</value>
+  </data>
+  <data name="unitGRM" xml:space="preserve">
+    <value>gram</value>
+  </data>
+  <data name="unitH87" xml:space="preserve">
+    <value>pcs</value>
+  </data>
+  <data name="unitHUR" xml:space="preserve">
+    <value>hrs</value>
+  </data>
+  <data name="unitKGM" xml:space="preserve">
+    <value>kg</value>
+  </data>
+  <data name="unitKMT" xml:space="preserve">
+    <value>km</value>
+  </data>
+  <data name="unitKT" xml:space="preserve">
+    <value>kit</value>
+  </data>
+  <data name="unitKWH" xml:space="preserve">
+    <value>kWh</value>
+  </data>
+  <data name="unitKWT" xml:space="preserve">
+    <value>kW</value>
+  </data>
+  <data name="unitLS" xml:space="preserve">
+    <value>lump sum</value>
+  </data>
+  <data name="unitLTR" xml:space="preserve">
+    <value>l</value>
+  </data>
+  <data name="unitMIN" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="unitMMT" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="unitMON" xml:space="preserve">
+    <value>month(s)</value>
+  </data>
+  <data name="unitMTK" xml:space="preserve">
+    <value>m^2</value>
+  </data>
+  <data name="unitMTQ" xml:space="preserve">
+    <value>m^3</value>
+  </data>
+  <data name="unitMTR" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="unitP1" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="unitPR" xml:space="preserve">
+    <value>pair</value>
+  </data>
+  <data name="unitSET" xml:space="preserve">
+    <value>set(s)</value>
+  </data>
+  <data name="unitT3" xml:space="preserve">
+    <value>thousand</value>
+  </data>
+  <data name="unitTNE" xml:space="preserve">
+    <value>t</value>
+  </data>
+  <data name="unitWEE" xml:space="preserve">
+    <value>week(s)</value>
+  </data>
+  <data name="unitXBA" xml:space="preserve">
+    <value>barrel</value>
+  </data>
+  <data name="unitXBD" xml:space="preserve">
+    <value>board</value>
+  </data>
+  <data name="unitXBG" xml:space="preserve">
+    <value>bag</value>
+  </data>
+  <data name="unitXBJ" xml:space="preserve">
+    <value>bucket</value>
+  </data>
+  <data name="unitXBO" xml:space="preserve">
+    <value>bottle</value>
+  </data>
+  <data name="unitXCI" xml:space="preserve">
+    <value>canister</value>
+  </data>
+  <data name="unitXCT" xml:space="preserve">
+    <value>carton</value>
+  </data>
+  <data name="unitXPP" xml:space="preserve">
+    <value>bulk</value>
+  </data>
+  <data name="unitXPX" xml:space="preserve">
+    <value>pallet</value>
+  </data>
+  <data name="unitXRD" xml:space="preserve">
+    <value>rod</value>
+  </data>
+  <data name="unitXSA" xml:space="preserve">
+    <value>sack</value>
   </data>
 </root>

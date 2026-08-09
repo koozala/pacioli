@@ -32,7 +32,7 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             var summation = context.Summation;
 
-            AddRow(sumTab, "Positionssumme", summation?.LineTotalAmount);
+            AddRow(sumTab, Resources.Positionssumme, summation?.LineTotalAmount);
             AddRow(sumTab, Resources.prepaid, summation?.TotalPrepaidAmount);
             AddRow(sumTab, Resources.allowance, summation?.AllowanceTotalAmount);
             AddRow(sumTab, Resources.charge, summation?.ChargeTotalAmount);

@@ -33,7 +33,7 @@ namespace Pacioli.Pdf.Invoice.Sections
                  */
                 taxTab.AddCell(new ItemCellRight(InvoiceText.FormatGroup(
                     $"{tax.BasisAmount?.Value}",
-                    tax.LineTotalBasisAmount == null ? null : $"(Positionen: {tax.LineTotalBasisAmount.Value})")));
+                    tax.LineTotalBasisAmount == null ? null : $"({Resources.Positionen}: {tax.LineTotalBasisAmount.Value})")));
                 taxTab.AddCell(new ItemCellRight($"{tax.CalculatedAmount?.Value}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.ExemptionReason} {tax.ExemptionReasonCode?.Value}"));
                 taxTab.AddCell(new ItemCellRight($"{tax.AllowanceChargeBasisAmount?.Value}"));
@@ -49,7 +49,7 @@ namespace Pacioli.Pdf.Invoice.Sections
             if (exchange != null)
             {
                 doc.Add(new Paragraph(InvoiceText.FormatGroup(
-                    "Umrechnungskurs:",
+                    $"{Resources.Umrechnungskurs}:",
                     exchange.ConversionRate.ToString("0.#####"),
                     InvoiceText.FormatGroup(exchange.SourceCurrencyCode, "->", exchange.TargetCurrencyCode),
                     InvoiceText.DateOf(exchange.ConversionRateDateTime)?.ToString("d"))).SetFontSize(12));
