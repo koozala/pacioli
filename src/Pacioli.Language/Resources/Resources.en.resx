@@ -848,4 +848,7 @@ More information on the Internet: https://github.com/koozala/pacioli</value>
   <data name="DokumentSchliessen" xml:space="preserve">
     <value>Closes this document. The other documents stay open.</value>
   </data>
+  <data name="VersionUnbekannt" xml:space="preserve">
+    <value>unknown (no answer from the server)</value>
+  </data>
 </root>

@@ -307,7 +307,10 @@ namespace Pacioli.WindowsApp
             string version = VersionInformation.GetVersion();
             var repo = await PacioliRepository.CreateAsync();
 
-            MessageBox.Show(string.Format(Resources.msgInfoText, version, repo.VersionName, repo.DownloadUrl));
+            /* A server without an answer names no version, thus the message says so. */
+            string available = repo.HasVersion ? repo.VersionName : Resources.VersionUnbekannt;
+
+            MessageBox.Show(string.Format(Resources.msgInfoText, version, available, repo.DownloadUrl));
         }
 
         private void einstellungenToolStripMenuItem_Click(object sender, EventArgs e)

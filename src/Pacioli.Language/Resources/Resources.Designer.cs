@@ -982,7 +982,16 @@ namespace Pacioli.Language.Resources {
                 return ResourceManager.GetString("Schliessen", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to unbekannt (Server nicht erreichbar).
+        /// </summary>
+        public static string VersionUnbekannt {
+            get {
+                return ResourceManager.GetString("VersionUnbekannt", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Verkäufer.
         /// </summary>

@@ -24,18 +24,29 @@ namespace Pacioli.WindowsApp
 
             if (pref.PerformUpdateCheck)
             {
-                var check = UpdateCheck.CreateAsync().Result;
-                // Safe to block here: no SynchronizationContext is installed before Application.Run,
-                // so GetAwaiter().GetResult() cannot deadlock.
-                //check.ExecuteAsync(true).GetAwaiter().GetResult();
-
-                if (check.NewVersionAvailable().Result)
+                /*
+                 * The check must never stop the start of the program. A server that sleeps,
+                 * a network without a way out, or a proxy that asks for a name: each of
+                 * them gives an exception here, and the user would see no window at all.
+                 * Thus the check keeps quiet if it fails.
+                 */
+                try
                 {
-                    var result = MessageBox.Show(string.Format(Resources.msgUpdateAsk, VersionInformation.GetVersion(), check.LatestVersion), Resources.msgUpdateAnnounce, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (result == DialogResult.Yes)
+                    var check = UpdateCheck.CreateAsync().Result;
+                    // Safe to block here: no SynchronizationContext is installed before Application.Run,
+                    // so GetAwaiter().GetResult() cannot deadlock.
+
+                    if (check.NewVersionAvailable())
                     {
-                        check.PerformUpdate().Wait();
+                        var result = MessageBox.Show(string.Format(Resources.msgUpdateAsk, VersionInformation.GetVersion(), check.LatestVersion), Resources.msgUpdateAnnounce, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (result == DialogResult.Yes)
+                        {
+                            check.PerformUpdate().Wait();
+                        }
                     }
+                }
+                catch (Exception)
+                {
                 }
             }
 
