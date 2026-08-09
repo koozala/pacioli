@@ -25,6 +25,22 @@ namespace Pacioli.Pdf.Invoice.Sections
             return quantity.Value.ToString(DecimalExtensions.PrecFmt(quantity.Value));
         }
 
+        public static string FormatGroup(params string?[] values)
+        {
+            string separator = string.Empty;
+            StringBuilder sb = new StringBuilder();
+            foreach (string? value in values)
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    sb.Append(separator);
+                    sb.Append(value);
+                    separator = " ";
+                }
+            }
+            return sb.ToString();
+        }
+
         public static void AppendReference(StringBuilder sb, string caption, ReferencedDocument? refdoc)
         {
             if (refdoc == null)
@@ -32,7 +48,8 @@ namespace Pacioli.Pdf.Invoice.Sections
                 return;
             }
 
-            string t = $"{caption}: {refdoc.IssuerAssignedId?.Value}";
+            string pos = refdoc.LineId == null ? string.Empty : $" ({refdoc.LineId})";
+            string t = $"{caption}: {refdoc.IssuerAssignedId?.Value} {pos}";
             DateOnly? issued = DateOf(refdoc.FormattedIssueDateTime);
             if (issued != null)
             {
@@ -63,6 +80,121 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             string? fax = contact.FaxUniversalCommunication?.CompleteNumber;
             if (!string.IsNullOrWhiteSpace(fax)) sb.AppendLine($"{Resources.fax}: {fax}");
+        }
+
+        public static string FormatTradeContact(TradeContact contact)
+        {
+            StringBuilder sb = new StringBuilder();
+            AppendContact(sb, contact);
+            return sb.ToString();
+        }
+
+        public static string FormatAddress(TradeAddress addr)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrWhiteSpace(addr.LineOne)) sb.AppendLine(addr.LineOne);
+            if (!string.IsNullOrWhiteSpace(addr.LineTwo)) sb.AppendLine(addr.LineTwo);
+            if (!string.IsNullOrWhiteSpace(addr.LineThree)) sb.AppendLine(addr.LineThree);
+            if ((addr.PostcodeCode != null)) sb.Append(addr.PostcodeCode.ToString() + " ");
+            if (!string.IsNullOrWhiteSpace(addr.CityName)) sb.Append(addr.CityName);
+            if (!string.IsNullOrWhiteSpace(addr.CountrySubDivisionName)) sb.Append(" " + addr.CountrySubDivisionName);
+            if (!string.IsNullOrWhiteSpace(addr.CountryId)) sb.Append(" " + addr.CountryId);
+            return sb.ToString();
+        }
+
+        /*
+         * The full text of a party: the name, the free text, the numbers, the address,
+         * the tax numbers, the legal organisation, the contacts, and the electronic
+         * address. Each part gets its own line.
+         *
+         * A part that the party does not give makes no line. The text has no empty line
+         * at its end, thus the caller can put the text after a caption.
+         *
+         * The role code does not come to the page. It is a code, and the page shows the
+         * role in the caption of the caller, for example "Lieferung an".
+         */
+        public static string FormatTradeParty(TradeParty party)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            void Add(string? text)
+            {
+                if (!string.IsNullOrWhiteSpace(text))
+                {
+                    sb.AppendLine(text!.TrimEnd());
+                }
+            }
+
+            Add(party.Name);
+            Add(party.Description);
+
+            foreach (Identifier? id in party.Id)
+            {
+                Add(Text(id));
+            }
+
+            foreach (Identifier? id in party.GlobalId)
+            {
+                Add(FormatGroup(id?.SchemeId, Text(id)));
+            }
+
+            if (party.PostalTradeAddress != null)
+            {
+                Add(FormatAddress(party.PostalTradeAddress));
+            }
+
+            foreach (TaxRegistration? reg in party.SpecifiedTaxRegistration)
+            {
+                if (!string.IsNullOrWhiteSpace(reg?.Id?.Value))
+                {
+                    Add($"{reg!.Id!.SchemeId}: {reg.Id.Value}");
+                }
+            }
+
+            if (party.SpecifiedLegalOrganization != null)
+            {
+                Add(FormatLegalOrg(party.SpecifiedLegalOrganization));
+            }
+
+            foreach (TradeContact? contact in party.DefinedTradeContact)
+            {
+                if (contact != null)
+                {
+                    Add(FormatTradeContact(contact));
+                }
+            }
+
+            if (party.UriUniversalCommunication != null)
+            {
+                Add(FormatGroup(Text(party.UriUniversalCommunication.UriId),
+                                party.UriUniversalCommunication.CompleteNumber));
+            }
+
+            return sb.ToString().TrimEnd();
+        }
+
+        public static string FormatLegalOrg(LegalOrganization org)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrWhiteSpace(org.TradingBusinessName)) sb.AppendLine(org.TradingBusinessName);
+            if (org.PostalTradeAddress != null) sb.AppendLine(FormatAddress(org.PostalTradeAddress));
+            if (org.Id != null) sb.AppendLine(InvoiceText.Text(org.Id));
+            return sb.ToString();
+        }
+
+        public static string FormatReferencedDocument(ReferencedDocument doc)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"Referenz: {InvoiceText.Text(doc.IssuerAssignedId)}");
+            sb.AppendLine($"Anhang: {(doc.AttachmentBinaryObject == null ? "Nein" : "Ja")}");
+            if (doc.Name != null) sb.AppendLine($"{doc.Name}");
+            if (doc.FormattedIssueDateTime != null) sb.AppendLine($"Datum: {InvoiceText.DateOf(doc.FormattedIssueDateTime)?.ToString("d")}");
+            if (doc.UriId != null) sb.AppendLine($"URI: {InvoiceText.Text(doc.UriId)}");
+            if (doc.ReferenceTypeCode != null) sb.AppendLine($"Typ: {doc.ReferenceTypeCode}");
+            if (doc.LineId != null) sb.AppendLine($"Position: {InvoiceText.Text(doc.LineId)}");
+
+            return sb.ToString();
         }
 
         public static void AddContentCodeLine(StringBuilder sb, Code? code)
