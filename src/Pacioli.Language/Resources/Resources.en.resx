@@ -851,4 +851,7 @@ More information on the Internet: https://github.com/koozala/pacioli</value>
   <data name="VersionUnbekannt" xml:space="preserve">
     <value>unknown (no answer from the server)</value>
   </data>
+  <data name="DateiHierAblegen" xml:space="preserve">
+    <value>Drop a file here to show it</value>
+  </data>
 </root>

@@ -993,6 +993,15 @@ namespace Pacioli.Language.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Datei zum Anzeigen hier ablegen.
+        /// </summary>
+        public static string DateiHierAblegen {
+            get {
+                return ResourceManager.GetString("DateiHierAblegen", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Verkäufer.
         /// </summary>
         public static string seller {

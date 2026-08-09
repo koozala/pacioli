@@ -851,4 +851,7 @@ Mehr Informationen im Internet: https://github.com/koozala/pacioli</value>
   <data name="VersionUnbekannt" xml:space="preserve">
     <value>unbekannt (Server nicht erreichbar)</value>
   </data>
+  <data name="DateiHierAblegen" xml:space="preserve">
+    <value>Datei zum Anzeigen hier ablegen</value>
+  </data>
 </root>
