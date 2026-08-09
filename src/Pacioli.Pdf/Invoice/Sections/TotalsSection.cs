@@ -26,7 +26,7 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             foreach (var advance in context.Settlement?.SpecifiedAdvancePayment ?? new List<AdvancePayment>())
             {
-                sumTab.AddCell(new ItemCell($"***** {Resources.prepaid}"));
+                sumTab.AddCell(new ItemCell(Resources.prepaid));
                 sumTab.AddCell(new ItemCellRight($"{Fmt.ToString(advance.PaidAmount?.Value, "#,0.00")}"));
             }
 
