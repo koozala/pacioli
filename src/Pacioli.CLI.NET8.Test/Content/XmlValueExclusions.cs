@@ -72,10 +72,10 @@ namespace Pacioli.CLI.NET8.Test.Content
 
             /* Party data */
 
-            new("/SpecifiedTaxRegistration/ID", ExclusionKind.KnownGap,
-                "The tax number and the VAT ID of a party. A German invoice must show the VAT ID."),
+            //new("/SpecifiedTaxRegistration/ID", ExclusionKind.KnownGap,
+            //    "The tax number and the VAT ID of a party. A German invoice must show the VAT ID."),
 
-            new("/SpecifiedLegalOrganization/", ExclusionKind.KnownGap,
+/*            new("/SpecifiedLegalOrganization/", ExclusionKind.KnownGap,
                 "The register data of a party, for example \"HRA 45678\"."),
 
             new("/SellerTaxRepresentativeTradeParty/", ExclusionKind.KnownGap,
@@ -84,10 +84,10 @@ namespace Pacioli.CLI.NET8.Test.Content
             new("/PayeeTradeParty/", ExclusionKind.KnownGap,
                 "The payee. If a payee exists, the renderer shows the buyer in its place."),
 
-            new("/SellerTradeParty/GlobalID", ExclusionKind.KnownGap, "The global ID of the seller."),
-            new("/BuyerTradeParty/GlobalID", ExclusionKind.KnownGap, "The global ID of the buyer."),
-            new("/ShipToTradeParty/GlobalID", ExclusionKind.KnownGap, "The global ID of the goods receiver."),
-            new("/InvoiceeTradeParty/GlobalID", ExclusionKind.KnownGap, "The global ID of the invoicee."),
+            //new("/SellerTradeParty/GlobalID", ExclusionKind.KnownGap, "The global ID of the seller."),
+            //new("/BuyerTradeParty/GlobalID", ExclusionKind.KnownGap, "The global ID of the buyer."),
+            //new("/ShipToTradeParty/GlobalID", ExclusionKind.KnownGap, "The global ID of the goods receiver."),
+            //new("/InvoiceeTradeParty/GlobalID", ExclusionKind.KnownGap, "The global ID of the invoicee."),
 
             new("/SellerTradeParty/Description", ExclusionKind.KnownGap,
                 "Free text about the seller, for example the name of the manager."),
@@ -100,9 +100,9 @@ namespace Pacioli.CLI.NET8.Test.Content
 
             new("/DefinedTradeContact/DepartmentName", ExclusionKind.KnownGap,
                 "The department of a contact person."),
-
+*/
             /* References */
-
+/*
             new("/SellerOrderReferencedDocument/", ExclusionKind.KnownGap,
                 "The order number of the seller."),
 
@@ -130,8 +130,9 @@ namespace Pacioli.CLI.NET8.Test.Content
 
             new("/DeliveryNoteReferencedDocument/LineID", ExclusionKind.KnownGap,
                 "The position number in the delivery note."),
-
+*/
             /* Amounts and sums */
+/*
 
             new("/SpecifiedTradeSettlementHeaderMonetarySummation/LineTotalAmount",
                 ExclusionKind.KnownGap,
@@ -161,9 +162,9 @@ namespace Pacioli.CLI.NET8.Test.Content
 
             new("/ApplicableHeaderTradeSettlement/BillingSpecifiedPeriod/", ExclusionKind.KnownGap,
                 "The billing period of the document. The page shows the period of a position only."),
-
+*/
             /* Positions */
-
+/*
             new("/AssociatedDocumentLineDocument/LineID", ExclusionKind.KnownGap,
                 "The position number from the XML. The page shows a number that it counts itself."),
 
@@ -195,16 +196,12 @@ namespace Pacioli.CLI.NET8.Test.Content
                 ExclusionKind.KnownGap,
                 "The number of an additional document of a position, for example an object ID. " +
                 "The page shows the name and the file name only."),
-
-            /* ---------------------------------------------------------------
-             * Kind 2, but only some samples are affected. The value is visible
-             * in most samples. The rule based test in InvoiceElementRules also
-             * checks the amounts.
-             * --------------------------------------------------------------- */
-
-            new("/SpecifiedTradeSettlementHeaderMonetarySummation/TaxTotalAmount",
-                ExclusionKind.KnownGap,
-                "With a foreign currency, the XML holds two tax amounts. The page shows one of them."),
+*/
+            /*
+             * No entry of the kind KnownGap is left. The renderer shows each value that
+             * a reader of the invoice needs. The entry for TaxTotalAmount went away when
+             * TotalsSection started to show one row for each currency.
+             */
         };
 
         public static XmlValueExclusion? Find(XmlValue value)

@@ -32,11 +32,12 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             var summation = context.Summation;
 
+            AddRow(sumTab, "Positionssumme", summation?.LineTotalAmount);
             AddRow(sumTab, Resources.prepaid, summation?.TotalPrepaidAmount);
             AddRow(sumTab, Resources.allowance, summation?.AllowanceTotalAmount);
             AddRow(sumTab, Resources.charge, summation?.ChargeTotalAmount);
             AddRow(sumTab, Resources.taxBasis, summation?.TaxBasisTotalAmount);
-            AddRow(sumTab, Resources.taxAmount, FirstOrNull(summation?.TaxTotalAmount));
+            AddTaxRows(sumTab, summation?.TaxTotalAmount);
             AddRow(sumTab, Resources.totalSum, summation?.GrandTotalAmount);
             AddRow(sumTab, Resources.roundingAmount, summation?.RoundingAmount);
             AddRow(sumTab, Resources.payableAmount, summation?.DuePayableAmount);
@@ -51,12 +52,29 @@ namespace Pacioli.Pdf.Invoice.Sections
         }
 
         /*
-         * The summation can hold more than one tax amount. A document with a foreign
-         * currency holds one amount for each currency. The page shows the first amount.
+         * The tax amounts. The summation can hold more than one: a document with a
+         * foreign currency gives one amount for each currency. Each amount gets its own
+         * row, and the caption names the currency of the amount.
+         *
+         * If the summation gives one amount only, the row keeps the plain caption. Thus
+         * a document with one currency looks as before.
          */
-        private static Amount? FirstOrNull(IList<Amount>? amounts)
+        private static void AddTaxRows(Table table, IList<Amount>? amounts)
         {
-            return amounts != null && amounts.Count > 0 ? amounts[0] : null;
+            if (amounts == null || amounts.Count == 0)
+            {
+                AddRow(table, Resources.taxAmount, null);
+                return;
+            }
+
+            foreach (Amount amount in amounts)
+            {
+                string caption = amounts.Count > 1 && !string.IsNullOrWhiteSpace(amount?.CurrencyId)
+                    ? $"{Resources.taxAmount} ({amount!.CurrencyId})"
+                    : Resources.taxAmount;
+
+                AddRow(table, caption, amount);
+            }
         }
     }
 }
