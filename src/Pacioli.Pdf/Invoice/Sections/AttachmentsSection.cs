@@ -51,6 +51,7 @@ namespace Pacioli.Pdf.Invoice.Sections
             {
                 FileName = binary?.FileName ?? string.Empty,
                 Name = refdoc.Name,
+                ReferenceId = InvoiceText.Text(refdoc.IssuerAssignedId),
                 Data = binary?.Value,
                 MimeType = binary?.MimeCode
             });

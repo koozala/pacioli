@@ -2,6 +2,7 @@ using Pacioli.Language.Resources;
 using Pacioli.Pdf.ERechnung;
 using Pacioli.Pdf.Invoice;
 using Pacioli.Preview.ImageGeneration;
+using Pacioli.WindowsApp.NET8.Util;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -116,30 +117,67 @@ namespace Pacioli.WindowsApp.NET8.Controls
 
             foreach (var att in attachments)
             {
-                string label = !string.IsNullOrWhiteSpace(att.Name)
-                    ? att.Name!
-                    : att.FileName;
-                var link = new LinkLabel
+                /*
+                 * An invoice can name a document without the data of its file. Such an
+                 * attachment gets a plain label, and not a link. Before, it got a link
+                 * that did nothing when the user clicked it.
+                 */
+                if (AttachmentStore.HasContent(att))
                 {
-                    Text = label,
-                    AutoSize = true,
-                    //MaximumSize = new Size(F_AttachmentsPanel.Width - 10, 0),
-                    Tag = att
-                };
-                link.LinkClicked += AttachmentLink_Clicked;
-                F_AttachmentsPanel.Controls.Add(link);
+                    var link = new LinkLabel
+                    {
+                        Text = BuildAttachmentLabel(att),
+                        AutoSize = true,
+                        //MaximumSize = new Size(F_AttachmentsPanel.Width - 10, 0),
+                        Tag = att
+                    };
+                    link.LinkClicked += AttachmentLink_Clicked;
+                    F_AttachmentsPanel.Controls.Add(link);
+                }
+                else
+                {
+                    F_AttachmentsPanel.Controls.Add(new Label
+                    {
+                        Text = $"{BuildAttachmentLabel(att)} (nur Verweis, keine Datei)",
+                        AutoSize = true
+                    });
+                }
             }
+        }
+
+        /* The text of one attachment: its name, its file name, and its number. */
+        private static string BuildAttachmentLabel(AttachmentDescriptor att)
+        {
+            string name = !string.IsNullOrWhiteSpace(att.Name) ? att.Name! : att.FileName;
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                name = att.ReferenceId ?? string.Empty;
+            }
+            else if (!string.IsNullOrWhiteSpace(att.ReferenceId))
+            {
+                name = $"{name} ({att.ReferenceId})";
+            }
+
+            return string.IsNullOrWhiteSpace(name) ? "Anlage" : name;
         }
 
         private void AttachmentLink_Clicked(object? sender, LinkLabelLinkClickedEventArgs e)
         {
             var att = (AttachmentDescriptor)((LinkLabel)sender!).Tag!;
-            var data = att.Data;
-            if (data == null) return;
 
-            var tempPath = Path.Combine(Path.GetTempPath(), att.FileName);
-            File.WriteAllBytes(tempPath, data);
-            Process.Start(new ProcessStartInfo(tempPath) { UseShellExecute = true });
+            try
+            {
+                string path = AttachmentStore.Save(att);
+                AttachmentStore.Open(path);
+            }
+            catch (Exception ex)
+            {
+                /* A file that the system cannot open must not stop the application. */
+                MessageBox.Show(
+                    $"Die Anlage kann nicht geöffnet werden.{Environment.NewLine}{Environment.NewLine}{ex.Message}",
+                    "Pacioli", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void UpdateImage()

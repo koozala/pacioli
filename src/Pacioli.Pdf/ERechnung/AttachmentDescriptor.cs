@@ -18,6 +18,13 @@ namespace Pacioli.Pdf.ERechnung
         /* The name of the document, if the invoice gives one. */
         public string? Name { get; set; }
 
+        /*
+         * The number that the issuer gave to the document, for example "LV 1.1.1.1.1.".
+         * An invoice can name a document without the data of its file. Then this number
+         * is the only way to find the document.
+         */
+        public string? ReferenceId { get; set; }
+
         /* The content of the file, or null if the invoice holds a reference only. */
         public byte[]? Data { get; set; }
 
