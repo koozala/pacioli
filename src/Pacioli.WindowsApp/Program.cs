@@ -1,0 +1,46 @@
+
+using Microsoft.Web.WebView2.Core;
+using Pacioli.Config.Persistence;
+using Pacioli.Language.Resources;
+using Pacioli.WindowsApp.Util;
+using System.Diagnostics;
+using System.Reflection;
+using System.Text;
+
+namespace Pacioli.WindowsApp
+{
+    internal static class Program
+    {
+        /// <summary>
+        ///  The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main(string[] args)
+        {
+            // To customize application configuration such as set high DPI settings or default font,
+            // see https://aka.ms/applicationconfiguration.
+
+            var pref = UserPreferences.LoadPreferences();
+
+            if (pref.PerformUpdateCheck)
+            {
+                var check = UpdateCheck.CreateAsync().Result;
+                // Safe to block here: no SynchronizationContext is installed before Application.Run,
+                // so GetAwaiter().GetResult() cannot deadlock.
+                //check.ExecuteAsync(true).GetAwaiter().GetResult();
+
+                if (check.NewVersionAvailable().Result)
+                {
+                    var result = MessageBox.Show(string.Format(Resources.msgUpdateAsk, VersionInformation.GetVersion(), check.LatestVersion), Resources.msgUpdateAnnounce, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (result == DialogResult.Yes)
+                    {
+                        check.PerformUpdate().Wait();
+                    }
+                }
+            }
+
+            ApplicationConfiguration.Initialize();
+            Application.Run(new MainForm(args));
+        }
+    }
+}

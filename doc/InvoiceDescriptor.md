@@ -491,7 +491,7 @@ underscore at its start, for example `_InvoiceReferencedDocuments`, is not for y
 `InvoiceWriter` in the project `Pacioli.Pdf` writes the data to the PDF page. It does not
 write all fields.
 
-The test project `Pacioli.CLI.NET8.Test` measures this. It renders each sample document,
+The test project `Pacioli.CLI.Test` measures this. It renders each sample document,
 then it looks for each value of the XML input on the page. The test makes a report:
 
 ```

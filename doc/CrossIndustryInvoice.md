@@ -640,7 +640,7 @@ HeaderTradeSettlement?      Settlement  => Transaction?.ApplicableHeaderTradeSet
 Almost all properties of the model can be null. Use the null conditional operator `?.` for
 each step of a path.
 
-The renderer does not write all fields. The test project `Pacioli.CLI.NET8.Test` measures
+The renderer does not write all fields. The test project `Pacioli.CLI.Test` measures
 this: it renders each sample document, then it looks for each value of the XML input on the
 page. The test makes a report:
 

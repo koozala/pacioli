@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pacioli.Preview", "Pacioli.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pacioli.Pdf", "Pacioli.Pdf\Pacioli.Pdf.csproj", "{A5DDDE81-EE14-433C-8F6A-ABDBE4D85A0D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pacioli.WindowsApp.NET8", "Pacioli.WindowsApp.NET8\Pacioli.WindowsApp.NET8.csproj", "{2BDEFC8C-054E-4801-ADED-3D7EBCE44B99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pacioli.WindowsApp", "Pacioli.WindowsApp\Pacioli.WindowsApp.csproj", "{2BDEFC8C-054E-4801-ADED-3D7EBCE44B99}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pacioli.Language", "Pacioli.Language\Pacioli.Language.csproj", "{36A97452-580B-44BF-AB7F-AEB9B80948E4}"
 EndProject
@@ -15,13 +15,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacioli.Config.Persistence.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pacioli.Config.Persistence", "Pacioli.Config.Persistence\Pacioli.Config.Persistence.csproj", "{0FE90A22-6F36-418E-85AA-D510C68C56FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacioli.CLI.NET8", "Pacioli.CLI.NET8\Pacioli.CLI.NET8.csproj", "{4330658C-1C3A-4A8A-9BB6-C580E898665A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacioli.CLI", "Pacioli.CLI\Pacioli.CLI.csproj", "{4330658C-1C3A-4A8A-9BB6-C580E898665A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacioli.Updater", "Pacioli.Updater\Pacioli.Updater.csproj", "{A99A76F2-38E9-4ECD-B605-ED8A46DA6906}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pacioli.Updater.Test", "Pacioli.Updater.Test\Pacioli.Updater.Test.csproj", "{28AC4C08-B87F-447F-8AB0-B17A08E52977}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pacioli.CLI.NET8.Test", "Pacioli.CLI.NET8.Test\Pacioli.CLI.NET8.Test.csproj", "{8E2C4DC0-69F3-49FC-B0D8-8AF1E9EE9756}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pacioli.CLI.Test", "Pacioli.CLI.Test\Pacioli.CLI.Test.csproj", "{8E2C4DC0-69F3-49FC-B0D8-8AF1E9EE9756}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
