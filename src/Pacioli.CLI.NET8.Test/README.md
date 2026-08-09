@@ -155,7 +155,17 @@ The file is in Markdown form. It has these parts:
 | Values that are missing, and that have no entry | The failures, with the line number in the XML, the path, and the value. |
 | Known gaps of the renderer | Each gap, with the number of values, the number of samples, and the reason. Then examples with the sample and the line number. |
 | Entries of kind KnownGap without a hit | Entries that you can remove. |
+| Elements that the page does not show, by design | Each entry of the kind NotRendered, with the number of values, the number of samples, and the reason. |
 | Each sample | One row for each sample, with its counts. |
+| Each sample in detail | For each sample, the elements that are not on the page: the number of values, the kind, and the path of the element. |
+
+The kind in the last part has three values:
+
+| Kind | Meaning |
+|---|---|
+| `not rendered` | The page must not show the value in this form. |
+| `known gap` | The renderer does not show the value yet. |
+| `**missing**` | No entry explains the value. This makes the test fail. |
 
 The test also writes a short form of the gaps to the console.
 

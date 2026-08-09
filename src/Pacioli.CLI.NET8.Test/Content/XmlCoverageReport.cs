@@ -26,8 +26,12 @@ namespace Pacioli.CLI.NET8.Test.Content
             get { lock (_lock) { return _samples.Count; } }
         }
 
-        public void AddSample(string sample, int found, int notRendered, int knownGap,
-                              IReadOnlyList<XmlValue> missing)
+        /*
+         * Takes the result of one sample: how many values are on the page, and each
+         * value that is not. The counts of the kinds come from the second list, thus
+         * the caller cannot give a count that does not agree with the list.
+         */
+        public void AddSample(string sample, int found, IReadOnlyList<NotOnPageValue> notOnPage)
         {
             lock (_lock)
             {
@@ -35,9 +39,7 @@ namespace Pacioli.CLI.NET8.Test.Content
                 {
                     Name = sample,
                     Found = found,
-                    NotRendered = notRendered,
-                    KnownGap = knownGap,
-                    Missing = missing.ToList()
+                    NotOnPage = notOnPage.ToList()
                 });
             }
         }
@@ -73,7 +75,9 @@ namespace Pacioli.CLI.NET8.Test.Content
                 WriteMissing(text);
                 WriteGaps(text);
                 WriteUnusedEntries(text);
+                WriteNotRenderedGroups(text);
                 WriteSamples(text);
+                WriteSampleDetails(text);
 
                 return text.ToString();
             }
@@ -101,6 +105,9 @@ namespace Pacioli.CLI.NET8.Test.Content
             text.AppendLine($"- Samples directory: `{SamplesDirectory}`");
             text.AppendLine($"- CLI tool: `{CliExecutable}`");
             text.AppendLine($"- XML samples: {_samples.Count}");
+            text.AppendLine();
+            text.AppendLine("The section [Each sample in detail](#each-sample-in-detail) names, for each");
+            text.AppendLine("sample, the elements that are not on the page.");
             text.AppendLine();
         }
 
@@ -240,6 +247,110 @@ namespace Pacioli.CLI.NET8.Test.Content
             text.AppendLine();
         }
 
+        /*
+         * The elements that the page does not show by design, over all samples.
+         *
+         * The section for the known gaps names the values that a reader misses. This
+         * section names the values that the page must not show in the form of the XML,
+         * for example a code.
+         */
+        private void WriteNotRenderedGroups(StringBuilder text)
+        {
+            var groups = _samples
+                .SelectMany(sample => sample.NotOnPage
+                    .Where(entry => entry.Kind == NotOnPageKind.NotRendered)
+                    .Select(entry => new { sample.Name, Entry = entry }))
+                .GroupBy(item => item.Entry.Pattern ?? string.Empty)
+                .Select(group => new
+                {
+                    Pattern = group.Key,
+                    Count = group.Count(),
+                    Samples = group.Select(item => item.Name).Distinct(StringComparer.OrdinalIgnoreCase).Count(),
+                    Reason = group.First().Entry.Reason ?? string.Empty
+                })
+                .OrderByDescending(group => group.Count)
+                .ToList();
+
+            text.AppendLine("## Elements that the page does not show, by design");
+            text.AppendLine();
+
+            if (groups.Count == 0)
+            {
+                text.AppendLine("None.");
+                text.AppendLine();
+                return;
+            }
+
+            text.AppendLine($"The page does not show {groups.Sum(group => group.Count)} value(s), " +
+                            $"in {groups.Count} entry/entries. These values are codes and technical data.");
+            text.AppendLine("The page shows their meaning in an other form, or it does not need them.");
+            text.AppendLine();
+            text.AppendLine("| Values | Samples | Entry | Reason |");
+            text.AppendLine("|---:|---:|---|---|");
+
+            foreach (var group in groups)
+            {
+                text.AppendLine($"| {group.Count} | {group.Samples} | `{group.Pattern}` | {group.Reason} |");
+            }
+
+            text.AppendLine();
+        }
+
+        /*
+         * For each sample, the elements that are not on the page.
+         *
+         * The list holds one row for each element, with the number of values and the
+         * kind. The kind tells if the page must not show the value, if the renderer has
+         * a gap, or if no entry explains the value.
+         */
+        private void WriteSampleDetails(StringBuilder text)
+        {
+            text.AppendLine("## Each sample in detail");
+            text.AppendLine();
+            text.AppendLine("The elements of a sample that are not on the page. A sample without a row");
+            text.AppendLine("shows each of its values.");
+            text.AppendLine();
+
+            foreach (SampleResult sample in _samples.OrderBy(item => item.Name, StringComparer.OrdinalIgnoreCase))
+            {
+                text.AppendLine($"### {sample.Name}");
+                text.AppendLine();
+
+                if (sample.NotOnPage.Count == 0)
+                {
+                    text.AppendLine("Each value of this sample is on the page.");
+                    text.AppendLine();
+                    continue;
+                }
+
+                text.AppendLine($"{sample.Found} of {sample.Found + sample.NotOnPage.Count} values are on the page.");
+                text.AppendLine();
+                text.AppendLine("| Values | Kind | Element |");
+                text.AppendLine("|---:|---|---|");
+
+                var rows = sample.NotOnPage
+                    .GroupBy(entry => new { entry.Value.Path, entry.Kind })
+                    .Select(group => new { group.Key.Path, group.Key.Kind, Count = group.Count() })
+                    .OrderBy(row => row.Kind)
+                    .ThenByDescending(row => row.Count)
+                    .ThenBy(row => row.Path, StringComparer.Ordinal);
+
+                foreach (var row in rows)
+                {
+                    string kind = row.Kind switch
+                    {
+                        NotOnPageKind.NotRendered => "not rendered",
+                        NotOnPageKind.KnownGap => "known gap",
+                        _ => "**missing**"
+                    };
+
+                    text.AppendLine($"| {row.Count} | {kind} | `{row.Path}` |");
+                }
+
+                text.AppendLine();
+            }
+        }
+
         private void WriteSamples(StringBuilder text)
         {
             text.AppendLine("## Each sample");
@@ -268,9 +379,19 @@ namespace Pacioli.CLI.NET8.Test.Content
         {
             public required string Name { get; init; }
             public required int Found { get; init; }
-            public required int NotRendered { get; init; }
-            public required int KnownGap { get; init; }
-            public required List<XmlValue> Missing { get; init; }
+
+            /* Each value of this sample that is not on the page. */
+            public required List<NotOnPageValue> NotOnPage { get; init; }
+
+            public int NotRendered => Count(NotOnPageKind.NotRendered);
+            public int KnownGap => Count(NotOnPageKind.KnownGap);
+
+            public List<XmlValue> Missing => NotOnPage
+                .Where(entry => entry.Kind == NotOnPageKind.Missing)
+                .Select(entry => entry.Value)
+                .ToList();
+
+            private int Count(NotOnPageKind kind) => NotOnPage.Count(entry => entry.Kind == kind);
         }
 
         private sealed class GapGroup

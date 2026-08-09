@@ -252,6 +252,7 @@ namespace Pacioli.CLI.NET8.Test
             var values = XmlValueExtractor.Extract(sample.FullPath);
 
             var missing = new List<XmlValue>();
+            var notOnPage = new List<NotOnPageValue>();
             int found = 0;
             int notRendered = 0;
             int knownGap = 0;
@@ -263,6 +264,13 @@ namespace Pacioli.CLI.NET8.Test
                 if (exclusion?.Kind == ExclusionKind.NotRendered)
                 {
                     notRendered++;
+                    notOnPage.Add(new NotOnPageValue
+                    {
+                        Value = value,
+                        Kind = NotOnPageKind.NotRendered,
+                        Pattern = exclusion.Pattern,
+                        Reason = exclusion.Reason
+                    });
                     continue;
                 }
 
@@ -286,13 +294,21 @@ namespace Pacioli.CLI.NET8.Test
                         _knownGapHits[exclusion.Pattern] = _knownGapHits.GetValueOrDefault(exclusion.Pattern) + 1;
                     }
                     _report.AddKnownGap(sample.RelativePath, exclusion, value);
+                    notOnPage.Add(new NotOnPageValue
+                    {
+                        Value = value,
+                        Kind = NotOnPageKind.KnownGap,
+                        Pattern = exclusion.Pattern,
+                        Reason = exclusion.Reason
+                    });
                     continue;
                 }
 
                 missing.Add(value);
+                notOnPage.Add(new NotOnPageValue { Value = value, Kind = NotOnPageKind.Missing });
             }
 
-            _report.AddSample(sample.RelativePath, found, notRendered, knownGap, missing);
+            _report.AddSample(sample.RelativePath, found, notOnPage);
 
             if (missing.Count == 0)
             {
