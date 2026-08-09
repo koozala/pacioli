@@ -274,5 +274,46 @@ namespace Pacioli.Pdf.Invoice.Sections
                 sb.Append($"Betreffcodierung: {code!.Value}");
             }
         }
+
+        /*
+         * One tax of a position or of the document: the rate with its type and its
+         * category, the amount, the basis amounts, the reason of an exemption, and the
+         * day of the tax.
+         *
+         * A part that the document does not give makes no text. If the tax gives
+         * nothing, the method gives an empty text, thus the caller gets no empty line.
+         *
+         * The text ends with a line break, because the caller appends it to a text that
+         * holds one item per line.
+         *
+         * The code of the due date type does not come to the page. It is a code, and the
+         * page shows the day itself.
+         */
+        public static string FormatTradeTax(TradeTax tax)
+        {
+            string rate = FormatGroup(
+                tax.RateApplicablePercent.HasValue
+                    ? tax.RateApplicablePercent.Value.ToString("0.00") + "%"
+                    : null,
+                tax.TypeCode.ToTaxTypeName(),
+                tax.CategoryCode.ToTaxCategoryName());
+
+            string details = FormatGroup(
+                tax.CalculatedAmount == null ? null : $"Betrag: {FormatAmount(tax.CalculatedAmount)}",
+                tax.BasisAmount == null ? null : $"{Resources.basis}: {FormatAmount(tax.BasisAmount)}",
+                tax.LineTotalBasisAmount == null
+                    ? null
+                    : $"Basis der Positionen: {FormatAmount(tax.LineTotalBasisAmount)}",
+                tax.AllowanceChargeBasisAmount == null
+                    ? null
+                    : $"Basis der Zu- und Abschläge: {FormatAmount(tax.AllowanceChargeBasisAmount)}",
+                FormatGroup(tax.ExemptionReason, tax.ExemptionReasonCode?.Value),
+                DateOf(tax.TaxPointDate)?.ToString("d"));
+
+            string all = FormatGroup(rate, details);
+
+            return all.Length == 0 ? string.Empty : $"{Resources.tax}: {all}{Environment.NewLine}";
+        }
+
     }
 }
