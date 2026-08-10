@@ -16,7 +16,12 @@ namespace Pacioli.Pdf.Invoice.Sections
         {
             doc.Add(new Paragraph($"{Resources.taxSums}:").SetMarginTop(20.0f));
 
-            Table taxTab = new Table(6).SetFontSize(12).SetWidth(context.FullWidth);
+            /*
+             * KeepTogether holds the table on one page. Without it, a page break can go
+             * through a row, and then a long text of an exemption stands with one part on
+             * each page, with the head of the table between the two parts.
+             */
+            Table taxTab = new Table(6).SetFontSize(12).SetWidth(context.FullWidth).SetKeepTogether(true);
             taxTab.AddHeaderCell($"{Resources.tax}");
             taxTab.AddHeaderCell($"{Resources.taxCategory}");
             taxTab.AddHeaderCell($"{Resources.taxBasis}");

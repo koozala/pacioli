@@ -1,10 +1,10 @@
+using En16931.Model;
 using iText.Layout;
 using iText.Layout.Element;
 using Pacioli.Language.Resources;
 using System;
 using System.Linq;
 using System.Text;
-using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.Pdf.Invoice.Sections
 {
@@ -18,52 +18,55 @@ namespace Pacioli.Pdf.Invoice.Sections
 
         public void Write(Document doc, InvoiceContext context)
         {
-            if (!string.IsNullOrWhiteSpace(context.Agreement?.BuyerReference))
+            var invoice = context.Core;
+
+            if (!string.IsNullOrWhiteSpace(invoice.BuyerReference))
             {
-                doc.Add(new Paragraph($"{Resources.refOrder}: {context.Agreement!.BuyerReference}"));
+                doc.Add(new Paragraph($"{Resources.refOrder}: {invoice.BuyerReference}"));
             }
 
             // Kundennummer
 
-            StringBuilder reStr = new StringBuilder();
-            Identifier? buyerId = context.Agreement?.BuyerTradeParty?.Id
+            Identifier? buyerId = invoice.Buyer?.Identifiers
                 .FirstOrDefault(entry => !string.IsNullOrWhiteSpace(entry?.Value));
             if (buyerId != null)
             {
+                StringBuilder reStr = new StringBuilder();
                 reStr.Append($"{Resources.customerNo}: ");
                 reStr.Append($" {buyerId.Value}");
                 reStr.Append($" ({buyerId.SchemeId})");
-            }
-            if (reStr.Length > 0)
-            {
                 doc.Add(new Paragraph(reStr.ToString()));
             }
 
-            DateOnly? orderDate = InvoiceText.DateOf(context.Agreement?.BuyerOrderReferencedDocument?.FormattedIssueDateTime);
+            DateOnly? orderDate = invoice.Extensions?.PurchaseOrderDate;
             if (orderDate != null)
             {
                 doc.Add(new Paragraph($"{Resources.orderDate}: {orderDate.Value.ToString("d")}"));
             }
 
-            ProcuringProject? project = context.Agreement?.SpecifiedProcuringProject;
-            if (project != null &&
-                (!string.IsNullOrWhiteSpace(project.Name) || !string.IsNullOrWhiteSpace(project.Id?.Value)))
+            string? projectName = invoice.Extensions?.ProjectName;
+            if (!string.IsNullOrWhiteSpace(projectName) || !string.IsNullOrWhiteSpace(invoice.ProjectReference))
             {
-                doc.Add(new Paragraph($"{Resources.projectNo}: {project.Name} {project.Id?.Value}"));
+                doc.Add(new Paragraph($"{Resources.projectNo}: {projectName} {invoice.ProjectReference}"));
             }
 
-            DateOnly? deliveryDate = InvoiceText.DateOf(context.Delivery?.ActualDeliverySupplyChainEvent?.OccurrenceDateTime);
+            DateOnly? deliveryDate = invoice.Delivery?.ActualDeliveryDate;
             if (deliveryDate != null)
             {
                 doc.Add(new Paragraph($"{Resources.deliveryDate}: {deliveryDate.Value.ToString("d")}"));
             }
 
-            doc.Add(new Paragraph($"{Resources.currencyNote} {context.Settlement?.InvoiceCurrencyCode}")
+            doc.Add(new Paragraph($"{Resources.currencyNote} {invoice.CurrencyCode}")
                 .SetFont(context.Bold));
 
-            if (context.Agreement?.SellerOrderReferencedDocument != null)
+            /*
+             * The number of the sales order (BT-14). The page shows the name of the
+             * document, and "--" if the document gives none.
+             */
+            if (invoice.SalesOrderReference != null || invoice.Extensions?.SalesOrderName != null)
             {
-                doc.Add(new Paragraph($"{Resources.UnsereBestellnummer}: {context.Agreement.SellerOrderReferencedDocument.Name ?? "--"}"));
+                doc.Add(new Paragraph(
+                    $"{Resources.UnsereBestellnummer}: {invoice.Extensions?.SalesOrderName ?? "--"}"));
             }
         }
     }

@@ -1,18 +1,15 @@
+using En16931.Model;
 using iText.Layout;
 using Pacioli.Language.Resources;
-using System.Collections.Generic;
 using System.Text;
-using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.Pdf.Invoice.Sections
 {
     /*
      * The bank accounts.
      *
-     * First come the accounts of the seller, then the accounts of the buyer. The buyer
-     * gives an account for a direct debit.
-     *
-     * The BIC is not in the account. It sits in the financial institution beside it.
+     * First come the accounts of the seller (BG-17), then the account of the buyer. The
+     * buyer gives an account for a direct debit (BT-91).
      */
     internal sealed class BankAccountsSection : IInvoiceSection
     {
@@ -20,38 +17,36 @@ namespace Pacioli.Pdf.Invoice.Sections
 
         public void Write(Document doc, InvoiceContext context)
         {
-            var paymentMeans = context.Settlement?.SpecifiedTradeSettlementPaymentMeans
-                               ?? new List<TradeSettlementPaymentMeans>();
-
-            foreach (var means in paymentMeans)
+            PaymentInstructions? payment = context.Core.PaymentInstructions;
+            if (payment == null)
             {
-                CreditorFinancialAccount? account = means.PayeePartyCreditorFinancialAccount;
-                if (account == null)
-                {
-                    continue;
-                }
+                return;
+            }
 
+            foreach (CreditTransfer transfer in payment.CreditTransfers)
+            {
                 StringBuilder sb = new StringBuilder();
-                sb.Append($"{Resources.accountHolder}: {account.AccountName}");
-                sb.Append($"\nIBAN: {account.IbanId?.Value}");
-                sb.Append($"\nBIC: {means.PayeeSpecifiedCreditorFinancialInstitution?.BicId?.Value}");
-                if (!string.IsNullOrWhiteSpace(account.ProprietaryId?.Value))
-                {
-                    sb.Append($"\n{account.ProprietaryId!.Value}");
-                }
+                sb.Append($"{Resources.accountHolder}: {transfer.AccountName}");
+                sb.Append($"\nIBAN: {transfer.AccountIdentifier}");
+                sb.Append($"\nBIC: {transfer.ServiceProviderIdentifier}");
                 doc.Add(new PartyBox(Resources.bankverbindung, sb.ToString()));
             }
 
-            foreach (var means in paymentMeans)
+            /*
+             * An account number that is not an IBAN. The core puts it in the same
+             * property as the IBAN, thus the extension names it apart.
+             */
+            foreach (string proprietary in payment.Extensions?.ProprietaryAccountIdentifiers ?? [])
             {
-                DebtorFinancialAccount? account = means.PayerPartyDebtorFinancialAccount;
-                if (account == null)
-                {
-                    continue;
-                }
+                doc.Add(new PartyBox(Resources.bankverbindung, proprietary));
+            }
 
+            DirectDebit? debit = payment.DirectDebit;
+            if (debit?.DebitedAccountIdentifier != null)
+            {
                 doc.Add(new PartyBox(Resources.bankverbindung,
-                    $"{account.AccountName}\n{account.IbanId?.Value}\n{means.PayerSpecifiedDebtorFinancialInstitution?.BicId?.Value}"));
+                    $"{payment.Extensions?.DebitedAccountName}\n{debit.DebitedAccountIdentifier}\n" +
+                    $"{payment.Extensions?.DebitedServiceProviderIdentifier}"));
             }
         }
     }

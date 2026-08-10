@@ -1,13 +1,12 @@
+using En16931.Model;
 using iText.IO.Font.Constants;
 using iText.Kernel.Font;
 using iText.Layout.Borders;
 using iText.Layout.Element;
-using iText.StyledXmlParser.Css.Resolve.Shorthand.Impl;
 using Pacioli.Language.Resources;
 using Pacioli.Pdf.Invoice.Sections;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Vit.FeRD.ExtendedDocument.Model;
 using CodeLists = En16931.Codes.CodeLists;
 
 namespace Pacioli.Pdf.Invoice
@@ -24,7 +23,7 @@ namespace Pacioli.Pdf.Invoice
             AddText(text);
         }
 
-        public PartyBox(string title, TradeParty party)
+        public PartyBox(string title, Party party)
         {
             var bold = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
             Text t1 = new Text($"{title}\n").SetFont(bold).SetFontSize(12.0f);
@@ -37,29 +36,33 @@ namespace Pacioli.Pdf.Invoice
 
             /*
              * The full data of each contact person: the name, the department, the mail
-             * address, the telephone, and the fax. Before, the box showed the name of
-             * the first person only, thus the other data of a contact was not on the
-             * page. FormatTradeContact ends each line with a line break.
+             * address, the telephone, and the fax. EN 16931 gives one contact per party
+             * (BG-6 and BG-9); a document can give more, and then they stand in the
+             * extension. FormatContact ends each line with a line break.
              */
-            foreach (TradeContact? contact in party.DefinedTradeContact)
+            foreach (Contact contact in ContactsOf(party))
             {
-                if (contact != null)
-                {
-                    AddText(InvoiceText.FormatTradeContact(contact));
-                }
+                AddText(CoreText.FormatContact(contact));
             }
 
-            if (!string.IsNullOrWhiteSpace(party.Description))
+            /* BT-33, the free text about the seller. */
+            if (!string.IsNullOrWhiteSpace(party.AdditionalLegalInformation))
             {
-                AddText($"{party.Description}\n");
+                AddText($"{party.AdditionalLegalInformation}\n");
             }
 
-            if (party.PostalTradeAddress != null)
+            if (party.PostalAddress != null)
             {
-                AddText(InvoiceText.FormatAddress(party.PostalTradeAddress) + "\n");
+                AddText(CoreText.FormatAddress(party.PostalAddress) + "\n");
             }
 
-            Identifier? id = party.Id.FirstOrDefault(entry => !string.IsNullOrWhiteSpace(entry?.Value));
+            /*
+             * The identifier of the party (BT-29). The core holds the plain identifiers
+             * and the identifiers with a scheme in one list; the ones with a scheme come
+             * below, thus this line takes an identifier without a scheme.
+             */
+            Identifier? id = party.Identifiers
+                .FirstOrDefault(entry => !string.IsNullOrWhiteSpace(entry?.Value));
             if (id != null)
             {
                 string s = id.SchemeId != null ? $"({id.SchemeId})" : string.Empty;
@@ -67,43 +70,62 @@ namespace Pacioli.Pdf.Invoice
             }
 
             // Steuer-ID und USt-Idnr
-            foreach (var reg in party.SpecifiedTaxRegistration)
+
+            foreach (Identifier registration in party.Extensions?.TaxRegistrations ?? [])
             {
-                if (!string.IsNullOrWhiteSpace(reg?.Id?.Value))
+                if (!string.IsNullOrWhiteSpace(registration.Value))
                 {
-                    AddText($"{Resources.SteuerId}: {reg!.Id!.SchemeId}: {reg!.Id!.Value}\n");
+                    AddText($"{Resources.SteuerId}: {registration.SchemeId}: {registration.Value}\n");
                 }
             }
 
-            foreach (var gid in party.GlobalId)
+            foreach (Identifier global in party.Extensions?.GlobalIdentifiers ?? [])
             {
-                if (gid != null)
-                {
-                    AddText($"{Resources.GlobalId}: ({CodeText.Name(CodeLists.IdentifierScheme, gid.SchemeId)}) {gid.Value}\n");
-                }
+                AddText($"{Resources.GlobalId}: ({CodeText.Name(CodeLists.IdentifierScheme, global.SchemeId)}) {global.Value}\n");
             }
 
-            if (party.UriUniversalCommunication?.UriId != null)
+            if (party.ElectronicAddress != null)
             {
-                AddLine(party.UriUniversalCommunication?.UriId?.Value ?? string.Empty);
+                AddLine(party.ElectronicAddress.Value);
             }
 
-            if (party.SpecifiedLegalOrganization != null)
+            /*
+             * The legal organisation: its name (BT-28), its identifier (BT-30), and its
+             * address if the document gives one.
+             */
+            if (party.TradingName != null || party.LegalRegistrationIdentifier != null
+                                          || party.Extensions?.LegalOrganizationAddress != null)
             {
-                if (party.SpecifiedLegalOrganization.TradingBusinessName != null)
+                if (party.TradingName != null)
                 {
-                    AddText($"{Resources.NameDerOrganisation}: {party.SpecifiedLegalOrganization.TradingBusinessName}\n");
+                    AddText($"{Resources.NameDerOrganisation}: {party.TradingName}\n");
                 }
-                AddText($"ID: {InvoiceText.Text(party.SpecifiedLegalOrganization.Id)}\n");
-                if (party.SpecifiedLegalOrganization.PostalTradeAddress != null)
+
+                AddText($"ID: {party.LegalRegistrationIdentifier?.Value}\n");
+
+                if (party.Extensions?.LegalOrganizationAddress != null)
                 {
-                    AddText(InvoiceText.FormatAddress(party.SpecifiedLegalOrganization.PostalTradeAddress) + "\n");
+                    AddText(CoreText.FormatAddress(party.Extensions.LegalOrganizationAddress) + "\n");
                 }
             }
 
             this
                 .SetPadding(5.0f)
                 .SetBorder(new SolidBorder(2.0f));
+        }
+
+        /*
+         * The contacts of a party. The extension holds each one; if it holds none, the
+         * core gives the one contact of EN 16931.
+         */
+        private static IEnumerable<Contact> ContactsOf(Party party)
+        {
+            if (party.Extensions is { Contacts.Count: > 0 })
+            {
+                return party.Extensions.Contacts;
+            }
+
+            return party.Contact == null ? [] : [party.Contact];
         }
 
         void AddText(string text)

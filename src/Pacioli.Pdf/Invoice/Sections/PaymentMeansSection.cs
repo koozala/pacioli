@@ -1,14 +1,14 @@
+using En16931.Model;
+using En16931.Model.Extended;
 using iText.Layout;
 using Pacioli.Language.Resources;
-using System.Collections.Generic;
 using System.Text;
-using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.Pdf.Invoice.Sections
 {
     /*
-     * How the buyer pays: the free text of the payment means, a card, the SEPA creditor
-     * identifier, and the SEPA mandate.
+     * How the buyer pays: the free text of the payment means (BT-82), a card (BG-18), the
+     * SEPA creditor identifier (BT-90), and the SEPA mandate (BT-89).
      *
      * The section writes one box for all of this data. It writes nothing if the document
      * gives none of it.
@@ -19,29 +19,33 @@ namespace Pacioli.Pdf.Invoice.Sections
 
         public void Write(Document doc, InvoiceContext context)
         {
+            var invoice = context.Core;
+            PaymentInstructions? payment = invoice.PaymentInstructions;
+
             StringBuilder pmStr = new StringBuilder();
 
-            foreach (var means in context.Settlement?.SpecifiedTradeSettlementPaymentMeans
-                                  ?? new List<TradeSettlementPaymentMeans>())
+            if (!string.IsNullOrWhiteSpace(payment?.PaymentMeansText))
             {
-                if (!string.IsNullOrWhiteSpace(means.Information)) pmStr.AppendLine(means.Information);
-                if (means.ApplicableTradeSettlementFinancialCard != null)
-                {
-                    pmStr.AppendLine($"{Resources.card}: {means.ApplicableTradeSettlementFinancialCard.Id?.Value} " +
-                                     $"{means.ApplicableTradeSettlementFinancialCard.CardholderName}");
-                }
+                pmStr.AppendLine(payment!.PaymentMeansText);
             }
 
-            if (!string.IsNullOrWhiteSpace(context.Settlement?.CreditorReferenceId?.Value))
+            PaymentCard? card = payment?.PaymentCard;
+            if (card != null)
             {
-                pmStr.AppendLine(context.Settlement!.CreditorReferenceId!.Value);
+                pmStr.AppendLine($"{Resources.card}: {card.PrimaryAccountNumber} {card.HolderName}");
             }
 
-            foreach (var terms in context.Settlement?.SpecifiedTradePaymentTerms ?? new List<TradePaymentTerms>())
+            /* BT-90 stands on the settlement in the document, and on the seller in the model. */
+            if (!string.IsNullOrWhiteSpace(invoice.Seller?.BankAssignedCreditorIdentifier))
             {
-                if (!string.IsNullOrWhiteSpace(terms.DirectDebitMandateId?.Value))
+                pmStr.AppendLine(invoice.Seller!.BankAssignedCreditorIdentifier);
+            }
+
+            foreach (PaymentTerm term in invoice.Extensions?.PaymentTerms ?? [])
+            {
+                if (!string.IsNullOrWhiteSpace(term.DirectDebitMandateReference))
                 {
-                    pmStr.AppendLine($"{Resources.sepaMandate}: {terms.DirectDebitMandateId!.Value}");
+                    pmStr.AppendLine($"{Resources.sepaMandate}: {term.DirectDebitMandateReference}");
                 }
             }
 

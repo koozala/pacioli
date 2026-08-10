@@ -15,34 +15,37 @@ namespace Pacioli.Pdf.Invoice.Sections
 
         public void Write(Document doc, InvoiceContext context)
         {
-            if (context.Agreement?.SellerTradeParty != null)
+            var invoice = context.Core;
+            var extensions = invoice.Extensions;
+
+            if (invoice.Seller != null)
             {
-                doc.Add(new PartyBox($"{Resources.seller}", context.Agreement.SellerTradeParty));
+                doc.Add(new PartyBox($"{Resources.seller}", invoice.Seller));
             }
 
-            if (context.Settlement?.InvoiceeTradeParty != null)
+            if (extensions?.Invoicee != null)
             {
-                doc.Add(new PartyBox(Resources.invoicee, context.Settlement.InvoiceeTradeParty));
+                doc.Add(new PartyBox(Resources.invoicee, extensions.Invoicee));
             }
 
-            if (context.Settlement?.PayeeTradeParty != null)
+            if (invoice.Payee != null)
             {
-                doc.Add(new PartyBox(Resources.payee, context.Settlement.PayeeTradeParty));
+                doc.Add(new PartyBox(Resources.payee, invoice.Payee));
             }
 
-            if (context.Delivery?.ShipFromTradeParty != null)
+            if (extensions?.ShipFrom != null)
             {
-                doc.Add(new PartyBox(Resources.shipFrom, context.Delivery.ShipFromTradeParty));
+                doc.Add(new PartyBox(Resources.shipFrom, extensions.ShipFrom));
             }
 
-            if (context.Delivery?.ShipToTradeParty != null)
+            if (extensions?.ShipTo != null)
             {
-                doc.Add(new PartyBox(Resources.shipTo, context.Delivery.ShipToTradeParty));
+                doc.Add(new PartyBox(Resources.shipTo, extensions.ShipTo));
             }
 
-            if (context.Agreement?.BuyerTradeParty != null)
+            if (invoice.Buyer != null)
             {
-                doc.Add(new PartyBox(Resources.buyer, context.Agreement.BuyerTradeParty));
+                doc.Add(new PartyBox(Resources.buyer, invoice.Buyer));
             }
         }
     }

@@ -22,13 +22,27 @@ namespace Pacioli.Pdf.Invoice.Sections
     {
         private readonly List<AttachmentDescriptor> _attachments = new List<AttachmentDescriptor>();
 
-        public InvoiceContext(CrossIndustryInvoice invoice, string sourceFile)
+        public InvoiceContext(CrossIndustryInvoice invoice, En16931.Model.Invoice core, string sourceFile)
         {
             Invoice = invoice;
+            Core = core;
             SourceFile = sourceFile;
         }
 
+        /*
+         * The invoice in the model of the old library. A section that is not yet moved
+         * reads it. It goes away with the last section; see doc/En16931-Migration.md.
+         */
         public CrossIndustryInvoice Invoice { get; }
+
+        /*
+         * The invoice in the model of En16931. A section that is moved reads this one.
+         *
+         * The model is flat: a section reads Core.Seller.Name and not a path of six
+         * steps. Each property carries its BT or BG number. Data that goes over the core
+         * of EN 16931 stands under Extensions.
+         */
+        public En16931.Model.Invoice Core { get; }
 
         /* The name of the file that the user gave to the tool. */
         public string SourceFile { get; }

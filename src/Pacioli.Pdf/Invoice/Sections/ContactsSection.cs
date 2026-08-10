@@ -1,8 +1,7 @@
+using En16931.Model;
 using iText.Layout;
 using Pacioli.Language.Resources;
-using System.Linq;
 using System.Text;
-using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.Pdf.Invoice.Sections
 {
@@ -16,20 +15,21 @@ namespace Pacioli.Pdf.Invoice.Sections
 
         public void Write(Document doc, InvoiceContext context)
         {
-            WriteContact(doc, context.Agreement?.SellerTradeParty, Resources.contactSeller);
-            WriteContact(doc, context.Agreement?.BuyerTradeParty, Resources.contactBuyer);
+            WriteContact(doc, context.Core.Seller, Resources.contactSeller);
+            WriteContact(doc, context.Core.Buyer, Resources.contactBuyer);
         }
 
-        private static void WriteContact(Document doc, TradeParty? party, string caption)
+        private static void WriteContact(Document doc, Party? party, string caption)
         {
-            TradeContact? contact = party?.DefinedTradeContact.FirstOrDefault();
+            /* BG-6 and BG-9 give one contact. The first contact of the document. */
+            Contact? contact = party?.Contact;
             if (contact == null)
             {
                 return;
             }
 
             StringBuilder sb = new StringBuilder();
-            InvoiceText.AppendContact(sb, contact);
+            CoreText.AppendContact(sb, contact);
 
             if (sb.Length > 0)
             {

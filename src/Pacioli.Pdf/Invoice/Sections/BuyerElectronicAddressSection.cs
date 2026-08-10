@@ -1,6 +1,6 @@
 using iText.Layout;
 using iText.Layout.Element;
-using Vit.FeRD.ExtendedDocument.Model;
+using En16931.Model;
 
 namespace Pacioli.Pdf.Invoice.Sections
 {
@@ -11,11 +11,11 @@ namespace Pacioli.Pdf.Invoice.Sections
 
         public void Write(Document doc, InvoiceContext context)
         {
-            UniversalCommunication? buyerAddress = context.Agreement?.BuyerTradeParty?.UriUniversalCommunication;
+            Identifier? address = context.Core.Buyer?.ElectronicAddress;
 
-            if (buyerAddress?.UriId != null)
+            if (address != null)
             {
-                doc.Add(new Paragraph($"{buyerAddress.UriId.SchemeId} {buyerAddress.UriId.Value}"));
+                doc.Add(new Paragraph($"{address.SchemeId} {address.Value}"));
             }
         }
     }

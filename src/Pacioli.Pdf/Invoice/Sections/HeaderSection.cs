@@ -1,18 +1,15 @@
-using iText.Kernel.Colors;
 using iText.Layout;
 using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using Pacioli.Language.Resources;
 using System;
-using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.Pdf.Invoice.Sections
 {
     /*
      * The head of the page: the name of the source file, the title of the document,
-     * the date, the invoice number, and the order number. Then comes a group with the
-     * references of the document, in a light frame.
+     * the date, the invoice number, and the order number.
      */
     internal sealed class HeaderSection : IInvoiceSection
     {
@@ -20,6 +17,8 @@ namespace Pacioli.Pdf.Invoice.Sections
 
         public void Write(Document doc, InvoiceContext context)
         {
+            var invoice = context.Core;
+
             Paragraph infoText1 = new Paragraph().SetTextAlignment(TextAlignment.CENTER).SetFontSize(10);
             infoText1.SetBorder(new SolidBorder(0.5f));
             infoText1.Add(string.Format(Resources.infoText1, context.SourceFile));
@@ -27,17 +26,19 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             // Überschrift
 
-            if (!string.IsNullOrWhiteSpace(context.Document?.Name))
+            string? title = invoice.Extensions?.Title;
+            if (!string.IsNullOrWhiteSpace(title))
             {
-                doc.Add(new Paragraph($"{context.Document!.Name}")
+                doc.Add(new Paragraph($"{title}")
                     .SetTextAlignment(TextAlignment.CENTER).SetFontSize(14).SetFont(context.Bold).SetMarginTop(10.0f));
             }
-            doc.Add(new Paragraph($"{TypeCodeMapping.Map(context.Document?.TypeCode)}")
+
+            doc.Add(new Paragraph($"{TypeCodeMapping.Map(invoice.InvoiceTypeCode)}")
                 .SetTextAlignment(TextAlignment.CENTER).SetFontSize(12).SetFont(context.Bold).SetMarginTop(10.0f));
 
             // Datum usw.
 
-            DateOnly? invoiceDate = InvoiceText.DateOf(context.Document?.IssueDateTime);
+            DateOnly? invoiceDate = invoice.IssueDate;
             if (invoiceDate != null)
             {
                 string f1 = invoiceDate.Value.ToString("d");
@@ -46,25 +47,18 @@ namespace Pacioli.Pdf.Invoice.Sections
                 doc.Add(dateLine);
             }
 
-            string? invoiceNo = InvoiceText.Text(context.Document?.Id);
-            if (!string.IsNullOrWhiteSpace(invoiceNo))
+            if (!string.IsNullOrWhiteSpace(invoice.InvoiceNumber))
             {
-                Paragraph invoiceNoLine = new Paragraph($"{Resources.invoiceNo}: {invoiceNo}")
+                Paragraph invoiceNoLine = new Paragraph($"{Resources.invoiceNo}: {invoice.InvoiceNumber}")
                     .SetTextAlignment(TextAlignment.RIGHT).SetFontSize(12);
                 doc.Add(invoiceNoLine);
             }
 
-            string? orderNo = InvoiceText.Text(context.Agreement?.BuyerOrderReferencedDocument?.IssuerAssignedId);
-            if (!string.IsNullOrWhiteSpace(orderNo))
+            if (!string.IsNullOrWhiteSpace(invoice.PurchaseOrderReference))
             {
-                doc.Add(new Paragraph($"{Resources.orderNo}: {orderNo}")
+                doc.Add(new Paragraph($"{Resources.orderNo}: {invoice.PurchaseOrderReference}")
                     .SetTextAlignment(TextAlignment.RIGHT).SetFontSize(12));
             }
-
-            
         }
-
-        
     }
-
 }

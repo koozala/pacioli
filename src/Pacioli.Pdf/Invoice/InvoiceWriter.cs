@@ -23,6 +23,15 @@ namespace Pacioli.Pdf.Invoice
     public class InvoiceWriter
     {
         CrossIndustryInvoice invoice;
+
+        /*
+         * The same invoice in the model of En16931. The migration moves the sections from
+         * the model above to this one, section by section. When the last section is
+         * moved, the field above and the second read go away.
+         * See doc/En16931-Migration.md, phase 5.
+         */
+        En16931.Model.Invoice core;
+
         string sourceFile;
 
         Stream XmlData = new MemoryStream();
@@ -57,6 +66,9 @@ namespace Pacioli.Pdf.Invoice
                 fstream.CopyTo(XmlData);
             }
             XmlData.Seek(0, SeekOrigin.Begin);
+
+            core = En16931.InvoiceReader.Read(XmlData);
+            XmlData.Seek(0, SeekOrigin.Begin);
         }
 
         public Stream GetXml() => XmlData;
@@ -76,7 +88,7 @@ namespace Pacioli.Pdf.Invoice
 
             document.AddNewPage();
 
-            context = new InvoiceContext(invoice, sourceFile);
+            context = new InvoiceContext(invoice, core, sourceFile);
 
             foreach (IInvoiceSection section in Sections)
             {
