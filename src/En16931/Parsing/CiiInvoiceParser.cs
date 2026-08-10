@@ -92,6 +92,10 @@ public sealed partial class CiiInvoiceParser : IInvoiceParser
         // by TypeCode: 130 invoiced object, 50 tender or lot, 916 supporting document.
         foreach (var reference in agreement.Els(Ram + "AdditionalReferencedDocument"))
         {
+            /* The group as the document gives it, before the split by the type code. */
+            var asGiven = ReadReferencedDocument(reference);
+            if (asGiven is not null) Ext(invoice).AdditionalDocuments.Add(asGiven);
+
             var id = reference.El(Ram + "IssuerAssignedID");
             switch (reference.El(Ram + "TypeCode").Text())
             {

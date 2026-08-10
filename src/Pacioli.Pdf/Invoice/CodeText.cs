@@ -1,14 +1,6 @@
+using En16931.Codes;
 using Pacioli.Language.Resources;
 using System.Globalization;
-using Vit.FeRD.ExtendedDocument.Model;
-
-/*
- * The two libraries both have a class CodeList and a class CodeLanguage. Thus each name
- * needs its own alias. The code lists come from En16931; the model still comes from
- * Vit.FeRD.ExtendedDocument.
- */
-using CodeLanguage = En16931.Codes.CodeLanguage;
-using CodeList = En16931.Codes.CodeList;
 
 namespace Pacioli.Pdf.Invoice
 {
@@ -47,10 +39,6 @@ namespace Pacioli.Pdf.Invoice
             return string.IsNullOrWhiteSpace(name) ? key : name!;
         }
 
-        public static string Name(CodeList list, Code? code) => Name(list, code?.Value);
-
-        public static string Name(CodeList list, Identifier? id) => Name(list, id?.Value);
-
         /*
          * The code and its name, for example "AAI (Allgemeine Information)". If the list
          * holds no name, the method gives the code alone.
@@ -72,6 +60,5 @@ namespace Pacioli.Pdf.Invoice
             return string.IsNullOrWhiteSpace(name) ? key : $"{key} ({name})";
         }
 
-        public static string Describe(CodeList list, Code? code) => Describe(list, code?.Value);
     }
 }

@@ -5,15 +5,13 @@ using Pacioli.Pdf.ERechnung;
 using Pacioli.Pdf.Invoice.Sections;
 using System.Collections.Generic;
 using System.IO;
-using Vit.FeRD.ExtendedDocument;
-using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.Pdf.Invoice
 {
     /*
      * Writes an invoice to a PDF page.
      *
-     * The parser is Vit.FeRD.ExtendedDocument. The class reads the invoice, then it gives
+     * The parser is the project En16931. The class reads the invoice, then it gives
      * the data to each section of the list Sections. A section writes one part of the
      * page. Thus this class holds no content of its own: to change the content of the
      * page, change a section, or change the list.
@@ -22,16 +20,7 @@ namespace Pacioli.Pdf.Invoice
      */
     public class InvoiceWriter
     {
-        CrossIndustryInvoice invoice;
-
-        /*
-         * The same invoice in the model of En16931. The migration moves the sections from
-         * the model above to this one, section by section. When the last section is
-         * moved, the field above and the second read go away.
-         * See doc/En16931-Migration.md, phase 5.
-         */
-        En16931.Model.Invoice core;
-
+        En16931.Model.Invoice invoice;
         string sourceFile;
 
         Stream XmlData = new MemoryStream();
@@ -55,19 +44,16 @@ namespace Pacioli.Pdf.Invoice
             if (IsZugferd)
             {
                 using Stream data = extractor.XmlDataStream!;
-                invoice = FeRDInvoice.Load(data);
-                data.Seek(0, SeekOrigin.Begin);
                 data.CopyTo(XmlData);
             }
             else
             {
-                invoice = FeRDInvoice.Load(fileName);
                 using var fstream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
                 fstream.CopyTo(XmlData);
             }
             XmlData.Seek(0, SeekOrigin.Begin);
 
-            core = En16931.InvoiceReader.Read(XmlData);
+            invoice = En16931.InvoiceReader.Read(XmlData);
             XmlData.Seek(0, SeekOrigin.Begin);
         }
 
@@ -88,7 +74,7 @@ namespace Pacioli.Pdf.Invoice
 
             document.AddNewPage();
 
-            context = new InvoiceContext(invoice, core, sourceFile);
+            context = new InvoiceContext(invoice, sourceFile);
 
             foreach (IInvoiceSection section in Sections)
             {

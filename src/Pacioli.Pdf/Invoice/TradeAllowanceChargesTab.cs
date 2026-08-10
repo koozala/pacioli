@@ -1,13 +1,13 @@
+using En16931.Model;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using Pacioli.Language.Resources;
-using System;
 using System.Collections.Generic;
 using System.Text;
-using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.Pdf.Invoice
 {
+    /* The table of the allowances and the charges of the document (BG-20 and BG-21). */
     public class TradeAllowanceChargesTab
     {
         Table tab;
@@ -24,22 +24,21 @@ namespace Pacioli.Pdf.Invoice
             tab.AddHeaderCell(Resources.tax);
         }
 
-        public void Add(IEnumerable<TradeAllowanceCharge> charges)
+        public void Add(IEnumerable<AllowanceCharge> charges)
         {
-            foreach (var charge in charges)
+            foreach (AllowanceCharge charge in charges)
             {
-                var text = charge.ChargeIndicator ? Resources.Zuschlag : Resources.Abschlag;
+                var text = charge.IsCharge ? Resources.Zuschlag : Resources.Abschlag;
                 tab.AddCell(new ItemCell(text));
                 tab.AddCell(new ItemCell($"{charge.Reason}"));
-                tab.AddCell(new ItemCellRight($"{Fmt.ToString(charge.ActualAmount?.Value, "#,0.00")}"));
-                tab.AddCell(new ItemCellRight($"{charge.CalculationPercent}%"));
-                tab.AddCell(new ItemCellRight($"{Fmt.ToString(charge.BasisAmount?.Value, "#,0.00")}"));
+                tab.AddCell(new ItemCellRight($"{Fmt.ToString(charge.Amount, "#,0.00")}"));
+                tab.AddCell(new ItemCellRight($"{charge.Percentage}%"));
+                tab.AddCell(new ItemCellRight($"{Fmt.ToString(charge.BaseAmount, "#,0.00")}"));
 
                 StringBuilder taxText = new StringBuilder();
-                if (charge.CategoryTradeTax != null)
+                if (charge.VatCategoryCode != null || charge.VatRate != null)
                 {
-                    taxText.Append($"{charge.CategoryTradeTax.RateApplicablePercent?.ToString("0.00")}% " +
-                                   $"{charge.CategoryTradeTax.CategoryCode ?? string.Empty}");
+                    taxText.Append($"{charge.VatRate?.ToString("0.00")}% {charge.VatCategoryCode ?? string.Empty}");
                 }
                 tab.AddCell(taxText.ToString());
             }

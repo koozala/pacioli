@@ -1,10 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!--
-      net10.0 is necessary: the package Vit.FeRD.ExtendedDocument has a
-      lib folder for net10.0 only.
-    -->
+    <!-- net10.0 comes from the project En16931. -->
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -12,16 +9,11 @@
   <ItemGroup>
     <PackageReference Include="itext" Version="9.7.0" />
     <PackageReference Include="itext.bouncy-castle-adapter" Version="9.7.0" />
-    <PackageReference Include="Vit.FeRD.ExtendedDocument" Version="0.0.1-7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Pacioli.Language\Pacioli.Language.csproj" />
-    <!--
-      The code lists come from En16931. The parser of this project is still
-      Vit.FeRD.ExtendedDocument; the migration exchanges it step by step.
-      See doc/En16931-Migration.md.
-    -->
+    <!-- The parser and the code lists. See doc/En16931-Migration.md. -->
     <ProjectReference Include="..\En16931\En16931.csproj" />
   </ItemGroup>
 

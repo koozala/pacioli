@@ -5,10 +5,9 @@ This document is a plan. It tells you how Pacioli can replace the external packa
 
 - Made on: 2026-08-10
 - Branch: `EN16931`
-- State: phase 0, 2, 3 and 4 are done. `Pacioli.Pdf` takes its code lists from `En16931`,
-  and it reads the attachment of a PDF file without the old library. `En16931` can now
-  carry the full page. The model of the renderer is still `Vit.FeRD.ExtendedDocument`;
-  phase 5 exchanges it, section by section.
+- State: phase 0 to 5 are done. **`Pacioli.Pdf` does not use `Vit.FeRD.ExtendedDocument`
+  any more.** The package is now in the test project only, where it is the independent
+  control of the parser. Phase 6 turns UBL on.
 
 ## Contents
 
@@ -436,46 +435,37 @@ practice.
 
 **Result:** `En16931` can carry the full page. No file of `Pacioli.Pdf` changed.
 
-### Phase 5 — The renderer, section by section
+### Phase 5 — The renderer, section by section — **done on 2026-08-10**
 
-`InvoiceContext` is the seam. Give it a second property:
+All fourteen sections read the model of `En16931`. **`Pacioli.Pdf` does not use
+`Vit.FeRD.ExtendedDocument` any more**, and the package is out of its project file.
 
-```csharp
-public CrossIndustryInvoice Invoice { get; }   // old, goes away at the end
-public En16931.Model.Invoice Core { get; }     // new
-```
+`InvoiceContext` was the seam: it carried the old model and the new one at the same time,
+and `InvoiceWriter` read the document two times. With the last section both went away.
+`InvoiceContext` also lost its short ways into the tree (`Agreement`, `Delivery`,
+`Settlement`, `Summation`): the new model is flat, thus a section reads `Core.Seller.Name`
+and needs no help.
 
-`InvoiceWriter` then reads the document two times, one time with each library. The cost is
-small, and each section can move alone.
+The text steps moved from `InvoiceText.cs` to the new `CoreText.cs`, each one with its
+first caller. `InvoiceText.cs` is gone. Two sections that stood in no list went with it:
+`TransactionSection` and `FurtherDocumentsSection` were dead code.
 
-Move the sections in this order. The order goes from the simple section to the difficult
-section:
+#### What the migration found
 
-| Order | Section | Note |
-|---:|---|---|
-| 1 | `BuyerElectronicAddressSection` | 22 lines |
-| 2 | `HeaderSection` | needs the title of the document |
-| 3 | `ContactsSection` | needs more than one contact |
-| 4 | `TotalsSection` | needs the advance payments |
-| 5 | `ReferencesSection` | needs the date of the order |
-| 6 | `PartiesSection` + `PartyBox` | needs the invoicee and the ship-from party |
-| 7 | `BankAccountsSection`, `PaymentMeansSection` | |
-| 8 | `PaymentTermsSection` | needs more than one term, and the discount terms |
-| 9 | `TaxSummarySection` | needs the full tax data and the exchange rate |
-| 10 | `AllowanceChargeSection` + `TradeAllowanceChargesTab` | needs the service charges |
-| 11 | `NotesSection` | needs the content code |
-| 12 | `AttachmentsSection` | needs the attachments of a position |
-| 13 | `LineItemsSection` | the biggest section, 215 lines |
-| 14 | `TradeAgreementSection` | the biggest section, 295 lines |
+| Finding | What happened |
+|---|---|
+| `En16931` trims the text of an element; the old library keeps it as it stands. The name of a seller ends with a line break and spaces in one sample, thus the old page held a blank line. | The trimming stays: the text of a business term must not carry the spaces of the XML. The page then became two lines shorter, a page break went through a row of the tax table, and the text of an exemption stood with one part on each page. The table now has `KeepTogether`. A split row was a defect of the renderer, and no sample showed it before. |
+| The head of the invoice names its documents in one group, and the parser splits that group by the type code: 130 is the invoiced object (BT-18), 50 is the tender or lot (BT-17), each other code is a supporting document (BG-24). The table of the documents showed 13 values less. | The core keeps its split, because it follows EN 16931. `InvoiceExtensions.AdditionalDocuments` now keeps the group as the document gives it, and the table reads that list. |
 
-`InvoiceText.cs` (319 lines) holds the text steps of more than one section. Move a method
-of this class together with its first caller.
+#### The control
 
-**Test:** run `dotnet test src\Pacioli.CLI.Test\Pacioli.CLI.Test.csproj` after **each**
-section. The part of the values on the page must not go down.
+The test project still reads the sample data with `Vit.FeRD.ExtendedDocument`, as phase 1
+decided. **Thus `Sample_RenderedPdf_ShowsKeyElements` now compares the two parsers**: the
+renderer reads with `En16931`, the test reads with the old library, and each key element
+must agree. It passes for each of the 165 samples.
 
-**Result:** `Pacioli.Pdf` does not use the package any more. Remove the property
-`InvoiceContext.Invoice` and the second read in `InvoiceWriter`.
+**Result:** 1069 test cases green. The report agrees with the baseline of phase 0, value
+for value: 8204 values on the page, 74,5 %, one known gap.
 
 ### Phase 6 — UBL
 
@@ -522,7 +512,7 @@ Close them as in phase 5.
 |---|---|---|
 | `En16931` | 11 for the parser, 5 for the code lists, 3 for the extension layer | the model is complete for the renderer |
 | `En16931.Test` | 9 | 502 test cases |
-| `Pacioli.Pdf` | 24 of 34 files | 10 files use the new code lists, and `EInvoiceExtractor` is new; the model comes in phase 5 |
+| `Pacioli.Pdf` | 24 of 31 files | reads `En16931` only; `InvoiceText.cs` and two dead sections are gone |
 | `Pacioli.CLI` | `Pacioli.CLI.csproj` only | done in phase 0 |
 | `Pacioli.WindowsApp` | `Pacioli.WindowsApp.csproj` only | done in phase 0 |
 | `Pacioli.CLI.Test` | 9 files | the samples directories, the exclusions, the control of the PDF step, and the reachability of the model |

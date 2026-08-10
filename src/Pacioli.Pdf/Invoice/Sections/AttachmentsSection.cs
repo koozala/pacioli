@@ -1,14 +1,14 @@
+using En16931.Model;
 using iText.Layout;
 using iText.Layout.Element;
 using Pacioli.Language.Resources;
 using Pacioli.Pdf.ERechnung;
 using System.Collections.Generic;
-using Vit.FeRD.ExtendedDocument.Model;
 
 namespace Pacioli.Pdf.Invoice.Sections
 {
     /*
-     * The attached documents.
+     * The attached documents (BG-24).
      *
      * The section writes one line for each attachment, and it keeps the data of the
      * attachment in the context. InvoiceWriter.GetAttachments then gives the list to the
@@ -22,38 +22,35 @@ namespace Pacioli.Pdf.Invoice.Sections
 
         public void Write(Document doc, InvoiceContext context)
         {
-            foreach (var refdoc in context.Agreement?.AdditionalReferencedDocument ?? new List<ReferencedDocument>())
+            foreach (SupportingDocument document in context.Core.SupportingDocuments)
             {
-                AddAttachment(doc, context, refdoc);
+                AddAttachment(doc, context, document);
             }
 
-            foreach (var item in context.LineItems)
+            foreach (InvoiceLine line in context.Core.Lines)
             {
-                foreach (var refdoc in item.SpecifiedLineTradeSettlement?.AdditionalReferencedDocument ?? new List<ReferencedDocument>())
+                foreach (SupportingDocument document in line.Extensions?.Documents
+                                                        ?? (IReadOnlyList<SupportingDocument>)new List<SupportingDocument>())
                 {
-                    AddAttachment(doc, context, refdoc);
-                }
-                foreach (var refdoc in item.SpecifiedLineTradeAgreement?.AdditionalReferencedDocument ?? new List<ReferencedDocument>())
-                {
-                    AddAttachment(doc, context, refdoc);
+                    AddAttachment(doc, context, document);
                 }
             }
         }
 
         /* Writes one line for an attached document, and keeps the attachment for the caller. */
-        private static void AddAttachment(Document doc, InvoiceContext context, ReferencedDocument refdoc)
+        private static void AddAttachment(Document doc, InvoiceContext context, SupportingDocument document)
         {
-            BinaryObject? binary = refdoc.AttachmentBinaryObject;
+            Attachment? attachment = document.Attachment;
 
-            doc.Add(new Paragraph($"{Resources.attachment}: {refdoc.Name} {binary?.FileName}"));
+            doc.Add(new Paragraph($"{Resources.attachment}: {document.Description} {attachment?.FileName}"));
 
             context.AddAttachment(new AttachmentDescriptor
             {
-                FileName = binary?.FileName ?? string.Empty,
-                Name = refdoc.Name,
-                ReferenceId = InvoiceText.Text(refdoc.IssuerAssignedId),
-                Data = binary?.Value,
-                MimeType = binary?.MimeCode
+                FileName = attachment?.FileName ?? string.Empty,
+                Name = document.Description,
+                ReferenceId = document.Reference,
+                Data = attachment?.Content,
+                MimeType = attachment?.MimeCode
             });
         }
     }

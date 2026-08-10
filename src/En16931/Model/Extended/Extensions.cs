@@ -67,6 +67,18 @@ public sealed class InvoiceExtensions
     /// <summary>The modes of transport (UN/ECE Recommendation 19).</summary>
     public List<string> TransportModeCodes { get; } = [];
 
+    /// <summary>
+    /// Each document that the head of the invoice names, as the document gives it.
+    /// </summary>
+    /// <remarks>
+    /// CII puts three business terms in the same group and separates them by a type code:
+    /// 130 is the invoiced object (BT-18), 50 is the tender or lot (BT-17), and each other
+    /// code is a supporting document (BG-24). The core follows that split, thus a reader
+    /// of the core cannot show the group as one list any more. This list keeps the group
+    /// together, and a document appears here beside its place in the core.
+    /// </remarks>
+    public List<ReferencedDocument> AdditionalDocuments { get; } = [];
+
     /// <summary>The type of the accounting account. The core holds its identifier (BT-19).</summary>
     public string? AccountingAccountTypeCode { get; set; }
 

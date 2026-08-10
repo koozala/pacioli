@@ -1,23 +1,24 @@
+using En16931.Model;
+using En16931.Model.Extended;
 using iText.Layout;
 using iText.Layout.Element;
 using Pacioli.Language.Resources;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Vit.FeRD.ExtendedDocument.Model;
 using CodeLists = En16931.Codes.CodeLists;
 
 namespace Pacioli.Pdf.Invoice.Sections
 {
     /*
-     * The table of the positions.
+     * The table of the positions (BG-25).
      *
-     * The table has seven columns: the position number, the description, the tax, the
-     * quantity, the net unit price, the gross unit price, and the total of the position.
-     * The column with the description holds all other data of the position.
+     * The table has eight columns: the position number, the description, the tax, the
+     * quantity, the net unit price, the gross unit price, the price basis, and the total
+     * of the position. The column with the description holds all other data of the
+     * position.
      */
-    internal sealed class  LineItemsSection : IInvoiceSection
+    internal sealed class LineItemsSection : IInvoiceSection
     {
         public string Name => "Line items";
 
@@ -34,24 +35,23 @@ namespace Pacioli.Pdf.Invoice.Sections
             tab.AddHeaderCell(new ItemCell($"{Resources.sum}"));
 
             int lineCount = 0;
-            foreach (var item in context.LineItems)
+            foreach (InvoiceLine line in context.Core.Lines)
             {
-                LineTradeAgreement? lineAgreement = item.SpecifiedLineTradeAgreement;
-                LineTradeDelivery? lineDelivery = item.SpecifiedLineTradeDelivery;
-                LineTradeSettlement? lineSettlement = item.SpecifiedLineTradeSettlement;
-                TradeTax? lineTax = lineSettlement?.ApplicableTradeTax.FirstOrDefault();
-                Quantity? billedQuantity = lineDelivery?.BilledQuantity;
+                TaxDetail? lineTax = line.Extensions?.Tax.FirstOrDefault();
 
                 lineCount++;
-                tab.AddCell(new ItemCell($"{item.AssociatedDocumentLineDocument.LineId.Value ?? $"({lineCount})"}"));
-                tab.AddCell(new ItemCell(BuildDescription(item)));
-                tab.AddCell(new ItemCell($"{lineTax?.RateApplicablePercent?.ToString("0.00")}% {lineTax?.TypeCode.ToTaxTypeName()} {lineTax?.CategoryCode.ToTaxCategoryName()}"));
-                tab.AddCell(new ItemCellRight($"{InvoiceText.FormatQuantity(billedQuantity)} {billedQuantity?.UnitCode.ToUnit()}"));
-                tab.AddCell(new ItemCellRight($"{Fmt.ToString(lineAgreement?.NetPriceProductTradePrice?.ChargeAmount?.Value, "#,0.00")}"));
-                tab.AddCell(new ItemCellRight($"{Fmt.ToString(lineAgreement?.GrossPriceProductTradePrice?.ChargeAmount?.Value, "#,0.00")}"));
-                tab.AddCell(new ItemCellRight(BuildPriceBasis(lineAgreement)));
-                tab.AddCell(new ItemCellRight($"{Fmt.ToString(lineSettlement?.SpecifiedTradeSettlementLineMonetarySummation?.LineTotalAmount?.Value, "#,0.00")}"));
+                tab.AddCell(new ItemCell($"{line.Id ?? $"({lineCount})"}"));
+                tab.AddCell(new ItemCell(BuildDescription(line)));
+                tab.AddCell(new ItemCell(
+                    $"{line.Vat.Rate?.ToString("0.00")}% {lineTax?.TypeCode.ToTaxTypeName()} {line.Vat.CategoryCode.ToTaxCategoryName()}"));
+                tab.AddCell(new ItemCellRight(
+                    $"{CoreText.FormatQuantity(line.InvoicedQuantity)} {line.InvoicedQuantity?.UnitCode.ToUnit()}"));
+                tab.AddCell(new ItemCellRight($"{Fmt.ToString(line.Price.NetPrice, "#,0.00")}"));
+                tab.AddCell(new ItemCellRight($"{Fmt.ToString(line.Price.GrossPrice, "#,0.00")}"));
+                tab.AddCell(new ItemCellRight(BuildPriceBasis(line.Price)));
+                tab.AddCell(new ItemCellRight($"{Fmt.ToString(line.NetAmount, "#,0.00")}"));
             }
+
             doc.Add(tab);
         }
 
@@ -62,10 +62,10 @@ namespace Pacioli.Pdf.Invoice.Sections
          * "100 Anz." for a price for 100 pieces. The net price and the gross price can
          * have a different basis. If the two are equal, the column shows one line.
          */
-        private static string BuildPriceBasis(LineTradeAgreement? lineAgreement)
+        private static string BuildPriceBasis(PriceDetails price)
         {
-            string net = FormatBasisQuantity(lineAgreement?.NetPriceProductTradePrice?.BasisQuantity);
-            string gross = FormatBasisQuantity(lineAgreement?.GrossPriceProductTradePrice?.BasisQuantity);
+            string net = CoreText.FormatQuantityWithUnit(price.Extensions?.NetBaseQuantity);
+            string gross = CoreText.FormatQuantityWithUnit(price.Extensions?.GrossBaseQuantity);
 
             if (net.Length == 0)
             {
@@ -80,67 +80,61 @@ namespace Pacioli.Pdf.Invoice.Sections
             return $"{net}\n{gross}";
         }
 
-        private static string FormatBasisQuantity(Quantity? quantity)
-        {
-            if (quantity == null)
-            {
-                return string.Empty;
-            }
-
-            return InvoiceText.FormatGroup(InvoiceText.FormatQuantity(quantity), quantity.UnitCode.ToUnit());
-        }
-
         /* Builds the text of the description column of one position. */
-        private static string BuildDescription(SupplyChainTradeLineItem item)
+        private static string BuildDescription(InvoiceLine line)
         {
-            TradeProduct? product = item.SpecifiedTradeProduct;
-            LineTradeAgreement? lineAgreement = item.SpecifiedLineTradeAgreement;
-            LineTradeDelivery? lineDelivery = item.SpecifiedLineTradeDelivery;
-            LineTradeSettlement? lineSettlement = item.SpecifiedLineTradeSettlement;
-            Quantity? billedQuantity = lineDelivery?.BilledQuantity;
+            LineItem item = line.Item;
+            InvoiceLineExtensions? extensions = line.Extensions;
+            LineItemExtensions? itemExtensions = item.Extensions;
 
             StringBuilder s1 = new StringBuilder();
-            s1.AppendLine(product?.Name);
-            if (!string.IsNullOrEmpty(product?.Description))
+            s1.AppendLine(item.Name);
+
+            if (!string.IsNullOrEmpty(item.Description))
             {
-                s1.AppendLine(product!.Description);
+                s1.AppendLine(item.Description);
             }
 
-            DateOnly? itemDeliveryDate = InvoiceText.DateOf(lineDelivery?.ActualDeliverySupplyChainEvent?.OccurrenceDateTime);
-            if (itemDeliveryDate != null)
+            if (extensions?.ActualDeliveryDate != null)
             {
-                s1.AppendLine($"{Resources.deliveryDate}: {itemDeliveryDate.Value.ToString("d")}");
-            }
-            if (!string.IsNullOrWhiteSpace(product?.SellerAssignedId?.Value))
-            {
-                s1.AppendLine($"{Resources.sellerAssignedId}: {product!.SellerAssignedId!.Value}");
+                s1.AppendLine($"{Resources.deliveryDate}: {extensions.ActualDeliveryDate.Value.ToString("d")}");
             }
 
-            if (!string.IsNullOrWhiteSpace(product?.GlobalId?.Value))
+            if (!string.IsNullOrWhiteSpace(item.SellerIdentifier))
             {
-                s1.AppendLine($"{CodeText.Name(CodeLists.IdentifierScheme, product!.GlobalId!.SchemeId)} {product.GlobalId.Value}");
+                s1.AppendLine($"{Resources.sellerAssignedId}: {item.SellerIdentifier}");
             }
 
-            SpecifiedPeriod? billingPeriod = lineSettlement?.BillingSpecifiedPeriod;
-            DateOnly? periodStart = InvoiceText.DateOf(billingPeriod?.StartDateTime);
-            DateOnly? periodEnd = InvoiceText.DateOf(billingPeriod?.EndDateTime);
-            if (periodStart != null && periodEnd != null)
+            if (item.StandardIdentifier != null)
             {
-                s1.AppendLine($"{Resources.billingPeriod}: {periodStart.Value.ToString("d")} - {periodEnd.Value.ToString("d")}");
+                s1.AppendLine(
+                    $"{CodeText.Name(CodeLists.IdentifierScheme, item.StandardIdentifier.SchemeId)} {item.StandardIdentifier.Value}");
             }
-            if (!string.IsNullOrWhiteSpace(billedQuantity?.UnitCode))
+
+            if (line.Period?.StartDate != null && line.Period?.EndDate != null)
             {
-                s1.AppendLine($"{Resources.unitQuantity}: {billedQuantity!.UnitCode.ToUnit()}");
+                s1.AppendLine($"{Resources.billingPeriod}: " +
+                              $"{line.Period.StartDate.Value.ToString("d")} - {line.Period.EndDate.Value.ToString("d")}");
             }
-            foreach (var attr in product?.ApplicableProductCharacteristic ?? new List<ProductCharacteristic>())
+
+            if (!string.IsNullOrWhiteSpace(line.InvoicedQuantity?.UnitCode))
             {
-                s1.AppendLine($"{attr.Description}: {attr.Value}");
+                s1.AppendLine($"{Resources.unitQuantity}: {line.InvoicedQuantity!.UnitCode.ToUnit()}");
+            }
+
+            foreach (ItemAttribute attribute in item.Attributes)
+            {
+                s1.AppendLine($"{attribute.Name}: {attribute.Value}");
             }
 
             /* The classification of the article, for example a tariff number. */
-            foreach (var classification in product?.DesignatedProductClassification ?? new List<ProductClassification>())
+            for (int index = 0; index < item.ClassificationIdentifiers.Count; index++)
             {
-                string text = InvoiceText.FormatGroup(classification.ClassName, classification.ClassCode?.Value);
+                string? className = itemExtensions != null && index < itemExtensions.ClassificationNames.Count
+                    ? itemExtensions.ClassificationNames[index]
+                    : null;
+
+                string text = CoreText.FormatGroup(className, item.ClassificationIdentifiers[index].Value);
                 if (text.Length > 0)
                 {
                     s1.AppendLine(text);
@@ -148,10 +142,9 @@ namespace Pacioli.Pdf.Invoice.Sections
             }
 
             /* The serial number of the article. */
-            foreach (var instance in product?.IndividualTradeProductInstance ?? new List<TradeProductInstance>())
+            foreach (ProductInstance instance in itemExtensions?.Instances ?? [])
             {
-                string text = InvoiceText.FormatGroup(
-                    InvoiceText.Text(instance.SupplierAssignedSerialId), InvoiceText.Text(instance.BatchId));
+                string text = CoreText.FormatGroup(instance.SerialId, instance.BatchId);
                 if (text.Length > 0)
                 {
                     s1.AppendLine($"{Resources.Seriennummer}: {text}");
@@ -159,58 +152,96 @@ namespace Pacioli.Pdf.Invoice.Sections
             }
 
             /* The articles in a set, for example the parts of a bundle. */
-            foreach (var included in product?.IncludedReferencedProduct ?? new List<ReferencedProduct>())
+            foreach (IncludedProduct included in itemExtensions?.IncludedProducts ?? [])
             {
-                string text = InvoiceText.FormatGroup(
+                string text = CoreText.FormatGroup(
                     included.Name,
                     included.Description,
-                    InvoiceText.Text(included.SellerAssignedId),
-                    InvoiceText.Text(included.BuyerAssignedId),
-                    InvoiceText.Text(included.IndustryAssignedId),
-                    string.Join(" ", included.GlobalId.Select(id => InvoiceText.Text(id))),
-                    InvoiceText.FormatGroup(InvoiceText.FormatQuantity(included.UnitQuantity),
-                                            included.UnitQuantity?.UnitCode.ToUnit()));
+                    included.SellerIdentifier,
+                    included.BuyerIdentifier,
+                    included.IndustryIdentifier,
+                    string.Join(" ", included.GlobalIdentifiers.Select(id => id.Value)),
+                    CoreText.FormatQuantityWithUnit(included.UnitQuantity));
+
                 if (text.Length > 0)
                 {
                     s1.AppendLine($"{Resources.EnthaltenesProdukt}: {text}");
                 }
             }
-            foreach (var note in item.AssociatedDocumentLineDocument?.IncludedNote ?? new List<Note>())
-            {
-                s1.AppendLine($"{CodeText.Describe(CodeLists.NoteSubject, note.SubjectCode)} {CodeText.Describe(CodeLists.NoteSubject, note.ContentCode)} {note.Content}");
-            }
-            InvoiceText.AppendReference(s1, Resources.refOrderDocument, lineAgreement?.BuyerOrderReferencedDocument);
-            InvoiceText.AppendReference(s1, Resources.refContractdocument, lineAgreement?.ContractReferencedDocument);
-            InvoiceText.AppendReference(s1, Resources.refDeliveryNote, lineDelivery?.DeliveryNoteReferencedDocument);
-            InvoiceText.AppendReference(s1, Resources.Angebot, lineAgreement?.QuotationReferencedDocument);
-            if (lineDelivery?.ShipToTradeParty != null)
-            {
-                s1.AppendLine($"{Resources.shipTo}: {InvoiceText.FormatTradeParty(lineDelivery.ShipToTradeParty)}");
-            }
-            lineAgreement?.AdditionalReferencedDocument?.ForEach(doc => InvoiceText.AppendReference(s1, Resources.ZusaetzlichesDokument, doc));
 
-            if (!string.IsNullOrWhiteSpace(product?.BuyerAssignedId?.Value))
+            foreach (InvoiceNote note in NotesOf(line))
             {
-                s1.AppendLine($"{Resources.buyerAssignedId}: {product!.BuyerAssignedId!.Value}");
-            }
-            foreach (var acct in lineSettlement?.ReceivableSpecifiedTradeAccountingAccount ?? new List<TradeAccountingAccount>())
-            {
-                s1.AppendLine($"{Resources.account}: {acct.Id?.Value} {acct.TypeCode}");
-            }
-            foreach (var charge in lineSettlement?.SpecifiedTradeAllowanceCharge ?? new List<TradeAllowanceCharge>())
-            {
-                InvoiceText.AppendAllowanceCharge(s1, charge);
+                s1.AppendLine($"{CodeText.Describe(CodeLists.NoteSubject, note.SubjectCode)} " +
+                              $"{CodeText.Describe(CodeLists.NoteSubject, note.Extensions?.ContentCode)} {note.Text}");
             }
 
-            lineSettlement?.AdditionalReferencedDocument?.ForEach(doc => InvoiceText.AppendReference(s1, Resources.ZusaetzlichesDokument, doc));
-            lineSettlement?.ApplicableTradeTax.ForEach(tax => s1.Append(InvoiceText.FormatTradeTax(tax)));
+            CoreText.AppendReference(s1, Resources.refOrderDocument, extensions?.PurchaseOrder);
+            CoreText.AppendReference(s1, Resources.refContractdocument, extensions?.Contract);
+            CoreText.AppendReference(s1, Resources.refDeliveryNote, extensions?.DeliveryNote);
+            CoreText.AppendReference(s1, Resources.Angebot, extensions?.Quotation);
 
-            foreach (var charge in lineAgreement?.GrossPriceProductTradePrice?.AppliedTradeAllowanceCharge ?? new List<TradeAllowanceCharge>())
+            if (extensions?.ShipTo != null)
             {
-                InvoiceText.AppendAllowanceCharge(s1, charge);
+                s1.AppendLine($"{Resources.shipTo}: {CoreText.FormatParty(extensions.ShipTo)}");
+            }
+
+            foreach (SupportingDocument document in extensions?.Documents ?? [])
+            {
+                CoreText.AppendReference(s1, Resources.ZusaetzlichesDokument, AsReference(document));
+            }
+
+            if (!string.IsNullOrWhiteSpace(item.BuyerIdentifier))
+            {
+                s1.AppendLine($"{Resources.buyerAssignedId}: {item.BuyerIdentifier}");
+            }
+
+            if (line.BuyerAccountingReference != null || extensions?.AccountingAccountTypeCode != null)
+            {
+                s1.AppendLine($"{Resources.account}: {line.BuyerAccountingReference} " +
+                              $"{extensions?.AccountingAccountTypeCode}");
+            }
+
+            foreach (AllowanceCharge charge in line.Allowances.Concat(line.Charges))
+            {
+                CoreText.AppendAllowanceCharge(s1, charge);
+            }
+
+            foreach (TaxDetail tax in extensions?.Tax ?? [])
+            {
+                s1.Append(CoreText.FormatTax(tax));
+            }
+
+            foreach (AllowanceCharge charge in line.Price.Extensions?.GrossPriceAllowances ?? [])
+            {
+                CoreText.AppendAllowanceCharge(s1, charge);
             }
 
             return s1.ToString();
         }
+
+        /*
+         * The notes of a position. The extension holds each one; if it holds none, the
+         * core gives the one note of EN 16931 (BT-127).
+         */
+        private static IEnumerable<InvoiceNote> NotesOf(InvoiceLine line)
+        {
+            if (line.Extensions is { Notes.Count: > 0 })
+            {
+                return line.Extensions.Notes;
+            }
+
+            return line.Note == null ? [] : [new InvoiceNote { Text = line.Note }];
+        }
+
+        /* A supporting document as a reference, for the one line form. */
+        private static ReferencedDocument AsReference(SupportingDocument document) => new()
+        {
+            Reference = document.Reference,
+            Name = document.Description,
+            Uri = document.ExternalLocation,
+            IssueDate = document.Extensions?.IssueDate,
+            LineId = document.Extensions?.LineId,
+            ReferenceTypeCode = document.Extensions?.ReferenceTypeCode
+        };
     }
 }

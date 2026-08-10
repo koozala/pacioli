@@ -8,7 +8,7 @@ namespace Pacioli.Pdf.Invoice
     /*
      * Gives the text of a document type code, for example "380" or "387".
      *
-     * The model of Vit.FeRD.ExtendedDocument keeps the code as a string, thus this class
+     * The model keeps the code as a string, thus this class
      * reads the text directly from the resources. Each text has the key "type" with the
      * code, for example "type380". To add a text for a new code, add a resource with this
      * name. A change of this class is not necessary.
