@@ -60,7 +60,17 @@ namespace Pacioli.WindowsApp
             }
             pref.OpenAfterSave = F_OpenAfterSave.Checked;
             pref.PerformUpdateCheck = F_PerformUpdateCheck.Checked;
-            cdb.SavePreferences(pref);
+
+            /*
+             * Here the user asked for the step, thus a database that does not answer gets
+             * a message. The program goes on: the language of this session still follows
+             * the choice, and the next start reads the values of before.
+             */
+            if (!cdb.TrySavePreferences(pref))
+            {
+                MessageBox.Show(Resources.msgSettingsNotSaved);
+            }
+
             this.Close();
 
             pref.SetCulture();

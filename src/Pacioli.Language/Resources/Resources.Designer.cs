@@ -669,6 +669,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The program could not save the settings..
+        /// </summary>
+        public static string msgSettingsNotSaved {
+            get {
+                return ResourceManager.GetString("msgSettingsNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kein aktives Dokument.
         /// </summary>
         public static string msgNoActiveDocument {

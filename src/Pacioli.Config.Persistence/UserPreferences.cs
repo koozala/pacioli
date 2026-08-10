@@ -37,22 +37,38 @@ namespace Pacioli.Config.Persistence
             SendRatingData = true;
         }
 
+        /*
+         * Takes the language of the preferences.
+         *
+         * A code that no culture knows must not stop the program. The database can hold
+         * such a code: a version before wrote it, or a person changed the file by hand.
+         * The language of the computer then applies, as with the code "System".
+         */
         public void SetCulture()
         {
-            if (LanguageCode == "System")
+            CultureInfo culture = CultureOf(LanguageCode);
+
+            CultureInfo.CurrentCulture = culture;
+            CultureInfo.CurrentUICulture = culture;
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            Resources.Culture = culture;
+        }
+
+        static CultureInfo CultureOf(string languageCode)
+        {
+            if (string.IsNullOrWhiteSpace(languageCode) || languageCode == "System")
             {
-                CultureInfo.CurrentCulture = CultureInfo.InstalledUICulture;
-                CultureInfo.CurrentUICulture = CultureInfo.InstalledUICulture;
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InstalledUICulture;
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.InstalledUICulture;
-                Resources.Culture = CultureInfo.InstalledUICulture;
+                return CultureInfo.InstalledUICulture;
             }
-            else
+
+            try
             {
-                CultureInfo.CurrentCulture = new CultureInfo(LanguageCode);
-                Thread.CurrentThread.CurrentCulture = new CultureInfo(LanguageCode);
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(LanguageCode);
-                Resources.Culture = new CultureInfo(LanguageCode);
+                return new CultureInfo(languageCode);
+            }
+            catch (CultureNotFoundException)
+            {
+                return CultureInfo.InstalledUICulture;
             }
         }
     }

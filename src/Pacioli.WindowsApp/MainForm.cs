@@ -151,8 +151,9 @@ namespace Pacioli.WindowsApp
             var path = Path.GetDirectoryName(openFileDialog1.FileName);
             if (path != null)
             {
+                /* The folder of the last open is a comfort. See the save of the PDF file. */
                 preferences.DefaultFolder = path;
-                cdb.SavePreferences(preferences);
+                cdb.TrySavePreferences(preferences);
             }
         }
 
@@ -285,10 +286,18 @@ namespace Pacioli.WindowsApp
             var result = saveFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                pref.AttachmentOutputFolder = Path.GetDirectoryName(saveFileDialog1.FileName)!;
-                cdb.SavePreferences(pref);
-
+                /*
+                 * The file comes first. The folder of the last save is a comfort, thus a
+                 * database that does not answer must not take the PDF file with it.
+                 */
                 File.WriteAllBytes(saveFileDialog1.FileName, rp.RenderedDoc.PdfData!);
+
+                string? folder = Path.GetDirectoryName(saveFileDialog1.FileName);
+                if (folder != null)
+                {
+                    pref.AttachmentOutputFolder = folder;
+                    cdb.TrySavePreferences(pref);
+                }
 
                 if (pref.OpenAfterSave)
                 {

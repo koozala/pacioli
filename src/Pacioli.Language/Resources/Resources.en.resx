@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -308,6 +308,9 @@
   </data>
   <data name="errorFileReadMessage" xml:space="preserve">
     <value>Error while reading file {0}: {1}</value>
+  </data>
+  <data name="msgSettingsNotSaved" xml:space="preserve">
+    <value>The program could not save the settings. It goes on with the values of before.</value>
   </data>
   <data name="msgNoActiveDocument" xml:space="preserve">
     <value>No active document</value>
