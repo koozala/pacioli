@@ -49,6 +49,10 @@ namespace Pacioli.Pdf.Invoice.Sections
                 FileName = attachment?.FileName ?? string.Empty,
                 Name = document.Description,
                 ReferenceId = document.Reference,
+
+                /* BT-124. InvoiceWriter takes the data out of the PDF file with it. */
+                Uri = document.ExternalLocation,
+
                 Data = attachment?.Content,
                 MimeType = attachment?.MimeCode
             });

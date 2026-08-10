@@ -25,6 +25,15 @@ namespace Pacioli.Pdf.ERechnung
          */
         public string? ReferenceId { get; set; }
 
+        /*
+         * Where the file stands, if the invoice does not hold its data (BT-124).
+         *
+         * A PDF file of the specification can hold the file beside the invoice. The XML
+         * then names it with a URI of the form "#ef=Aufmass.png". InvoiceWriter reads
+         * this name and takes the data out of the PDF file.
+         */
+        public string? Uri { get; set; }
+
         /* The content of the file, or null if the invoice holds a reference only. */
         public byte[]? Data { get; set; }
 

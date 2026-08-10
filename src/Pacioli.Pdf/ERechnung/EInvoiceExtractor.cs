@@ -81,36 +81,79 @@ namespace Pacioli.Pdf.ERechnung
         /* The syntax of the invoice: Cii, Ubl, or Unknown if the file holds none. */
         public InvoiceSyntax Syntax { get; private set; } = InvoiceSyntax.Unknown;
 
+        /*
+         * The other embedded files of the PDF file, without the invoice.
+         *
+         * A PDF file of the specification can hold an enclosure beside the invoice, for
+         * example a bill of quantities or a photograph. The XML names such a file with a
+         * URI of the form "#ef=Aufmass.png"; the data of the file stands in the PDF file
+         * and not in the XML.
+         */
+        public IReadOnlyList<EmbeddedFile> EmbeddedFiles { get; private set; } = Array.Empty<EmbeddedFile>();
+
         private void Read(string fileName)
         {
             using var reader = new PdfReader(fileName);
             using var document = new PdfDocument(reader);
 
+            var others = new List<EmbeddedFile>();
+            bool found = false;
+
             foreach (Attachment attachment in AttachmentsOf(document))
             {
-                using var candidate = new MemoryStream(attachment.Data, writable: false);
-
-                InvoiceSyntax syntax;
-                try
+                if (found)
                 {
-                    syntax = InvoiceReader.DetectSyntax(System.Xml.Linq.XDocument.Load(candidate));
-                }
-                catch (System.Xml.XmlException)
-                {
-                    /* The attachment is not XML. The next one gets the test. */
+                    others.Add(new EmbeddedFile(attachment.Name, attachment.Data));
                     continue;
                 }
 
+                InvoiceSyntax syntax = SyntaxOf(attachment.Data);
+
                 if (syntax == InvoiceSyntax.Unknown)
                 {
+                    others.Add(new EmbeddedFile(attachment.Name, attachment.Data));
                     continue;
                 }
 
                 XmlDataStream = new MemoryStream(attachment.Data, writable: false);
                 AttachmentName = attachment.Name;
                 Syntax = syntax;
-                return;
+                found = true;
             }
+
+            EmbeddedFiles = others;
+        }
+
+        /* The syntax of the data, or Unknown if the data is not an invoice. */
+        private static InvoiceSyntax SyntaxOf(byte[] data)
+        {
+            using var candidate = new MemoryStream(data, writable: false);
+
+            try
+            {
+                return InvoiceReader.DetectSyntax(System.Xml.Linq.XDocument.Load(candidate));
+            }
+            catch (System.Xml.XmlException)
+            {
+                /* The attachment is not XML. */
+                return InvoiceSyntax.Unknown;
+            }
+        }
+
+        /* One embedded file of the PDF file, beside the invoice. */
+        public sealed class EmbeddedFile
+        {
+            public EmbeddedFile(string? name, byte[] data)
+            {
+                Name = name;
+                Data = data;
+            }
+
+            /* The name of the file, for example "Aufmass.png". */
+            public string? Name { get; }
+
+            /* The content of the file. */
+            public byte[] Data { get; }
         }
 
         /* One attachment of the PDF file. */
