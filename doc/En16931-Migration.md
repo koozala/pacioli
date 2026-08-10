@@ -5,8 +5,8 @@ This document is a plan. It tells you how Pacioli can replace the external packa
 
 - Made on: 2026-08-10
 - Branch: `EN16931`
-- State: phase 0 is done. `src\En16931` is in git and it has a test project. No project of
-  the application uses it yet.
+- State: phase 0 and phase 2 are done. `Pacioli.Pdf` takes its code lists from `En16931`.
+  The parser of the application is still `Vit.FeRD.ExtendedDocument`.
 
 ## Contents
 
@@ -26,9 +26,9 @@ This document is a plan. It tells you how Pacioli can replace the external packa
 | Syntax | CII only | CII **and** UBL 2.1 |
 | Model | The tree of the CII schema | Flat business terms (BT and BG) |
 | Profile | Factur-X 1.09.2 EXTENDED | EN 16931 core only |
-| Code lists | 24 lists, German and English | none |
+| Code lists | 24 lists, German and English | the same 24 lists, after the port of phase 2 |
 | Writer | yes | no (Pacioli does not write) |
-| Size | ~1 assembly | 10 files, 1704 lines |
+| Size | ~1 assembly | 15 files |
 
 Pacioli reads invoices only. It does not write them. Thus the writer of the package has
 no value for Pacioli.
@@ -181,10 +181,7 @@ The renderer reads these members of `Vit.FeRD.ExtendedDocument`. The column *In
 
 ### Two more parts that `En16931` does not hold
 
-1. **The code lists.** `CodeLists` of the package gives the name of a code in German and
-   in English: 24 lists, and 2162 units of measure. Eight places of the renderer use it,
-   through `CodeText.cs`. Without the lists the page shows `H87` and not `Anz.`, and
-   `AE` and not `Umkehrung der Steuerschuldnerschaft`.
+1. ~~**The code lists.**~~ Closed in phase 2: the 24 lists are now in `En16931.Codes`.
 2. **The attachment of a PDF file.** `ZugferdReader.Read` walks through each object of
    the PDF file. It gives each stream to `FeRDInvoice.Load`. If the call does not raise
    an exception, the stream holds the invoice. `En16931` can take this role with
@@ -262,24 +259,59 @@ step too. This is the strongest control that the migration can have, and it cost
 
 **Result:** no change of the code. A decision, and a note in the README of the test.
 
-### Phase 2 — The code lists
+### Phase 2 — The code lists — **done on 2026-08-10**
 
-Move the code lists into the solution. Two ways:
+The lists came by a port from the source of the package
+(`...\FeRD Spezifikation\lib\Vit.FeRD.ExtendedDocument`) into the namespace
+`En16931.Codes`. Four files: `CodeList`, `CodeLists`, `CodeListData.g.cs` (the workbook of
+the specification) and `CodeListDataDe` (the German table). The public form did not change:
+`GetName(code, language)`, `Describe(code, language)`, `CodeLanguage.German`.
 
-- **Port.** Take the tables of `CodeLists` from the source of the package into a new
-  project `En16931.CodeLists`, or into the namespace `En16931.Codes`.
-- **Make new.** Read the lists of the specification (UNTDID, Rec 20, ISO 3166, ISO 4217)
-  and keep the German table by hand. This is the way of the package, and it took 435
-  German entries over 21 lists.
+| Step | Result |
+|---|---|
+| Port the four files, namespace `En16931.Codes`. | 24 lists |
+| Write the doc comments new. The old ones named the classes of the CII model. | Each list now names its business term, for example "BT-3, the invoice type code". |
+| `CodeLists.ReasonFor` took a `TradeAllowanceCharge` of the old model. | It now takes `Model.AllowanceCharge` and reads `IsCharge`. |
+| Give `Pacioli.Pdf` a project reference to `En16931`. | done |
+| Point the nine files that use a code list to the new class. | done, with `using CodeLists = En16931.Codes.CodeLists;` |
 
-Give the new class the same form as the old one: `GetName(code, language)`,
-`Describe(code, language)`, `CodeLanguage.German`. Then `CodeText.cs` changes its `using`
-line only.
+Both libraries have a class `CodeList`, `CodeLists` and `CodeLanguage`. `Pacioli.Pdf` holds
+the model of the old library and the lists of the new one at the same time, thus each file
+needs an alias. The aliases go away with the last section in phase 5.
 
-**Test:** a unit test for each list. Each code of the 61 samples must give a name.
+**Test:** `CodeListTests` (the form of the lists, 24 lists) and `CodeCoverageTests`.
+`CodeCoverageTests` reads each sample into the model, takes each value that is a code, and
+looks for it in the list of that code. It works from the model, thus one test covers CII
+and UBL. **Each code of the 134 invoices of the samples and of the corpus gives a name.**
 
-**Result:** `CodeText.cs`, `TaxTypesExtensions.cs`, `TaxCategoryCodesExtensions.cs` and
-`QuantityCodesExtensions.cs` do not use the package any more.
+#### One hole in the official list
+
+`CodeCoverageTests` found one code that documents of the practice use and that the
+workbook does not give:
+
+| Code | List | Where |
+|---|---|---|
+| `9958` German Leitweg ID | EAS, the scheme of an electronic address | `EN16931_ElektronischeAdresse` and `EN16931_RechnungsUebertragung` of the corpus, in both syntaxes |
+
+The EAS list does not give 9958 any more, because the Leitweg-ID belongs to BT-10 today.
+German documents still use it. Without an entry, a page shows `9958` in the place of a
+name.
+
+`CodeListData.g.cs` comes from a program, thus an entry by hand would go away with the
+next run. The new file `CodeListDataExtra.cs` is the place for such an entry. Each entry
+needs a reason and a document that holds the code. **An extra entry fills a hole only:**
+the parser gives the name of the specification priority, thus an extra entry can never
+change an official name.
+
+The media type of an attachment (BT-125-1) is not part of this test. The specification
+allows six media types, and the corpus holds `application/octet-stream`. That is not a
+hole in a list: a media type is already a readable text. The question belongs to a
+validation.
+
+**Result:** `CodeText.cs`, `TaxTypesExtensions.cs`, `TaxCategoryCodesExtensions.cs`,
+`QuantityCodesExtensions.cs` and five sections take their code lists from `En16931`.
+The rendered page did not change: the report of the samples and of the corpus agrees with
+the baseline of phase 0, value for value.
 
 ### Phase 3 — The attachment of the PDF file
 
@@ -408,7 +440,7 @@ Close them as in phase 5.
 | Risk | Effect | What to do |
 |---|---|---|
 | The extension layer grows to a copy of the EXTENDED profile. | The work does not end. | Add a group only if a section uses it. The list of phase 4 is complete for the renderer of today. |
-| The code lists are much work. | Phase 2 blocks each other phase. | Port the tables of the package if the source is available. Do not write them new. |
+| ~~The code lists are much work.~~ | — | Closed in phase 2. The source of the package was available, thus the tables came by a port. |
 | The parser of `En16931` has a defect that the model hides. | The page shows a wrong value, and no test sees it. | Keep `Vit.FeRD` in the test project (phase 1). The two parsers then control each other. |
 | ~~No UBL samples.~~ | — | Closed in phase 0. The corpus gives 31 UBL documents. |
 | A sub invoice line (`ParentLineId`, `LineStatusCode`) has no place in the flat model. | The samples X02 and X03 lose their structure. | The renderer of today does not show the structure either. Keep the flat form, and put the parent ID in the extension. |

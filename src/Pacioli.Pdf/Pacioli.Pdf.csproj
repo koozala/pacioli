@@ -17,6 +17,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pacioli.Language\Pacioli.Language.csproj" />
+    <!--
+      The code lists come from En16931. The parser of this project is still
+      Vit.FeRD.ExtendedDocument; the migration exchanges it step by step.
+      See doc/En16931-Migration.md.
+    -->
+    <ProjectReference Include="..\En16931\En16931.csproj" />
   </ItemGroup>
 
 </Project>

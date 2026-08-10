@@ -1,4 +1,5 @@
 using Vit.FeRD.ExtendedDocument.Model;
+using CodeLists = En16931.Codes.CodeLists;
 
 namespace Pacioli.Pdf.Invoice
 {

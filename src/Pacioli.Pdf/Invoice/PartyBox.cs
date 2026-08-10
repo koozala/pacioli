@@ -8,6 +8,7 @@ using Pacioli.Pdf.Invoice.Sections;
 using System.Linq;
 using System.Text;
 using Vit.FeRD.ExtendedDocument.Model;
+using CodeLists = En16931.Codes.CodeLists;
 
 namespace Pacioli.Pdf.Invoice
 {

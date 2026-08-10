@@ -2,6 +2,7 @@ using Pacioli.Language.Resources;
 using System;
 using System.Text;
 using Vit.FeRD.ExtendedDocument.Model;
+using CodeLists = En16931.Codes.CodeLists;
 
 namespace Pacioli.Pdf.Invoice.Sections
 {

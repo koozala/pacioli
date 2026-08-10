@@ -2,13 +2,21 @@ using Pacioli.Language.Resources;
 using System.Globalization;
 using Vit.FeRD.ExtendedDocument.Model;
 
+/*
+ * The two libraries both have a class CodeList and a class CodeLanguage. Thus each name
+ * needs its own alias. The code lists come from En16931; the model still comes from
+ * Vit.FeRD.ExtendedDocument.
+ */
+using CodeLanguage = En16931.Codes.CodeLanguage;
+using CodeList = En16931.Codes.CodeList;
+
 namespace Pacioli.Pdf.Invoice
 {
     /*
      * Gives the clear text of a code.
      *
-     * The package Vit.FeRD.ExtendedDocument holds the code lists of the specification in
-     * the class CodeLists. Each list gives the name of a code in German and in English.
+     * The project En16931 holds the code lists of the specification in the class
+     * CodeLists. Each list gives the name of a code in German and in English.
      * If a list has no German name for a code, it gives the English name.
      *
      * A list does not hold a name for each code: the list of the units holds 2162 codes

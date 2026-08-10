@@ -3,6 +3,7 @@ using iText.Layout.Element;
 using Pacioli.Language.Resources;
 using System.Collections.Generic;
 using Vit.FeRD.ExtendedDocument.Model;
+using CodeLists = En16931.Codes.CodeLists;
 
 namespace Pacioli.Pdf.Invoice.Sections
 {

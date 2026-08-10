@@ -1,4 +1,4 @@
-﻿using iText.Kernel.Colors;
+using iText.Kernel.Colors;
 using iText.Layout;
 using iText.Layout.Borders;
 using iText.Layout.Element;
@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using Vit.FeRD.ExtendedDocument.Model;
+using CodeLists = En16931.Codes.CodeLists;
 
 namespace Pacioli.Pdf.Invoice.Sections
 {
