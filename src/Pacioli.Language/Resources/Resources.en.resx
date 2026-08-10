@@ -854,4 +854,7 @@ More information on the Internet: https://github.com/koozala/pacioli</value>
   <data name="DateiHierAblegen" xml:space="preserve">
     <value>Drop a file here to show it</value>
   </data>
+  <data name="countryOfOrigin" xml:space="preserve">
+    <value>Country of origin</value>
+  </data>
 </root>

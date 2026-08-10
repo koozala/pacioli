@@ -105,6 +105,11 @@ namespace Pacioli.Pdf.Invoice.Sections
                 s1.AppendLine($"{Resources.sellerAssignedId}: {item.SellerIdentifier}");
             }
 
+            if (item.CountryOfOrigin != null)
+            {
+                s1.AppendLine($"{Resources.countryOfOrigin}: {item.CountryOfOrigin}");
+            }
+
             if (item.StandardIdentifier != null)
             {
                 s1.AppendLine(

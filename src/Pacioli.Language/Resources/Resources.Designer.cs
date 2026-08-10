@@ -340,6 +340,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Herkunftsland.
+        /// </summary>
+        public static string countryOfOrigin {
+            get {
+                return ResourceManager.GetString("countryOfOrigin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alle Beträge in.
         /// </summary>
         public static string currencyNote {
@@ -354,6 +363,15 @@ namespace Pacioli.Language.Resources {
         public static string customerNo {
             get {
                 return ResourceManager.GetString("customerNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datei zum Anzeigen hier ablegen.
+        /// </summary>
+        public static string DateiHierAblegen {
+            get {
+                return ResourceManager.GetString("DateiHierAblegen", resourceCulture);
             }
         }
         
@@ -982,25 +1000,7 @@ namespace Pacioli.Language.Resources {
                 return ResourceManager.GetString("Schliessen", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to unbekannt (Server nicht erreichbar).
-        /// </summary>
-        public static string VersionUnbekannt {
-            get {
-                return ResourceManager.GetString("VersionUnbekannt", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Datei zum Anzeigen hier ablegen.
-        /// </summary>
-        public static string DateiHierAblegen {
-            get {
-                return ResourceManager.GetString("DateiHierAblegen", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Verkäufer.
         /// </summary>
@@ -2204,6 +2204,15 @@ namespace Pacioli.Language.Resources {
         public static string Versandhinweis {
             get {
                 return ResourceManager.GetString("Versandhinweis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unbekannt (Server nicht erreichbar).
+        /// </summary>
+        public static string VersionUnbekannt {
+            get {
+                return ResourceManager.GetString("VersionUnbekannt", resourceCulture);
             }
         }
         
