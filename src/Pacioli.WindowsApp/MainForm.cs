@@ -18,7 +18,14 @@ namespace Pacioli.WindowsApp
 {
     public partial class MainForm : Form
     {
-        ConfigDb cdb;
+        /*
+         * The preferences of the user. The field held no value before, because each
+         * handler made a ConfigDb of its own in a local variable with the same name. The
+         * save of a PDF file then went to the field, and it ended with a
+         * NullReferenceException.
+         */
+        readonly ConfigDb cdb = new ConfigDb();
+
         UserPreferences preferences = UserPreferences.LoadPreferences();
 
         /*
@@ -132,7 +139,6 @@ namespace Pacioli.WindowsApp
 
         private void öffnenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ConfigDb cdb = new ConfigDb();
             UserPreferences preferences = cdb.ReadPreferences();
 
             openFileDialog1.FileName = string.Empty;
