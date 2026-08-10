@@ -10,10 +10,10 @@
     <Version>0.14</Version>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Vit.FeRD.ExtendedDocument" Version="0.0.1-7" />
-  </ItemGroup>
-
+  <!--
+    This project does not name a parser. It uses InvoiceWriter and ZugferdExtractor of
+    Pacioli.Pdf, and that project brings the parser with it.
+  -->
   <ItemGroup>
     <ProjectReference Include="..\Pacioli.Pdf\Pacioli.Pdf.csproj" />
   </ItemGroup>

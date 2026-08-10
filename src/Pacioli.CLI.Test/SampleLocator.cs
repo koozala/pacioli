@@ -1,37 +1,53 @@
 namespace Pacioli.CLI.Test
 {
     /*
-     * Finds the sample documents in the samples directory.
+     * Finds the sample documents in the samples directories.
      *
-     * The locator looks in all subdirectories. It keeps the files that agree with one of the
-     * include patterns. It removes the files that are in an excluded directory. The default
-     * configuration excludes the directory "attachments", because these files are enclosures
-     * of an invoice. They are not invoices.
+     * The locator looks in all subdirectories of each directory. It keeps the files that
+     * agree with one of the include patterns. It removes the files that are in an excluded
+     * directory. The default configuration excludes the directory "attachments", because
+     * these files are enclosures of an invoice. They are not invoices.
+     *
+     * A test run can hold more than one directory. Then the name of a sample starts with
+     * the name of its directory, thus two samples with the same relative path stay apart.
      */
     public static class SampleLocator
     {
         public static IReadOnlyList<SampleFile> Find(TestSettings settings)
         {
-            if (string.IsNullOrWhiteSpace(settings.SamplesDirectory) ||
-                !Directory.Exists(settings.SamplesDirectory))
+            var roots = settings.SamplesDirectories
+                .Where(entry => !string.IsNullOrWhiteSpace(entry) && Directory.Exists(entry))
+                .Select(Path.GetFullPath)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            if (roots.Count == 0)
             {
                 return Array.Empty<SampleFile>();
             }
 
-            string root = Path.GetFullPath(settings.SamplesDirectory);
+            var found = new List<(string Path, string Name)>();
 
-            var files = settings.IncludePatterns
-                .SelectMany(pattern => Directory.EnumerateFiles(root, pattern, SearchOption.AllDirectories))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .Where(path => !IsExcluded(root, path, settings.ExcludeDirectories))
-                .OrderBy(path => path, StringComparer.OrdinalIgnoreCase)
-                .ToList();
+            foreach (string root in roots)
+            {
+                string prefix = roots.Count > 1 ? Path.GetFileName(root.TrimEnd(Path.DirectorySeparatorChar)) : string.Empty;
 
-            return files
-                .Select((path, position) => new SampleFile(
-                    position + 1,
-                    path,
-                    Path.GetRelativePath(root, path)))
+                var files = settings.IncludePatterns
+                    .SelectMany(pattern => Directory.EnumerateFiles(root, pattern, SearchOption.AllDirectories))
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .Where(path => !IsExcluded(root, path, settings.ExcludeDirectories))
+                    .Select(path => (
+                        Path: path,
+                        Name: prefix.Length == 0
+                            ? Path.GetRelativePath(root, path)
+                            : Path.Combine(prefix, Path.GetRelativePath(root, path))));
+
+                found.AddRange(files);
+            }
+
+            return found
+                .OrderBy(entry => entry.Name, StringComparer.OrdinalIgnoreCase)
+                .Select((entry, position) => new SampleFile(position + 1, entry.Path, entry.Name))
                 .ToList();
         }
 

@@ -44,6 +44,15 @@ namespace Pacioli.CLI.Test.Content
             new("TypeCode", ExclusionKind.NotRendered,
                 "A code, for example \"380\" or \"VAT\". The page shows the text of the code."),
 
+            new("CategoryCode", ExclusionKind.NotRendered,
+                "A code of a tax category, for example \"AE\". The page shows the text of the code. " +
+                "The category \"S\" is the usual rate, thus the page shows nothing for it."),
+
+            new("/ApplicableHeaderTradeSettlement/ApplicableTradeTax/ExemptionReasonCode",
+                ExclusionKind.NotRendered,
+                "A code of a VATEX exemption reason, for example \"VATEX-EU-O\". " +
+                "The tax table shows the text of the code."),
+
             new("ReferenceTypeCode", ExclusionKind.NotRendered, "A code of a reference type."),
             new("LineStatusReasonCode", ExclusionKind.NotRendered, "A code of a line status."),
             new("ReasonCode", ExclusionKind.NotRendered,
@@ -197,11 +206,16 @@ namespace Pacioli.CLI.Test.Content
                 "The number of an additional document of a position, for example an object ID. " +
                 "The page shows the name and the file name only."),
 */
+
             /*
-             * No entry of the kind KnownGap is left. The renderer shows each value that
-             * a reader of the invoice needs. The entry for TaxTotalAmount went away when
-             * TotalsSection started to show one row for each currency.
+             * The samples of the specification leave no gap. The entries below come from
+             * the corpus of ZUGFeRD, which holds documents of the practice. See the note
+             * about the corpus in testsettings.json.
              */
+
+            new("/ReceivingAdviceReferencedDocument/IssuerAssignedID", ExclusionKind.KnownGap,
+                "BT-15, the reference of the receiving advice. The page shows the despatch " +
+                "advice (BT-16) only. See TradeAgreementSection.")
         };
 
         public static XmlValueExclusion? Find(XmlValue value)

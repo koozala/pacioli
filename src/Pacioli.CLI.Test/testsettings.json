@@ -1,13 +1,44 @@
 {
-  "samplesDirectory": "E:\\_wrk\\Projekte\\E-Rechnungsdruck_AS400_PDF\\FeRD Spezifikation\\Version-2.5.2\\Beispiele",
+  "//samplesDirectories": "The directories that hold the sample documents. The test reads the samples of each one. If a test run holds more than one directory, the name of a sample starts with the name of its directory.",
+  "samplesDirectories": [
+    "E:\\_wrk\\Projekte\\E-Rechnungsdruck_AS400_PDF\\FeRD Spezifikation\\Version-2.5.2\\Beispiele",
+    "E:\\_wrk\\Projekte\\E-Rechnungsdruck_AS400_PDF\\corpus"
+  ],
+
   "cliExecutable": "",
   "includePatterns": [ "*.xml", "*.pdf" ],
-  "excludeDirectories": [ "attachments" ],
+
+  "//excludeDirectories": "Directory names that the test steps over. The name applies at each depth. Each name after 'attachments' belongs to the corpus; see the note at the end.",
+  "excludeDirectories": [
+    "attachments",
+    "UBL",
+    "PEPPOL",
+    "other",
+    "fatturaPA",
+    "ZUGFeRDv1",
+    "fail",
+    "unstructured"
+  ],
+
   "timeoutSeconds": 120,
 
   "//checkedElements": "The elements of the content check. An empty list checks all elements. See InvoiceElementRules.All.",
   "checkedElements": [],
 
   "//reportFile": "The file for the report of the XML value coverage. Empty puts it in TestResults beside the solution file.",
-  "reportFile": ""
+  "reportFile": "",
+
+  "//corpus": [
+    "The second directory is the corpus of ZUGFeRD (https://github.com/ZUGFeRD/corpus).",
+    "It holds documents of the practice. It doubles the number of the CII samples.",
+    "The corpus also holds documents that Pacioli does not read. excludeDirectories",
+    "names them:",
+    "  UBL, PEPPOL   UBL documents. Pacioli reads UBL after phase 6 of the migration.",
+    "  other         Holds one UBL document. Take this name out together with UBL.",
+    "  fatturaPA     The Italian standard. It is not an EN 16931 invoice.",
+    "  ZUGFeRDv1     ZUGFeRD 1.0. The parser reads ZUGFeRD 2.x only.",
+    "  fail          Documents with an artificial error.",
+    "  unstructured  A PDF file without an invoice in it.",
+    "See doc/En16931-Migration.md."
+  ]
 }

@@ -16,7 +16,22 @@ namespace Pacioli.CLI.Test
     {
         public const string SettingsFileName = "testsettings.json";
 
+        /*
+         * The first samples directory. The messages of the test use it.
+         * For the full set, use SamplesDirectories.
+         */
         public string SamplesDirectory { get; }
+
+        /*
+         * Each samples directory, in the order of the settings. The test reads the
+         * samples of each one.
+         *
+         * A test run can hold more than one collection: the samples of the
+         * specification, and a corpus with documents of the practice. See
+         * samplesDirectories in testsettings.json.
+         */
+        public IReadOnlyList<string> SamplesDirectories { get; }
+
         public string CliExecutable { get; }
         public IReadOnlyList<string> IncludePatterns { get; }
         public IReadOnlyList<string> ExcludeDirectories { get; }
@@ -35,8 +50,8 @@ namespace Pacioli.CLI.Test
 
         private TestSettings(SettingsFile file)
         {
-            (SamplesDirectory, SamplesDirectorySource) = ReadValue(
-                "SamplesDirectory", "PACIOLI_SAMPLES_DIR", file.SamplesDirectory);
+            (SamplesDirectories, SamplesDirectorySource) = ReadSamplesDirectories(file);
+            SamplesDirectory = SamplesDirectories.Count > 0 ? SamplesDirectories[0] : string.Empty;
 
             (string cli, string cliSource) = ReadValue(
                 "CliExecutable", "PACIOLI_CLI_EXE", file.CliExecutable);
@@ -108,6 +123,53 @@ namespace Pacioli.CLI.Test
             return Path.Combine(folder, "xml-value-report.md");
         }
 
+        /*
+         * The samples directories.
+         *
+         * A test parameter and an environment variable give a list with a semicolon
+         * between the entries. The settings file gives the list samplesDirectories.
+         *
+         * The file can also give the single value samplesDirectory. This form was the
+         * only form before, thus a settings file of an earlier version still works. If
+         * the file holds both forms, the single value comes first.
+         */
+        private static (IReadOnlyList<string> value, string source) ReadSamplesDirectories(SettingsFile file)
+        {
+            (string fromOverride, string source) = ReadValue(
+                "SamplesDirectory", "PACIOLI_SAMPLES_DIR", null);
+
+            if (!string.IsNullOrWhiteSpace(fromOverride))
+            {
+                return (Split(fromOverride), source);
+            }
+
+            var directories = new List<string>();
+
+            if (!string.IsNullOrWhiteSpace(file.SamplesDirectory))
+            {
+                directories.Add(file.SamplesDirectory!.Trim());
+            }
+
+            if (file.SamplesDirectories != null)
+            {
+                directories.AddRange(file.SamplesDirectories
+                    .Where(entry => !string.IsNullOrWhiteSpace(entry))
+                    .Select(entry => entry.Trim()));
+            }
+
+            var unique = directories
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            return unique.Count > 0
+                ? (unique, SettingsFileName)
+                : (Array.Empty<string>(), "default value");
+        }
+
+        private static IReadOnlyList<string> Split(string value) => value
+            .Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .ToList();
+
         private static (string value, string source) ReadValue(string parameterName, string environmentName, string? fileValue)
         {
             string? fromParameter = TestContext.Parameters.Get(parameterName);
@@ -159,6 +221,9 @@ namespace Pacioli.CLI.Test
         {
             [JsonPropertyName("samplesDirectory")]
             public string? SamplesDirectory { get; set; }
+
+            [JsonPropertyName("samplesDirectories")]
+            public string[]? SamplesDirectories { get; set; }
 
             [JsonPropertyName("cliExecutable")]
             public string? CliExecutable { get; set; }

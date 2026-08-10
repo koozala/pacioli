@@ -1,0 +1,7 @@
+{
+  "//samplesDirectories": "The directories that hold the sample documents. The test case SampleCorpusTests reads each XML file below them. A directory that is not on this computer makes no failure: the test case then gives the result 'ignored'.",
+  "samplesDirectories": [
+    "E:\\_wrk\\Projekte\\E-Rechnungsdruck_AS400_PDF\\FeRD Spezifikation\\Version-2.5.2\\Beispiele",
+    "E:\\_wrk\\Projekte\\E-Rechnungsdruck_AS400_PDF\\corpus"
+  ]
+}

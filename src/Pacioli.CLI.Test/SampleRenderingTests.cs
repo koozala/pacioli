@@ -59,7 +59,8 @@ namespace Pacioli.CLI.Test
             _rules = InvoiceElementRules.Select(Settings.CheckedElements);
 
             TestContext.Progress.WriteLine($"CLI tool         : {Settings.CliExecutable} ({Settings.CliExecutableSource})");
-            TestContext.Progress.WriteLine($"Samples directory: {Settings.SamplesDirectory} ({Settings.SamplesDirectorySource})");
+            TestContext.Progress.WriteLine(
+                $"Samples directory: {string.Join(" | ", Settings.SamplesDirectories)} ({Settings.SamplesDirectorySource})");
             TestContext.Progress.WriteLine($"Samples found    : {Samples.Count}");
             TestContext.Progress.WriteLine($"Checked elements : {string.Join(", ", _rules.Select(rule => rule.Name))}");
             TestContext.Progress.WriteLine($"Output directory : {_temporaryDirectory} (deleted at the end)");
@@ -109,13 +110,19 @@ namespace Pacioli.CLI.Test
         [Test, Order(1)]
         public void SamplesDirectory_ContainsSamples()
         {
-            Assert.That(Directory.Exists(Settings.SamplesDirectory), Is.True,
-                $"The samples directory does not exist: \"{Settings.SamplesDirectory}\" " +
+            Assert.That(Settings.SamplesDirectories, Is.Not.Empty,
+                "No samples directory is configured. Set samplesDirectories in testsettings.json, " +
+                "or use the environment variable PACIOLI_SAMPLES_DIR.");
+
+            var missing = Settings.SamplesDirectories.Where(entry => !Directory.Exists(entry)).ToList();
+
+            Assert.That(missing, Is.Empty,
+                $"A samples directory does not exist: \"{string.Join("\", \"", missing)}\" " +
                 $"(source: {Settings.SamplesDirectorySource}). " +
                 "Set the correct path in testsettings.json, or with the environment variable PACIOLI_SAMPLES_DIR.");
 
             Assert.That(Samples, Is.Not.Empty,
-                $"The test found no sample document in \"{Settings.SamplesDirectory}\" " +
+                $"The test found no sample document in \"{string.Join("\", \"", Settings.SamplesDirectories)}\" " +
                 $"with the patterns {string.Join(", ", Settings.IncludePatterns)}.");
         }
 
@@ -464,7 +471,7 @@ namespace Pacioli.CLI.Test
                 return;
             }
 
-            _report.SamplesDirectory = Settings.SamplesDirectory;
+            _report.SamplesDirectory = string.Join(" | ", Settings.SamplesDirectories);
             _report.CliExecutable = Settings.CliExecutable;
 
             try

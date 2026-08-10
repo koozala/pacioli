@@ -251,6 +251,12 @@ The test then applies two steps to the text and to the value:
 **Note:** the test reads the invoice data with the same library as the renderer. Thus the
 content check tests the render step. It does not test the parse step.
 
+**Keep the library `Vit.FeRD.ExtendedDocument` in this project.** The renderer moves to
+the project `En16931` with the migration; see [doc/En16931-Migration.md](../../doc/En16931-Migration.md).
+This project must keep the old library until the last phase. Then the renderer and the
+test read with two different parsers, and the content check compares the two. It then also
+tests the parse step, and that is the strongest control the migration can have.
+
 ## Output files
 
 The PDF files go to a new directory below the temporary directory of the system:
@@ -268,13 +274,29 @@ to the output directory.
 
 | Name                | Default                                                 | Function                                                  |
 |---------------------|---------------------------------------------------------|-----------------------------------------------------------|
-| `samplesDirectory`  | the path in `test/info.md`                              | The directory that holds the sample documents.            |
+| `samplesDirectories`| the samples of FeRD and the corpus of ZUGFeRD           | The directories that hold the sample documents.           |
+| `samplesDirectory`  | empty                                                   | One directory. The earlier form of `samplesDirectories`.  |
 | `cliExecutable`     | empty (the test searches for the file)                  | The path of `pacioli-cmd.exe`.                            |
 | `includePatterns`   | `[ "*.xml", "*.pdf" ]`                                  | The file patterns of the samples.                         |
 | `excludeDirectories`| `[ "attachments" ]`                                     | Directory names to ignore.                                |
 | `timeoutSeconds`    | `120`                                                   | The maximum time for one call of the CLI tool.            |
 | `checkedElements`   | `[]` (all elements)                                     | The elements of the content check, by name.               |
 | `reportFile`        | `TestResults\xml-value-report.md` beside the solution   | The file for the report of the XML value coverage.        |
+
+### More than one samples directory
+
+`samplesDirectories` takes a list. The test reads the samples of each directory. Then the
+name of a sample starts with the name of its directory, for example
+`corpus\XML-Rechnung\CII\EN16931_Einfach.cii.xml`. Thus two samples with the same relative
+path stay apart.
+
+Each directory of the list must be on the computer. If one is not there, the test case
+`SamplesDirectory_ContainsSamples` fails and names it. A wrong path must not make the test
+base smaller without a message.
+
+The default configuration holds two directories: the samples of the specification, and the
+corpus of ZUGFeRD with documents of the practice. The note at the end of `testsettings.json`
+tells which directories of the corpus the test steps over, and why.
 
 A name in `checkedElements` must agree with a rule. If it does not, the test case
 `CheckedElements_AreKnown` fails and shows the names that exist. Without this test case,
@@ -298,7 +320,7 @@ You can override each value. The order of precedence is:
 
 | Setting              | Test parameter        | Environment variable            |
 |----------------------|-----------------------|---------------------------------|
-| `samplesDirectory`   | `SamplesDirectory`    | `PACIOLI_SAMPLES_DIR`           |
+| `samplesDirectories` | `SamplesDirectory`    | `PACIOLI_SAMPLES_DIR`           |
 | `cliExecutable`      | `CliExecutable`       | `PACIOLI_CLI_EXE`               |
 | `includePatterns`    | `IncludePatterns`     | `PACIOLI_SAMPLE_PATTERNS`       |
 | `excludeDirectories` | `ExcludeDirectories`  | `PACIOLI_SAMPLE_EXCLUDE_DIRS`   |
@@ -316,7 +338,7 @@ Run all sample renderings:
 dotnet test src\Pacioli.CLI.Test\Pacioli.CLI.Test.csproj
 ```
 
-Use a different samples directory:
+Use a different samples directory. A semicolon separates more than one:
 
 ```
 dotnet test src\Pacioli.CLI.Test\Pacioli.CLI.Test.csproj -- TestRunParameters.Parameter(n="SamplesDirectory",value="D:\my samples")

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>En16931</AssemblyName>
+    <RootNamespace>En16931</RootNamespace>
+    <Description>Reads EN 16931 electronic invoices in both permitted XML syntaxes — UN/CEFACT CII (ZUGFeRD / Factur-X) and OASIS UBL 2.1 — into one syntax-neutral business term model.</Description>
+  </PropertyGroup>
+
+</Project>
