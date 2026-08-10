@@ -524,15 +524,30 @@ of size:
 | **The renderer needs minutes for a very big invoice.** `Large_Invoice_sample2.xml` of PEPPOL has 63404 positions in 63 MB, and it does not render in 120 seconds. The sample with 26813 positions does. | `timeoutSeconds` is now 600, with the numbers in `testsettings.json`. The value is far over a normal invoice, but the limit is now measured and not unknown. |
 | **BT-159, the country of origin of an article, is on no page.** | A new entry of the kind `KnownGap`. A CII document gives the same term, and a country code of two letters agrees with almost each page, thus this gap stayed hidden until the UBL samples came. |
 
-### Phase 7 — Remove the dependency
+### Phase 7 — Remove the dependency — **in part**
 
-| Step | File |
-|---|---|
-| Remove the package from `Pacioli.Pdf`. | `Pacioli.Pdf.csproj` |
-| Decide about the test project. Keep the package as an independent control, or remove it and move the rules to `En16931`. | `Pacioli.CLI.Test.csproj` |
-| Mark the document of the old model as history, as with `InvoiceDescriptor.md`. | `doc\CrossIndustryInvoice.md` |
-| Write the document of the new model. | `doc\En16931.md` (new) |
-| Give the version number of Pacioli a step. | `Pacioli.WindowsApp.csproj`, `version.json` |
+| Step | File | State |
+|---|---|---|
+| Remove the package from `Pacioli.Pdf`. | `Pacioli.Pdf.csproj` | **done in phase 5** |
+| Mark the document of the old model as history. | `doc\CrossIndustryInvoice.md` | **done** |
+| Write the document of the new model. | `doc\En16931.md` | **done** |
+| Decide about the test project. | `Pacioli.CLI.Test.csproj` | open |
+| Give the version number of Pacioli a step. | `Pacioli.WindowsApp.csproj`, `version.json` | open |
+
+#### The decision about the test project
+
+`Pacioli.CLI.Test` still holds `Vit.FeRD.ExtendedDocument`. Two ways:
+
+- **Keep it.** The renderer reads with `En16931`, the test reads with the old library, and
+  `Sample_RenderedPdf_ShowsKeyElements` compares the two. A defect of the new parser then
+  shows itself, and no other test can find such a defect. The cost is one package in one
+  test project, and the control works for a CII document only.
+- **Remove it.** Then `InvoiceElementRules` must take its values from `En16931`, and the
+  content check tests the render step alone, as it did before the migration.
+
+**The recommendation is to keep it.** The package costs nothing at run time, and it is the
+only control that looks at the parser from the outside. `Content\LegacyPdfAttachmentReader.cs`
+uses it for the same reason: it guards the step that takes the invoice out of a PDF file.
 
 ## Risks
 

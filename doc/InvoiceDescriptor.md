@@ -1,9 +1,9 @@
 # The class InvoiceDescriptor
 
-> **Pacioli does not use this library any more.** The parser is now
-> `Vit.FeRD.ExtendedDocument`. For the model that Pacioli uses today, see
-> [CrossIndustryInvoice.md](CrossIndustryInvoice.md). This document stays for the history,
-> and for a comparison of the two models.
+> **Pacioli does not use this library any more.** The parser is now the project
+> `En16931`. For the model that Pacioli uses today, see [En16931.md](En16931.md); for the
+> library between the two, see [CrossIndustryInvoice.md](CrossIndustryInvoice.md). This
+> document stays for the history, and for a comparison of the models.
 
 `InvoiceDescriptor` is the data model of an electronic invoice. Pacioli used it for all
 invoice data. The class comes from the library `ZUGFeRD-csharp` of s2industries.

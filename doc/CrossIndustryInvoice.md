@@ -1,6 +1,15 @@
 # The class CrossIndustryInvoice
 
-`CrossIndustryInvoice` is the data model of an electronic invoice. Pacioli uses it for all
+> **Pacioli does not use this library any more.** The parser is now the project
+> `En16931`, and it reads CII and UBL. For the model that Pacioli uses today, see
+> [En16931.md](En16931.md). This document stays for the history, and for a comparison of
+> the two models. [En16931-Migration.md](En16931-Migration.md) tells how the step went.
+>
+> The test project `Pacioli.CLI.Test` still holds the package. There it is the independent
+> control of the parser: the renderer reads with `En16931`, the test reads with this
+> library, and the two must agree for a CII document.
+
+`CrossIndustryInvoice` is the data model of an electronic invoice. Pacioli used it for all
 invoice data. The class comes from the library `Vit.FeRD.ExtendedDocument`.
 
 - Namespace: `Vit.FeRD.ExtendedDocument.Model`
@@ -625,10 +634,10 @@ profile:
 bool isXRechnung = invoice.Profile?.Contains("xrechnung") == true;
 ```
 
-## How Pacioli uses the model
+## How Pacioli used the model
 
-`InvoiceWriter` in the project `Pacioli.Pdf` writes the data to the PDF page. The class has
-short properties for the groups, thus the code stays readable:
+`InvoiceWriter` in the project `Pacioli.Pdf` wrote the data to the PDF page. The class had
+short properties for the groups, thus the code stayed readable:
 
 ```csharp
 SupplyChainTradeTransaction? Transaction => invoice.SupplyChainTradeTransaction;
