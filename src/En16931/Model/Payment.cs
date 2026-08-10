@@ -20,6 +20,9 @@ public sealed class PaymentInstructions
 
     /// <summary>BG-19 Direct debit.</summary>
     public DirectDebit? DirectDebit { get; set; }
+
+    /// <summary>Data that goes over the core. Null if the document gives none.</summary>
+    public Extended.PaymentExtensions? Extensions { get; set; }
 }
 
 /// <summary>BG-17 Credit transfer.</summary>
@@ -141,4 +144,7 @@ public sealed class VatBreakdown
 
     /// <summary>BT-121 VAT exemption reason code (VATEX).</summary>
     public string? ExemptionReasonCode { get; set; }
+
+    /// <summary>The full tax of this entry. Null if the document gives no more data.</summary>
+    public Extended.TaxDetail? Detail { get; set; }
 }

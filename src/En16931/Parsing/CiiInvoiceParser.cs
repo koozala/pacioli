@@ -8,7 +8,7 @@ namespace En16931.Parsing;
 /// Reads a UN/CEFACT Cross Industry Invoice — the syntax ZUGFeRD and Factur-X
 /// embed into a PDF/A-3 — into the EN 16931 model.
 /// </summary>
-public sealed class CiiInvoiceParser : IInvoiceParser
+public sealed partial class CiiInvoiceParser : IInvoiceParser
 {
     /// <inheritdoc/>
     public InvoiceSyntax Syntax => InvoiceSyntax.Cii;
@@ -57,12 +57,15 @@ public sealed class CiiInvoiceParser : IInvoiceParser
         invoice.InvoiceTypeCode = document.El(Ram + "TypeCode").Text();
         invoice.IssueDate = document.Path(Ram + "IssueDateTime", Udt + "DateTimeString").CiiDate();
 
+        ReadDocumentExtensions(document, invoice);
+
         foreach (var note in document.Els(Ram + "IncludedNote"))
         {
             invoice.Notes.Add(new InvoiceNote
             {
                 Text = note.El(Ram + "Content").Text(),
-                SubjectCode = note.El(Ram + "SubjectCode").Text()
+                SubjectCode = note.El(Ram + "SubjectCode").Text(),
+                Extensions = ReadNoteExtensions(note)
             });
         }
     }
@@ -83,6 +86,8 @@ public sealed class CiiInvoiceParser : IInvoiceParser
         invoice.ProjectReference =
             agreement.Path(Ram + "SpecifiedProcuringProject", Ram + "ID").Text();
 
+        ReadAgreementExtensions(agreement, invoice);
+
         // CII puts three business terms into the same element and separates them
         // by TypeCode: 130 invoiced object, 50 tender or lot, 916 supporting document.
         foreach (var reference in agreement.Els(Ram + "AdditionalReferencedDocument"))
@@ -91,7 +96,17 @@ public sealed class CiiInvoiceParser : IInvoiceParser
             switch (reference.El(Ram + "TypeCode").Text())
             {
                 case "130":
-                    invoice.InvoicedObjectIdentifier = ReadIdentifier(id);
+                    /*
+                     * BT-18 gives one object identifier, but a document of the EXTENDED
+                     * profile can name more than one. The core keeps the first, and the
+                     * extension keeps each one.
+                     */
+                    var objectIdentifier = ReadIdentifier(id);
+                    if (objectIdentifier is not null)
+                    {
+                        invoice.InvoicedObjectIdentifier ??= objectIdentifier;
+                        Ext(invoice).InvoicedObjectIdentifiers.Add(objectIdentifier);
+                    }
                     break;
                 case "50":
                     invoice.TenderOrLotReference = id.Text();
@@ -111,6 +126,7 @@ public sealed class CiiInvoiceParser : IInvoiceParser
             Reference = reference.El(Ram + "IssuerAssignedID").Text(),
             Description = reference.El(Ram + "Name").Text(),
             ExternalLocation = reference.El(Ram + "URIID").Text(),
+            Extensions = ReadSupportingDocumentExtensions(reference),
             Attachment = binary is null ? null : new Attachment
             {
                 Content = TryDecodeBase64(binary.Text()),
@@ -126,6 +142,8 @@ public sealed class CiiInvoiceParser : IInvoiceParser
             delivery.Path(Ram + "DespatchAdviceReferencedDocument", Ram + "IssuerAssignedID").Text();
         invoice.ReceivingAdviceReference =
             delivery.Path(Ram + "ReceivingAdviceReferencedDocument", Ram + "IssuerAssignedID").Text();
+
+        ReadDeliveryExtensions(delivery, invoice);
 
         var shipTo = delivery.El(Ram + "ShipToTradeParty");
         var date = delivery
@@ -156,6 +174,8 @@ public sealed class CiiInvoiceParser : IInvoiceParser
         if (creditorReference is not null && invoice.Seller is not null)
             invoice.Seller.BankAssignedCreditorIdentifier = creditorReference;
 
+        ReadSettlementExtensions(settlement, invoice);
+
         var terms = settlement.El(Ram + "SpecifiedTradePaymentTerms");
         invoice.PaymentTerms = terms.El(Ram + "Description").Text();
         invoice.PaymentDueDate = terms.Path(Ram + "DueDateDateTime", Udt + "DateTimeString").CiiDate();
@@ -181,7 +201,8 @@ public sealed class CiiInvoiceParser : IInvoiceParser
                 CategoryCode = tax.El(Ram + "CategoryCode").Text(),
                 CategoryRate = tax.El(Ram + "RateApplicablePercent").Dec(),
                 ExemptionReasonText = tax.El(Ram + "ExemptionReason").Text(),
-                ExemptionReasonCode = tax.El(Ram + "ExemptionReasonCode").Text()
+                ExemptionReasonCode = tax.El(Ram + "ExemptionReasonCode").Text(),
+                Detail = ReadTaxDetail(tax)
             });
 
             // BT-7 and BT-8 are document level terms that CII carries on the tax entry.
@@ -202,7 +223,8 @@ public sealed class CiiInvoiceParser : IInvoiceParser
                 InvoiceNumber = reference.El(Ram + "IssuerAssignedID").Text(),
                 IssueDate = reference
                     .Path(Ram + "FormattedIssueDateTime", Qdt + "DateTimeString").CiiDate()
-                    ?? reference.Path(Ram + "FormattedIssueDateTime", Udt + "DateTimeString").CiiDate()
+                    ?? reference.Path(Ram + "FormattedIssueDateTime", Udt + "DateTimeString").CiiDate(),
+                Extensions = ReadPrecedingInvoiceExtensions(reference)
             });
         }
 
@@ -262,6 +284,8 @@ public sealed class CiiInvoiceParser : IInvoiceParser
         if (instructions.DirectDebit is null && mandate is not null)
             instructions.DirectDebit = new DirectDebit { MandateReference = mandate };
 
+        instructions.Extensions = ReadPaymentExtensions(means);
+
         invoice.PaymentInstructions = instructions;
     }
 
@@ -317,6 +341,7 @@ public sealed class CiiInvoiceParser : IInvoiceParser
                 .Path(Ram + "ReceivableSpecifiedTradeAccountingAccount", Ram + "ID").Text(),
             Item = ReadItem(line.El(Ram + "SpecifiedTradeProduct")),
             Price = ReadPrice(agreement),
+            Extensions = ReadLineExtensions(line),
             Vat = new LineVatInformation
             {
                 CategoryCode = settlement.Path(Ram + "ApplicableTradeTax", Ram + "CategoryCode").Text(),
@@ -353,7 +378,8 @@ public sealed class CiiInvoiceParser : IInvoiceParser
             Discount = gross.Path(Ram + "AppliedTradeAllowanceCharge", Ram + "ActualAmount").Dec(),
             NetPrice = net.El(Ram + "ChargeAmount").Dec(),
             BaseQuantity = ReadQuantity(net.El(Ram + "BasisQuantity")
-                                        ?? gross.El(Ram + "BasisQuantity"))
+                                        ?? gross.El(Ram + "BasisQuantity")),
+            Extensions = ReadPriceExtensions(agreement)
         };
     }
 
@@ -366,7 +392,8 @@ public sealed class CiiInvoiceParser : IInvoiceParser
             SellerIdentifier = product.El(Ram + "SellerAssignedID").Text(),
             BuyerIdentifier = product.El(Ram + "BuyerAssignedID").Text(),
             StandardIdentifier = ReadIdentifier(product.El(Ram + "GlobalID")),
-            CountryOfOrigin = product.Path(Ram + "OriginTradeCountry", Ram + "ID").Text()
+            CountryOfOrigin = product.Path(Ram + "OriginTradeCountry", Ram + "ID").Text(),
+            Extensions = product is null ? null : ReadItemExtensions(product)
         };
 
         foreach (var classification in product.Els(Ram + "DesignatedProductClassification"))
@@ -423,7 +450,8 @@ public sealed class CiiInvoiceParser : IInvoiceParser
             ElectronicAddress = ReadIdentifier(
                 party.Path(Ram + "URIUniversalCommunication", Ram + "URIID")),
             PostalAddress = ReadAddress(party.El(Ram + "PostalTradeAddress")),
-            Contact = ReadContact(party.El(Ram + "DefinedTradeContact"))
+            Contact = ReadContact(party.El(Ram + "DefinedTradeContact")),
+            Extensions = ReadPartyExtensions(party)
         };
 
         foreach (var id in party.Els(Ram + "ID").Concat(party.Els(Ram + "GlobalID")))
@@ -462,7 +490,8 @@ public sealed class CiiInvoiceParser : IInvoiceParser
     {
         Name = contact.El(Ram + "PersonName").Text(),
         Telephone = contact.Path(Ram + "TelephoneUniversalCommunication", Ram + "CompleteNumber").Text(),
-        Email = contact.Path(Ram + "EmailURIUniversalCommunication", Ram + "URIID").Text()
+        Email = contact.Path(Ram + "EmailURIUniversalCommunication", Ram + "URIID").Text(),
+        Extensions = ReadContactExtensions(contact)
     };
 
     private static Quantity? ReadQuantity(XElement? element)

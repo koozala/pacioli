@@ -39,6 +39,9 @@ public sealed class Party
 
     /// <summary>BG-6 / BG-9 Contact.</summary>
     public Contact? Contact { get; set; }
+
+    /// <summary>Data that goes over the core. Null if the document gives none.</summary>
+    public Extended.PartyExtensions? Extensions { get; set; }
 }
 
 /// <summary>
@@ -79,6 +82,9 @@ public sealed class Contact
 
     /// <summary>BT-43 / BT-58 Contact email address.</summary>
     public string? Email { get; set; }
+
+    /// <summary>Data that goes over the core. Null if the document gives none.</summary>
+    public Extended.ContactExtensions? Extensions { get; set; }
 }
 
 /// <summary>BG-13 Delivery information.</summary>

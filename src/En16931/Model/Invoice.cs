@@ -121,6 +121,9 @@ public sealed class Invoice
 
     /// <summary>BG-25 Invoice lines.</summary>
     public List<InvoiceLine> Lines { get; } = [];
+
+    /// <summary>Data that goes over the core. Null if the document gives none.</summary>
+    public Extended.InvoiceExtensions? Extensions { get; set; }
 }
 
 /// <summary>BG-1 — one invoice note.</summary>
@@ -131,6 +134,9 @@ public sealed class InvoiceNote
 
     /// <summary>BT-22 Invoice note.</summary>
     public string? Text { get; set; }
+
+    /// <summary>Data that goes over the core. Null if the document gives none.</summary>
+    public Extended.NoteExtensions? Extensions { get; set; }
 }
 
 /// <summary>BG-3 — a reference to a preceding invoice.</summary>
@@ -141,6 +147,9 @@ public sealed class PrecedingInvoiceReference
 
     /// <summary>BT-26 Preceding invoice issue date.</summary>
     public DateOnly? IssueDate { get; set; }
+
+    /// <summary>Data that goes over the core. Null if the document gives none.</summary>
+    public Extended.PrecedingInvoiceExtensions? Extensions { get; set; }
 }
 
 /// <summary>BG-24 — an additional supporting document.</summary>
@@ -157,6 +166,9 @@ public sealed class SupportingDocument
 
     /// <summary>BT-125 Attached document.</summary>
     public Attachment? Attachment { get; set; }
+
+    /// <summary>Data that goes over the core. Null if the document gives none.</summary>
+    public Extended.SupportingDocumentExtensions? Extensions { get; set; }
 }
 
 /// <summary>BG-14 and BG-26 — a date range.</summary>

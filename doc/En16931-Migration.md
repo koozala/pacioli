@@ -5,9 +5,10 @@ This document is a plan. It tells you how Pacioli can replace the external packa
 
 - Made on: 2026-08-10
 - Branch: `EN16931`
-- State: phase 0, 2 and 3 are done. `Pacioli.Pdf` takes its code lists from `En16931`, and
-  it reads the attachment of a PDF file without the old library. The model of the renderer
-  is still `Vit.FeRD.ExtendedDocument`; phase 4 and phase 5 exchange it.
+- State: phase 0, 2, 3 and 4 are done. `Pacioli.Pdf` takes its code lists from `En16931`,
+  and it reads the attachment of a PDF file without the old library. `En16931` can now
+  carry the full page. The model of the renderer is still `Vit.FeRD.ExtendedDocument`;
+  phase 5 exchanges it, section by section.
 
 ## Contents
 
@@ -114,6 +115,12 @@ EXTENDED profile.
 
 The renderer reads these members of `Vit.FeRD.ExtendedDocument`. The column *In
 `En16931`* tells you if the new model holds the same data.
+
+> **Phase 4 closed each gap of the tables below.** A row with **no** now has its place in
+> `En16931.Model.Extended`; the tables stay as they are, because they name the work of
+> phase 5: a row with **no** is a value that a section must take from
+> `Extensions`, and a row with **yes** is a value that a section takes from the core.
+> `ModelReachabilityTests` controls that no value is left.
 
 ### Document
 
@@ -348,10 +355,62 @@ faster: the two ways together need 3 seconds for 165 files. `EInvoiceExtractor` 
 the name of the attachment and the syntax, which the old class did not give. The rendered
 page did not change.
 
-### Phase 4 — The extension layer of `En16931`
+### Phase 4 — The extension layer of `En16931` — **done on 2026-08-10**
 
-Add the groups of [the gap](#the-gap-between-the-two-models) to `En16931`. Do not copy the
-full EXTENDED profile. Add the 15 groups that the renderer uses:
+The 15 groups of [the gap](#the-gap-between-the-two-models) are in the model. The new
+namespace is `En16931.Model.Extended`, in three files.
+
+#### The form
+
+A type of the core carries an `Extensions` property. The property is `null` if the
+document gives no such data:
+
+```csharp
+invoice.Seller.Name                      // BT-27, the core
+invoice.Seller.Extensions?.Contacts      // each contact, over the core
+line.Item.Extensions?.Instances          // the serial numbers
+```
+
+**The core keeps its form.** Each property of the core still carries its BT or BG number,
+and the plan of phase 5 does not change: a section reads the core for a business term, and
+the extension for the rest. Eleven types of the core have the property today: `Invoice`,
+`InvoiceNote`, `Party`, `Contact`, `PrecedingInvoiceReference`, `SupportingDocument`,
+`PaymentInstructions`, `InvoiceLine`, `LineItem`, `PriceDetails`, and `VatBreakdown`
+(there the property has the name `Detail`, because it holds the full tax of that entry).
+
+The reading sits in `CiiInvoiceParser.Extended.cs`, a second part of the parser class.
+Each method there takes the same XML element as the method of the core that calls it, thus
+a value can never come to the wrong object. The UBL parser fills the extensions in
+phase 6, where UBL also has the data.
+
+#### The control
+
+`ModelReachabilityTests` in `Pacioli.CLI.Test` is the acceptance test of this phase. For
+each XML sample it reads every value of the document, reads the same document with
+`En16931`, and walks the model with reflection. **Each value that the page shows today
+must be in the model.**
+
+"The page shows it today" means: no entry of `XmlValueExclusions` applies to it. The test
+case `XmlSample_AllValuesAreVisible` passes with 0 missing values, thus a value without an
+entry is on the page.
+
+**All 101 XML samples pass.** Phase 5 can move a section without loss.
+
+#### What the test found
+
+The first run gave 10 samples with a gap. Two were missing groups, and one was a defect of
+the parser:
+
+| Finding | What happened |
+|---|---|
+| The ship-to party loses its identifiers, its tax registrations and its contacts. | The core holds the name, the location and the address of this party (BG-13 and BG-15). `InvoiceExtensions.ShipTo` now holds the full party. |
+| `PackageQuantity` of a position has no place. | New in `InvoiceLineExtensions`, together with `ChargeFreeQuantity`. |
+| **A document with two invoiced object identifiers loses the first one.** | The parser wrote `invoice.InvoicedObjectIdentifier = ...` in a loop. BT-18 gives one identifier, but the samples X14 and E20 name two objects with the type code 130. The core now keeps the first (`??=`), and `InvoiceExtensions.InvoicedObjectIdentifiers` keeps each one. |
+
+The last one is a defect of `En16931` that no other test saw, because the model was
+consistent with itself. The renderer of today shows both values.
+
+#### The 15 groups
 
 1. Title of the document, and the content code of a note.
 2. More than one contact per party, with department and fax.
@@ -371,16 +430,11 @@ full EXTENDED profile. Add the 15 groups that the renderer uses:
 14. Basis quantity of the net price and of the gross price apart.
 15. Discount on the gross price with percent, basis and reason.
 
-Keep the core clean. Put the extra data in its own place, for example
-`Invoice.Extensions` of the type `InvoiceExtensions`, and `InvoiceLine.Extensions`. A
-group that a UBL document also holds goes into the core; a group that only CII holds goes
-into the extension.
+`ExtensionsTests` in `En16931.Test` names the shape of each group, with a fixture that
+holds all 15. `ModelReachabilityTests` controls the same over 101 documents of the
+practice.
 
-**Test:** a test in `En16931.Test` reads each of the 61 CII samples. For each value that
-the renderer shows today, the value must be reachable from the model. Take the list of
-the values from the report of phase 0.
-
-**Result:** `En16931` can carry the full page. No file of `Pacioli.Pdf` changes yet.
+**Result:** `En16931` can carry the full page. No file of `Pacioli.Pdf` changed.
 
 ### Phase 5 — The renderer, section by section
 
@@ -466,12 +520,12 @@ Close them as in phase 5.
 
 | Project | Files | State |
 |---|---|---|
-| `En16931` | 10 for the parser, 5 for the code lists, plus the extension layer of phase 4 | the code lists are there |
-| `En16931.Test` | 8 | new in phase 0 |
+| `En16931` | 11 for the parser, 5 for the code lists, 3 for the extension layer | the model is complete for the renderer |
+| `En16931.Test` | 9 | 502 test cases |
 | `Pacioli.Pdf` | 24 of 34 files | 10 files use the new code lists, and `EInvoiceExtractor` is new; the model comes in phase 5 |
 | `Pacioli.CLI` | `Pacioli.CLI.csproj` only | done in phase 0 |
 | `Pacioli.WindowsApp` | `Pacioli.WindowsApp.csproj` only | done in phase 0 |
-| `Pacioli.CLI.Test` | 8 files | more than one samples directory, the exclusions, and the control of the PDF step |
+| `Pacioli.CLI.Test` | 9 files | the samples directories, the exclusions, the control of the PDF step, and the reachability of the model |
 | `doc` | 3 files, and the baselines | — |
 
 The public interface of `Pacioli.Pdf` does not change. `Pacioli.WindowsApp` and

@@ -41,6 +41,9 @@ public sealed class InvoiceLine
 
     /// <summary>BG-31 Item information.</summary>
     public LineItem Item { get; set; } = new();
+
+    /// <summary>Data that goes over the core. Null if the document gives none.</summary>
+    public Extended.InvoiceLineExtensions? Extensions { get; set; }
 }
 
 /// <summary>BG-29 Price details.</summary>
@@ -57,6 +60,9 @@ public sealed class PriceDetails
 
     /// <summary>BT-149 Item price base quantity, with BT-150 as its unit of measure.</summary>
     public Quantity? BaseQuantity { get; set; }
+
+    /// <summary>Data that goes over the core. Null if the document gives none.</summary>
+    public Extended.PriceExtensions? Extensions { get; set; }
 }
 
 /// <summary>BG-30 Line VAT information.</summary>
@@ -95,6 +101,9 @@ public sealed class LineItem
 
     /// <summary>BG-32 Item attributes.</summary>
     public List<ItemAttribute> Attributes { get; } = [];
+
+    /// <summary>Data that goes over the core. Null if the document gives none.</summary>
+    public Extended.LineItemExtensions? Extensions { get; set; }
 }
 
 /// <summary>BG-32 Item attribute.</summary>
