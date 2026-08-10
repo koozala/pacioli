@@ -11,16 +11,14 @@
   "//excludeDirectories": "Directory names that the test steps over. The name applies at each depth. Each name after 'attachments' belongs to the corpus; see the note at the end.",
   "excludeDirectories": [
     "attachments",
-    "UBL",
-    "PEPPOL",
-    "other",
     "fatturaPA",
     "ZUGFeRDv1",
     "fail",
     "unstructured"
   ],
 
-  "timeoutSeconds": 120,
+  "//timeoutSeconds": "The corpus holds two stress documents of PEPPOL with 26813 and 63404 positions, 26 MB and 63 MB. The renderer needs minutes for them, thus the value is higher than a normal document needs.",
+  "timeoutSeconds": 600,
 
   "//checkedElements": "The elements of the content check. An empty list checks all elements. See InvoiceElementRules.All.",
   "checkedElements": [],

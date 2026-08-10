@@ -1,3 +1,5 @@
+using System.Xml.Linq;
+using En16931;
 using Pacioli.Pdf.ERechnung;
 using Vit.FeRD.ExtendedDocument;
 using Vit.FeRD.ExtendedDocument.Model;
@@ -5,26 +7,52 @@ using Vit.FeRD.ExtendedDocument.Model;
 namespace Pacioli.CLI.Test.Content
 {
     /*
-     * Reads the invoice data of a sample document.
+     * Reads the invoice data of a sample document with Vit.FeRD.ExtendedDocument.
      *
-     * The loader uses the same steps as the CLI tool. A ZUGFeRD PDF file holds the XML
-     * data as an attachment. An XML file holds the data directly.
+     * THE LIBRARY HERE IS NOT THE LIBRARY OF THE RENDERER. The renderer reads with
+     * En16931; this project keeps the old library as an independent control. Thus the
+     * content check compares the two parsers, and it tests the parse step too.
+     * See doc/En16931-Migration.md, phase 1.
      *
-     * Note: the test reads the data with the same library as the renderer. Thus the
-     * content check tests the render step. It does not test the parse step.
+     * The old library reads CII only. For a UBL document the loader gives null, and the
+     * test case then gives the result "ignored": a control needs two parsers, and only
+     * one of them knows UBL.
      */
     public static class InvoiceLoader
     {
-        public static CrossIndustryInvoice Load(string samplePath)
+        /* The invoice, or null if the old library cannot read this syntax. */
+        public static CrossIndustryInvoice? Load(string samplePath)
         {
             var extractor = new EInvoiceExtractor(samplePath);
 
             if (extractor.HasInvoice)
             {
+                if (extractor.Syntax != InvoiceSyntax.Cii)
+                {
+                    return null;
+                }
+
                 return FeRDInvoice.Load(extractor.XmlDataStream!);
             }
 
+            if (SyntaxOf(samplePath) != InvoiceSyntax.Cii)
+            {
+                return null;
+            }
+
             return FeRDInvoice.Load(samplePath);
+        }
+
+        private static InvoiceSyntax SyntaxOf(string path)
+        {
+            try
+            {
+                return InvoiceReader.DetectSyntax(XDocument.Load(path, LoadOptions.None));
+            }
+            catch (System.Xml.XmlException)
+            {
+                return InvoiceSyntax.Unknown;
+            }
         }
     }
 }

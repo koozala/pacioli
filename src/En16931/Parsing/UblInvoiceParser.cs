@@ -39,6 +39,7 @@ public sealed partial class UblInvoiceParser : IInvoiceParser
         ReadAllowancesAndCharges(root, invoice);
         ReadTaxTotals(root, invoice);
         ReadTotals(root.El(Cac + "LegalMonetaryTotal"), invoice);
+        ReadExtensions(root, invoice);
 
         var lineName = isCreditNote ? "CreditNoteLine" : "InvoiceLine";
         foreach (var line in root.Els(Cac + lineName))
@@ -260,7 +261,8 @@ public sealed partial class UblInvoiceParser : IInvoiceParser
                     CategoryCode = category.El(Cbc + "ID").Text(),
                     CategoryRate = category.El(Cbc + "Percent").Dec(),
                     ExemptionReasonText = category.El(Cbc + "TaxExemptionReason").Text(),
-                    ExemptionReasonCode = category.El(Cbc + "TaxExemptionReasonCode").Text()
+                    ExemptionReasonCode = category.El(Cbc + "TaxExemptionReasonCode").Text(),
+                    Detail = ReadTaxDetail(subtotal)
                 });
             }
         }
@@ -297,6 +299,7 @@ public sealed partial class UblInvoiceParser : IInvoiceParser
             ObjectIdentifier = ReadIdentifier(line.Path(Cac + "DocumentReference", Cbc + "ID")),
             Item = ReadItem(item),
             Price = ReadPrice(line.El(Cac + "Price")),
+            Extensions = ReadLineExtensions(line, isCreditNote),
             Vat = new LineVatInformation
             {
                 CategoryCode = item.Path(Cac + "ClassifiedTaxCategory", Cbc + "ID").Text(),
@@ -330,7 +333,8 @@ public sealed partial class UblInvoiceParser : IInvoiceParser
             NetPrice = price.El(Cbc + "PriceAmount").Dec(),
             Discount = allowance.El(Cbc + "Amount").Dec(),
             GrossPrice = allowance.El(Cbc + "BaseAmount").Dec(),
-            BaseQuantity = ReadQuantity(price.El(Cbc + "BaseQuantity"))
+            BaseQuantity = ReadQuantity(price.El(Cbc + "BaseQuantity")),
+            Extensions = ReadPriceExtensions(price)
         };
     }
 
@@ -410,7 +414,8 @@ public sealed partial class UblInvoiceParser : IInvoiceParser
             AdditionalLegalInformation = legalEntity.El(Cbc + "CompanyLegalForm").Text(),
             ElectronicAddress = ReadIdentifier(party.El(Cbc + "EndpointID")),
             PostalAddress = ReadAddress(party.El(Cac + "PostalAddress")),
-            Contact = ReadContact(party.El(Cac + "Contact"))
+            Contact = ReadContact(party.El(Cac + "Contact")),
+            Extensions = ReadPartyExtensions(party)
         };
 
         foreach (var identification in party.Els(Cac + "PartyIdentification"))

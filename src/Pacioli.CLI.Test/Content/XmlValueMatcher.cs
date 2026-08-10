@@ -7,7 +7,8 @@ namespace Pacioli.CLI.Test.Content
      *
      * The renderer does not always write a value in the same form as the XML input:
      *
-     *   - A date comes as "20200305" in the XML. The renderer writes "05.03.2020".
+     *   - A date comes as "20200305" in a CII document, and as "2020-03-05" in a UBL
+     *     document. The renderer writes "05.03.2020".
      *   - An amount comes as "198.00" in the XML. The renderer writes "198,00".
      *   - A quantity comes as "20.0000" in the XML. The renderer writes "20".
      *
@@ -16,8 +17,13 @@ namespace Pacioli.CLI.Test.Content
      */
     public static class XmlValueMatcher
     {
-        /* The format code of a date in a ZUGFeRD document: 8 digits, yyyyMMdd. */
+        /*
+         * The forms of a date. CII gives 8 digits with the format code 102; UBL gives the
+         * form of ISO 8601. The renderer writes the date in the form of the culture.
+         */
         public const string DateFormat = "yyyyMMdd";
+
+        public static readonly string[] DateFormats = { DateFormat, "yyyy-MM-dd" };
 
         public static bool IsVisible(string value, PdfTextContent page)
         {
@@ -51,7 +57,7 @@ namespace Pacioli.CLI.Test.Content
 
         public static bool TryParseDate(string text, out DateTime date)
         {
-            return DateTime.TryParseExact(text, DateFormat, CultureInfo.InvariantCulture,
+            return DateTime.TryParseExact(text, DateFormats, CultureInfo.InvariantCulture,
                 DateTimeStyles.None, out date);
         }
 

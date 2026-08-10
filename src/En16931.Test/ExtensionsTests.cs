@@ -317,14 +317,51 @@ public class ExtensionsTests
         Assert.That(allowance?.Reason, Is.EqualTo("Mengenrabatt"));
     }
 
-    /* A document without such data must leave the extensions null. */
+    /*
+     * A group that the document does not give must leave its extension null. The UBL
+     * fixture gives a payment term, thus the invoice has extensions; but it gives no
+     * group that only CII holds, and it gives nothing over the core for its position.
+     */
     [Test]
-    public void ADocumentOfTheCoreLeavesTheExtensionsEmpty()
+    public void ADocumentGivesNoExtensionForAGroupThatItDoesNotHold()
     {
         var invoice = InvoiceReader.ReadXml(Fixtures.Ubl);
 
-        Assert.That(invoice.Extensions, Is.Null);
         Assert.That(invoice.Lines.Single().Extensions, Is.Null);
         Assert.That(invoice.Lines.Single().Item.Extensions, Is.Null);
+        Assert.That(invoice.Lines.Single().Price.Extensions, Is.Null);
+        Assert.That(invoice.Notes.Single().Extensions, Is.Null);
+    }
+
+    /*
+     * UBL does not hold each group that CII holds. Such a group stays empty, and the
+     * renderer then shows nothing for it.
+     */
+    [Test]
+    public void AUblDocumentHasNoGroupThatOnlyCiiHolds()
+    {
+        var extensions = InvoiceReader.ReadXml(Fixtures.Ubl).Extensions;
+
+        Assert.That(extensions, Is.Not.Null, "The fixture gives a payment term.");
+        Assert.That(extensions!.Title, Is.Null);
+        Assert.That(extensions.Invoicee, Is.Null);
+        Assert.That(extensions.LogisticsServiceCharges, Is.Empty);
+        Assert.That(extensions.AdvancePayments, Is.Empty);
+        Assert.That(extensions.TransportModeCodes, Is.Empty);
+    }
+
+    /* The groups that both syntaxes hold must read the same from both. */
+    [Test]
+    public void AUblDocumentGivesThePaymentTermAndTheTaxRegistration()
+    {
+        var invoice = InvoiceReader.ReadXml(Fixtures.Ubl);
+
+        var term = invoice.Extensions!.PaymentTerms.Single();
+        Assert.That(term.Description, Is.EqualTo("Zahlbar bis zum 14.04.2026."));
+        Assert.That(term.DueDate, Is.EqualTo(new DateOnly(2026, 4, 14)));
+
+        var registration = invoice.Seller?.Extensions?.TaxRegistrations.Single();
+        Assert.That(registration?.Value, Is.EqualTo("DE123456788"));
+        Assert.That(registration?.SchemeId, Is.EqualTo("VAT"));
     }
 }

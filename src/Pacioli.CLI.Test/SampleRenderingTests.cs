@@ -192,10 +192,24 @@ namespace Pacioli.CLI.Test
                 Assert.Ignore($"The CLI tool could not render this sample: {rendered.Problem}");
             }
 
-            CrossIndustryInvoice descriptor = InvoiceLoader.Load(sample.FullPath);
+            /*
+             * The control reads with the old library, and that library knows CII only.
+             * A UBL document therefore has no second parser, and the case gives the
+             * result "ignored". XmlSample_AllValuesAreVisible still checks each value of
+             * such a document, because it works from the XML and not from a model.
+             */
+            CrossIndustryInvoice? descriptor = InvoiceLoader.Load(sample.FullPath);
+
+            if (descriptor == null)
+            {
+                Assert.Ignore(
+                    "The control library Vit.FeRD.ExtendedDocument reads CII only, thus it " +
+                    "cannot give the expected values of this document.");
+            }
+
             PdfTextContent page = PdfTextContent.Read(rendered.PdfPath);
 
-            var results = _rules.SelectMany(rule => rule.Check(descriptor, page)).ToList();
+            var results = _rules.SelectMany(rule => rule.Check(descriptor!, page)).ToList();
             var failures = results.Where(result => result.IsFailure).ToList();
 
             int checkedCount = results.Count(result => result.Outcome == ElementCheckOutcome.Found);

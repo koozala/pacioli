@@ -5,9 +5,9 @@ This document is a plan. It tells you how Pacioli can replace the external packa
 
 - Made on: 2026-08-10
 - Branch: `EN16931`
-- State: phase 0 to 5 are done. **`Pacioli.Pdf` does not use `Vit.FeRD.ExtendedDocument`
-  any more.** The package is now in the test project only, where it is the independent
-  control of the parser. Phase 6 turns UBL on.
+- State: phase 0 to 6 are done. **Pacioli reads a UBL invoice**, and `Pacioli.Pdf` does not
+  use `Vit.FeRD.ExtendedDocument` any more. The package is in the test project only, where
+  it is the independent control of the parser for a CII document. Phase 7 is left.
 
 ## Contents
 
@@ -82,7 +82,8 @@ The samples and the CII part of the ZUGFeRD corpus, 101 XML documents:
 | Missing, without an entry (test failure) | 0 | 0,0 % |
 
 **About three quarters of all values of the XML input are on the page, and the renderer
-has one known gap.** This is the level that the migration must keep. The next chapter
+has one known gap.** This is the level that the migration must keep. (After phase 6 the
+test run also holds the UBL samples; see that phase for the numbers of the wider base.) The next chapter
 names each value that a direct exchange would remove.
 
 > An earlier report gave 79,1 % for the samples of the specification. That number was too
@@ -467,23 +468,61 @@ must agree. It passes for each of the 165 samples.
 **Result:** 1069 test cases green. The report agrees with the baseline of phase 0, value
 for value: 8204 values on the page, 74,5 %, one known gap.
 
-### Phase 6 — UBL
+### Phase 6 — UBL — **done on 2026-08-10**
 
-1. `InvoiceWriter` gives a UBL file to `InvoiceReader` too.
-2. `EInvoiceExtractor` finds a UBL attachment in a PDF file.
-3. Take the names `UBL`, `PEPPOL` and `other` out of `excludeDirectories` in
-   `testsettings.json`. The 31 UBL documents of the corpus then go into the test run.
-   28 of them have a CII document with the same name, thus you can compare the two pages
-   of one invoice.
-4. Control the code lists with the codes of UBL. UBL uses other lists in some places,
-   for example the scheme of the electronic address.
-5. Control the resources: `TypeCodeMapping` and `QuantityCodesExtensions` read a resource
-   with the code in its name. A UBL document can bring a code that has no resource.
+**Pacioli reads a UBL invoice.** This is the goal of the migration.
 
-**Test:** a new report for the UBL samples. The first run gives the gaps of the UBL path.
-Close them as in phase 5.
+The renderer needed no change: it reads `InvoiceReader`, and that class knows both
+syntaxes since phase 0. `EInvoiceExtractor` finds a UBL attachment in a PDF file since
+phase 3. The work of this phase was the parser and the test.
 
-**Result:** Pacioli reads a UBL invoice. This is the goal of the migration.
+#### The parser
+
+`UblInvoiceParser.Extended.cs` fills the extension layer: the tax registrations of a party
+with their scheme, the identifiers under a scheme, the payment terms with their discount
+and their penalty, the despatch advice, the deliver to party, the documents of the head
+and of a position, the full tax of a position, and the allowances on the price.
+
+UBL does not hold each group that CII holds: it has no title of the document, no content
+code of a note, no invoicee party, no ship-from party and no logistics service charge.
+Such a property stays null, and the page then shows nothing for it.
+
+#### The test base
+
+`excludeDirectories` lost the names `UBL`, `PEPPOL` and `other`. The test run went from
+101 to 132 XML samples, and from 11012 to 1366385 values — the corpus holds two stress
+documents of PEPPOL with 26813 and 63404 positions.
+
+| Result, samples and corpus, 132 XML documents | Values | Part |
+|---|---:|---:|
+| Values in the XML input | 1366385 | 100,0 % |
+| On the page | 1182555 | 86,5 % |
+| Not rendered, by design | 183828 | 13,5 % |
+| **Known gap of the renderer** | **2** | **0,0 %** |
+| Missing, without an entry (test failure) | 0 | 0,0 % |
+
+**The CII path did not change.** With the configuration of phase 5 the report gives 11012
+values, 8204 on the page, 74,5 %, and one known gap — value for value the baseline of
+phase 0.
+
+#### What the first run showed
+
+The first run with the UBL samples gave 80969 missing values. Three causes, in this order
+of size:
+
+| Cause | Values | What happened |
+|---|---:|---|
+| The matcher knew the date of CII only. It reads `20200305`, and UBL writes `2020-03-05`. | ~53000 | `XmlValueMatcher` now knows both forms. This was a hole in the test, not in the renderer. |
+| The two syntaxes give the same term a different name, thus the entries of `XmlValueExclusions` did not apply. | ~27000 | New entries for `TaxScheme/ID`, `InvoiceTypeCode`, `ChargeIndicator`, `ProfileID`, `CustomizationID`, and the others. |
+| The UBL parser filled no extension. | 132 | `UblInvoiceParser.Extended.cs`. |
+
+#### Two more findings
+
+| Finding | What happened |
+|---|---|
+| **The control of phase 1 has a limit.** `Sample_RenderedPdf_ShowsKeyElements` reads the expected values with `Vit.FeRD.ExtendedDocument`, and that library reads CII only. It failed for each of the 30 UBL samples. | The test case now gives the result "ignored" for a document that the old library cannot read, with the reason. The control keeps its full value for the CII samples. `XmlSample_AllValuesAreVisible` still checks each value of a UBL document, because it works from the XML and not from a model. |
+| **The renderer needs minutes for a very big invoice.** `Large_Invoice_sample2.xml` of PEPPOL has 63404 positions in 63 MB, and it does not render in 120 seconds. The sample with 26813 positions does. | `timeoutSeconds` is now 600, with the numbers in `testsettings.json`. The value is far over a normal invoice, but the limit is now measured and not unknown. |
+| **BT-159, the country of origin of an article, is on no page.** | A new entry of the kind `KnownGap`. A CII document gives the same term, and a country code of two letters agrees with almost each page, thus this gap stayed hidden until the UBL samples came. |
 
 ### Phase 7 — Remove the dependency
 

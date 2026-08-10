@@ -74,6 +74,52 @@ namespace Pacioli.CLI.Test.Content
                 ExclusionKind.NotRendered,
                 "The ID of the business process."),
 
+            /*
+             * The names below belong to UBL. The two syntaxes give the same business term
+             * a different name, thus a CII entry above does not apply to a UBL document.
+             */
+
+            new("/TaxScheme/ID", ExclusionKind.NotRendered,
+                "The scheme of a tax, almost always \"VAT\". The page shows the name of the tax."),
+
+            new("InvoiceTypeCode", ExclusionKind.NotRendered,
+                "A code, for example \"380\". The page shows the text of the code."),
+
+            new("CreditNoteTypeCode", ExclusionKind.NotRendered,
+                "A code, for example \"381\". The page shows the text of the code."),
+
+            new("PaymentMeansCode", ExclusionKind.NotRendered,
+                "A code of a payment means. The page shows the text of the code."),
+
+            new("ChargeIndicator", ExclusionKind.NotRendered,
+                "A true or false value. The page shows a text, for example \"Zuschlag\"."),
+
+            new("CustomizationID", ExclusionKind.NotRendered,
+                "The ID of the profile, for example \"urn:cen.eu:en16931:2017\"."),
+
+            new("ProfileID", ExclusionKind.NotRendered,
+                "The ID of the business process."),
+
+            new("/Invoice/Note", ExclusionKind.NotRendered,
+                "A note of a UBL document. UBL has no element for the subject code (BT-21), " +
+                "thus the code stands before the text between two number signs, for example " +
+                "\"#AAI#Ein Hinweis\". The page shows the code and the text apart."),
+
+            new("/CreditNote/Note", ExclusionKind.NotRendered,
+                "A note of a UBL credit note. See /Invoice/Note."),
+
+            new("AllowanceChargeReasonCode", ExclusionKind.NotRendered,
+                "A code of a reason. The page shows the text of the reason."),
+
+            new("TaxExemptionReasonCode", ExclusionKind.NotRendered,
+                "A code of a VATEX exemption reason. The page shows the text of the code."),
+
+            new("EmbeddedDocumentBinaryObject", ExclusionKind.NotRendered,
+                "The data of an attachment, in base64 form."),
+
+            new("DocumentTypeCode", ExclusionKind.NotRendered,
+                "A code of a document type. The page shows the text of the code."),
+
             /* ---------------------------------------------------------------
              * Kind 2: the renderer does not show these values yet.
              * Each entry is a task for the renderer.
@@ -212,6 +258,12 @@ namespace Pacioli.CLI.Test.Content
              * the corpus of ZUGFeRD, which holds documents of the practice. See the note
              * about the corpus in testsettings.json.
              */
+
+            new("/OriginCountry/IdentificationCode", ExclusionKind.KnownGap,
+                "BT-159, the country of origin of an article. The page does not show it. " +
+                "A CII document gives the same term in OriginTradeCountry/ID, and a country " +
+                "code of two letters agrees with almost each page, thus this gap stayed hidden " +
+                "until the UBL samples came."),
 
             new("/ReceivingAdviceReferencedDocument/IssuerAssignedID", ExclusionKind.KnownGap,
                 "BT-15, the reference of the receiving advice. The page shows the despatch " +
