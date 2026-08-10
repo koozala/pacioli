@@ -5,6 +5,7 @@ using Pacioli.Language.Resources;
 using System;
 using System.Linq;
 using System.Text;
+using CodeLists = En16931.Codes.CodeLists;
 
 namespace Pacioli.Pdf.Invoice.Sections
 {
@@ -34,7 +35,10 @@ namespace Pacioli.Pdf.Invoice.Sections
                 StringBuilder reStr = new StringBuilder();
                 reStr.Append($"{Resources.customerNo}: ");
                 reStr.Append($" {buyerId.Value}");
-                reStr.Append($" ({buyerId.SchemeId})");
+                if (!string.IsNullOrWhiteSpace(buyerId.SchemeId))
+                {
+                    reStr.Append($" ({CodeText.Name(CodeLists.IdentifierScheme, buyerId.SchemeId)})");
+                }
                 doc.Add(new Paragraph(reStr.ToString()));
             }
 
@@ -50,15 +54,6 @@ namespace Pacioli.Pdf.Invoice.Sections
                 doc.Add(new Paragraph($"{Resources.projectNo}: {projectName} {invoice.ProjectReference}"));
             }
 
-            DateOnly? deliveryDate = invoice.Delivery?.ActualDeliveryDate;
-            if (deliveryDate != null)
-            {
-                doc.Add(new Paragraph($"{Resources.deliveryDate}: {deliveryDate.Value.ToString("d")}"));
-            }
-
-            doc.Add(new Paragraph($"{Resources.currencyNote} {invoice.CurrencyCode}")
-                .SetFont(context.Bold));
-
             /*
              * The number of the sales order (BT-14). The page shows the name of the
              * document, and "--" if the document gives none.
@@ -68,6 +63,7 @@ namespace Pacioli.Pdf.Invoice.Sections
                 doc.Add(new Paragraph(
                     $"{Resources.UnsereBestellnummer}: {invoice.Extensions?.SalesOrderName ?? "--"}"));
             }
+
         }
     }
 }

@@ -309,9 +309,6 @@
   <data name="errorFileReadMessage" xml:space="preserve">
     <value>Error while reading file {0}: {1}</value>
   </data>
-  <data name="msgSettingsNotSaved" xml:space="preserve">
-    <value>The program could not save the settings. It goes on with the values of before.</value>
-  </data>
   <data name="msgNoActiveDocument" xml:space="preserve">
     <value>No active document</value>
   </data>
@@ -859,5 +856,11 @@ More information on the Internet: https://github.com/koozala/pacioli</value>
   </data>
   <data name="countryOfOrigin" xml:space="preserve">
     <value>Country of origin</value>
+  </data>
+  <data name="msgSettingsNotSaved" xml:space="preserve">
+    <value>The program could not save the settings. It goes on with the values of before.</value>
+  </data>
+  <data name="buyerElectronicAddress" xml:space="preserve">
+    <value>Buyer</value>
   </data>
 </root>

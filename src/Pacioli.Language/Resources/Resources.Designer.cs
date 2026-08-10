@@ -295,6 +295,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Käufer.
+        /// </summary>
+        public static string buyerElectronicAddress {
+            get {
+                return ResourceManager.GetString("buyerElectronicAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Karte.
         /// </summary>
         public static string card {
@@ -669,15 +678,6 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The program could not save the settings..
-        /// </summary>
-        public static string msgSettingsNotSaved {
-            get {
-                return ResourceManager.GetString("msgSettingsNotSaved", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Kein aktives Dokument.
         /// </summary>
         public static string msgNoActiveDocument {
@@ -701,6 +701,15 @@ namespace Pacioli.Language.Resources {
         public static string msgServerErrorText {
             get {
                 return ResourceManager.GetString("msgServerErrorText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die Einstellungen konnten nicht gespeichert werden. Das Programm arbeitet mit den bisherigen Werten weiter..
+        /// </summary>
+        public static string msgSettingsNotSaved {
+            get {
+                return ResourceManager.GetString("msgSettingsNotSaved", resourceCulture);
             }
         }
         

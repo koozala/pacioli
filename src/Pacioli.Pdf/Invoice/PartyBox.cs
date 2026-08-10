@@ -65,8 +65,7 @@ namespace Pacioli.Pdf.Invoice
                 .FirstOrDefault(entry => !string.IsNullOrWhiteSpace(entry?.Value));
             if (id != null)
             {
-                string s = id.SchemeId != null ? $"({id.SchemeId})" : string.Empty;
-                AddText($"ID: {id.Value} {s}\n");
+                AddText($"ID: {CodeText.Name(CodeLists.IdentifierScheme, id.SchemeId)} {id.Value}\n");
             }
 
             // Steuer-ID und USt-Idnr
@@ -75,18 +74,18 @@ namespace Pacioli.Pdf.Invoice
             {
                 if (!string.IsNullOrWhiteSpace(registration.Value))
                 {
-                    AddText($"{Resources.SteuerId}: {registration.SchemeId}: {registration.Value}\n");
+                    AddText($"{Resources.SteuerId}: {CodeText.Name(CodeLists.IdentifierScheme, registration.SchemeId)} {registration.Value}\n");
                 }
             }
 
             foreach (Identifier global in party.Extensions?.GlobalIdentifiers ?? [])
             {
-                AddText($"{Resources.GlobalId}: ({CodeText.Name(CodeLists.IdentifierScheme, global.SchemeId)}) {global.Value}\n");
+                AddText($"{Resources.GlobalId}: {CodeText.Name(CodeLists.IdentifierScheme, global.SchemeId)} {global.Value}\n");
             }
 
             if (party.ElectronicAddress != null)
             {
-                AddLine(party.ElectronicAddress.Value);
+                AddLine($"{CodeText.Name(CodeLists.ElectronicAddressScheme, party.ElectronicAddress.SchemeId)}: {party.ElectronicAddress.Value}");
             }
 
             /*

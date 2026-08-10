@@ -1,4 +1,5 @@
 using En16931.Model;
+using iText.IO.Font.Constants;
 using iText.Layout;
 using iText.Layout.Element;
 using Pacioli.Language.Resources;
@@ -33,14 +34,7 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             if (count > 0)
             {
-                doc.Add(new Paragraph(Resources.WeitereUnterlagen));
-
-                string? title = invoice.Extensions?.Title;
-                if (title != null) doc.Add(new Paragraph(title));
-
-                doc.Add(new Paragraph($"{Resources.Dokumentendatum}: {invoice.IssueDate.ToString()}"));
-                doc.Add(new Paragraph(
-                    $"{Resources.Code}: {CodeText.Name(CodeLists.DocumentType, invoice.InvoiceTypeCode)}"));
+                doc.Add(new Paragraph(Resources.WeitereUnterlagen).SetFont(context.Bold).SetMarginTop(25.0f));
                 doc.Add(tab);
             }
         }

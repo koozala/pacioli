@@ -1,6 +1,8 @@
 using iText.Layout;
 using iText.Layout.Element;
 using En16931.Model;
+using Pacioli.Language.Resources;
+using CodeLists = En16931.Codes.CodeLists;
 
 namespace Pacioli.Pdf.Invoice.Sections
 {
@@ -15,7 +17,7 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             if (address != null)
             {
-                doc.Add(new Paragraph($"{address.SchemeId} {address.Value}"));
+                doc.Add(new Paragraph($"{Resources.buyerElectronicAddress}: {CodeText.Name(CodeLists.ElectronicAddressScheme, address.SchemeId)} {address.Value}"));
             }
         }
     }

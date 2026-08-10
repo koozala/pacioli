@@ -6,6 +6,7 @@ using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using Pacioli.Language.Resources;
+using System.Text;
 using CodeLists = En16931.Codes.CodeLists;
 
 /* Invoice is also the name of the namespace Pacioli.Pdf.Invoice, thus it needs an alias. */
@@ -212,11 +213,14 @@ namespace Pacioli.Pdf.Invoice.Sections
                 .SetPadding(5.0f)
                 .SetMarginTop(10.0f);
 
+            StringBuilder sb = new StringBuilder();
+
             int count = 0;
 
             void AddItem(string text)
             {
-                settlementGroup.Add(new Paragraph(text).SetFontSize(12));
+                //settlementGroup.Add(new Paragraph(text).SetFontSize(12));
+                sb.AppendLine(text);
                 count++;
             }
 
@@ -281,6 +285,7 @@ namespace Pacioli.Pdf.Invoice.Sections
 
             if (count > 0)
             {
+                settlementGroup.Add(new Paragraph(sb.ToString()).SetFontSize(12));
                 doc.Add(settlementGroup);
             }
         }

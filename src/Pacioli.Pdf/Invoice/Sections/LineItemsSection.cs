@@ -52,6 +52,8 @@ namespace Pacioli.Pdf.Invoice.Sections
                 tab.AddCell(new ItemCellRight($"{Fmt.ToString(line.NetAmount, "#,0.00")}"));
             }
 
+            doc.Add(new Paragraph($"{Resources.currencyNote} {context.Core.CurrencyCode}")
+    .SetFont(context.Bold));
             doc.Add(tab);
         }
 
