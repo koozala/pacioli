@@ -5,8 +5,9 @@ This document is a plan. It tells you how Pacioli can replace the external packa
 
 - Made on: 2026-08-10
 - Branch: `EN16931`
-- State: phase 0 and phase 2 are done. `Pacioli.Pdf` takes its code lists from `En16931`.
-  The parser of the application is still `Vit.FeRD.ExtendedDocument`.
+- State: phase 0, 2 and 3 are done. `Pacioli.Pdf` takes its code lists from `En16931`, and
+  it reads the attachment of a PDF file without the old library. The model of the renderer
+  is still `Vit.FeRD.ExtendedDocument`; phase 4 and phase 5 exchange it.
 
 ## Contents
 
@@ -182,10 +183,8 @@ The renderer reads these members of `Vit.FeRD.ExtendedDocument`. The column *In
 ### Two more parts that `En16931` does not hold
 
 1. ~~**The code lists.**~~ Closed in phase 2: the 24 lists are now in `En16931.Codes`.
-2. **The attachment of a PDF file.** `ZugferdReader.Read` walks through each object of
-   the PDF file. It gives each stream to `FeRDInvoice.Load`. If the call does not raise
-   an exception, the stream holds the invoice. `En16931` can take this role with
-   `InvoiceReader.TryRead`, but the step needs a new form (see phase 3).
+2. ~~**The attachment of a PDF file.**~~ Closed in phase 3: `EInvoiceExtractor` reads the
+   name tree of the embedded files and asks `InvoiceReader.DetectSyntax`.
 
 ## The plan
 
@@ -313,24 +312,41 @@ validation.
 The rendered page did not change: the report of the samples and of the corpus agrees with
 the baseline of phase 0, value for value.
 
-### Phase 3 — The attachment of the PDF file
+### Phase 3 — The attachment of the PDF file — **done on 2026-08-10**
 
-Write `ZugferdReader` new. Give it a new name, because it now also finds a UBL
-attachment: `EInvoiceExtractor`.
+`ZugferdReader` and `ZugferdExtractor` went away. The new class is
+`Pacioli.Pdf\ERechnung\EInvoiceExtractor.cs`. It has a new name because it also finds a
+UBL attachment.
 
-Do not walk through each object of the PDF file, and do not use an exception as a test.
-Use the name tree of the embedded files of iText
-(`PdfCatalog.GetNameTree(PdfName.EmbeddedFiles)`). Read the file name and the relation
-(`AFRelationship`). Factur-X and ZUGFeRD give the attachment the name `factur-x.xml`,
-`zugferd-invoice.xml` or `xrechnung.xml`. Take the first attachment whose name agrees, or,
-if no name agrees, the first attachment that `InvoiceReader.DetectSyntax` accepts.
+The old way walked through each object of the PDF file and gave each stream to
+`FeRDInvoice.Load`. A call without an exception was the answer. The new way reads the name
+tree of the embedded files (`PdfCatalog.GetNameTree(PdfName.EmbeddedFiles)`), takes the
+file name from `UF` or from `F`, and asks `InvoiceReader.DetectSyntax`. That test looks at
+the root element only, thus it raises no exception and it is fast.
 
-**Test:** each of the 70 PDF samples must give the same bytes as today. Write a test that
-compares the old way and the new way.
+A PDF file can hold more than one attachment: the invoice, and an enclosure, for example a
+bill of quantities. The class puts the attachments in an order and takes the first one
+that is an invoice:
 
-**Result:** `Pacioli.Pdf\zugferd\ZugferdReader.cs` and
-`Pacioli.Pdf\ERechnung\ZugferdExtractor.cs` do not use the package any more. The step is
-also faster and safer than the step of today.
+| Group | Attachment |
+|---:|---|
+| 1 | A name of the specification: `factur-x.xml`, `zugferd-invoice.xml`, `xrechnung.xml`, `cii.xml` |
+| 2 | An other attachment with the ending `.xml` |
+| 3 | Each other attachment |
+
+Inside a group, the order of the document stays.
+
+**Test:** `PdfAttachmentTests` gives each PDF sample to the old way and to the new way and
+compares the bytes. The old way is a copy in the test project
+(`Content\LegacyPdfAttachmentReader.cs`); it uses the old library, as the test project
+does anyway until phase 7. **The new way finds the same bytes as the old way, for each of
+the 165 PDF samples.** Two more test cases control that the extractor names the attachment
+and the syntax, and that a file that is not a PDF file raises no exception.
+
+**Result:** `Pacioli.Pdf` reads a PDF attachment without the old library, and the step is
+faster: the two ways together need 3 seconds for 165 files. `EInvoiceExtractor` also gives
+the name of the attachment and the syntax, which the old class did not give. The rendered
+page did not change.
 
 ### Phase 4 — The extension layer of `En16931`
 
@@ -448,15 +464,15 @@ Close them as in phase 5.
 
 ## The files that change
 
-| Project | Files | Lines |
-|---|---:|---:|
-| `En16931` | 10 today, plus the extension layer and the code lists | 1704 today |
-| `En16931.Test` | new | — |
-| `Pacioli.Pdf` | 24 of 34 files | ~2400 |
-| `Pacioli.CLI` | `Pacioli.CLI.csproj` only | — |
-| `Pacioli.WindowsApp` | `Pacioli.WindowsApp.csproj` only | — |
-| `Pacioli.CLI.Test` | 4 files, in phase 7 only | ~200 |
-| `doc` | 2 files | — |
+| Project | Files | State |
+|---|---|---|
+| `En16931` | 10 for the parser, 5 for the code lists, plus the extension layer of phase 4 | the code lists are there |
+| `En16931.Test` | 8 | new in phase 0 |
+| `Pacioli.Pdf` | 24 of 34 files | 10 files use the new code lists, and `EInvoiceExtractor` is new; the model comes in phase 5 |
+| `Pacioli.CLI` | `Pacioli.CLI.csproj` only | done in phase 0 |
+| `Pacioli.WindowsApp` | `Pacioli.WindowsApp.csproj` only | done in phase 0 |
+| `Pacioli.CLI.Test` | 8 files | more than one samples directory, the exclusions, and the control of the PDF step |
+| `doc` | 3 files, and the baselines | — |
 
 The public interface of `Pacioli.Pdf` does not change. `Pacioli.WindowsApp` and
 `Pacioli.CLI` use `InvoiceWriter(fileName)`, `Write`, `GetXml`, `GetAttachments`,

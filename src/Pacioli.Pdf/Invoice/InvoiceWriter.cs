@@ -3,7 +3,6 @@ using iText.Kernel.Pdf;
 using iText.Layout;
 using Pacioli.Pdf.ERechnung;
 using Pacioli.Pdf.Invoice.Sections;
-using Pacioli.Pdf.zugferd;
 using System.Collections.Generic;
 using System.IO;
 using Vit.FeRD.ExtendedDocument;
@@ -41,15 +40,15 @@ namespace Pacioli.Pdf.Invoice
         {
             sourceFile = fileName;
 
-            var zr = new ZugferdReader(fileName);
-            IsZugferd = zr.Read(out Stream? data);
+            var extractor = new EInvoiceExtractor(fileName);
+            IsZugferd = extractor.HasInvoice;
 
             if (IsZugferd)
             {
-                invoice = FeRDInvoice.Load(data!);
-                data!.Seek(0, SeekOrigin.Begin);
-                data!.CopyTo(XmlData);
-                data!.Dispose();
+                using Stream data = extractor.XmlDataStream!;
+                invoice = FeRDInvoice.Load(data);
+                data.Seek(0, SeekOrigin.Begin);
+                data.CopyTo(XmlData);
             }
             else
             {

@@ -37,7 +37,7 @@ namespace Pacioli.CLI.Headless
                 return;
             }
 
-            ZugferdExtractor zugferdExtractor = new ZugferdExtractor(Args.InputFile);
+            EInvoiceExtractor extractor = new EInvoiceExtractor(Args.InputFile);
 
             if (Args.GenPdf ?? false)
             {
@@ -51,11 +51,11 @@ namespace Pacioli.CLI.Headless
             {
                 string p1 = Args.OutputFolder ?? ".";
 
-                if (zugferdExtractor.IsZugferdFile && zugferdExtractor.XmlDataStream != null)
+                if (extractor.HasInvoice)
                 {
                     using (FileStream fs = new FileStream(Path.Combine(p1, Args.XmlName ?? "boo.xml"), FileMode.Create, FileAccess.Write))
                     {
-                        zugferdExtractor.XmlDataStream.CopyTo(fs);
+                        extractor.XmlDataStream!.CopyTo(fs);
                     }
                 }
                 else

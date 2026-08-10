@@ -17,11 +17,11 @@ namespace Pacioli.CLI.Test.Content
     {
         public static CrossIndustryInvoice Load(string samplePath)
         {
-            var extractor = new ZugferdExtractor(samplePath);
+            var extractor = new EInvoiceExtractor(samplePath);
 
-            if (extractor.IsZugferdFile && extractor.XmlDataStream != null)
+            if (extractor.HasInvoice)
             {
-                return FeRDInvoice.Load(extractor.XmlDataStream);
+                return FeRDInvoice.Load(extractor.XmlDataStream!);
             }
 
             return FeRDInvoice.Load(samplePath);
