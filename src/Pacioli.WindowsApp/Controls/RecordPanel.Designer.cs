@@ -146,10 +146,9 @@
             FF_ShowXmlButton.Text = "XML";
             FF_ShowXmlButton.UseVisualStyleBackColor = false;
             FF_ShowXmlButton.Click += FF_ShowXmlButton_Click;
-            //
+            // 
             // FF_CloseButton
-            //
-            // The text comes from the resources, thus the constructor gives it.
+            // 
             FF_CloseButton.AutoSize = true;
             FF_CloseButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             FF_CloseButton.BackColor = Color.SlateGray;
@@ -161,9 +160,9 @@
             FF_CloseButton.TabIndex = 1;
             FF_CloseButton.UseVisualStyleBackColor = false;
             FF_CloseButton.Click += FF_CloseButton_Click;
-            //
+            // 
             // RecordPanel
-            //
+            // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(F_TablePanel);
@@ -176,6 +175,7 @@
             F_DragDropPanel.ResumeLayout(false);
             F_DragDropPanel.PerformLayout();
             FF_ButtonPanel.ResumeLayout(false);
+            FF_ButtonPanel.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }

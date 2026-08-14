@@ -15,9 +15,10 @@ namespace Pacioli.WindowsApp.Controls
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                _contentFont?.Dispose();
+                components?.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -55,10 +56,12 @@ namespace Pacioli.WindowsApp.Controls
             // F_XmlTreeView
             // 
             F_XmlTreeView.Dock = DockStyle.Fill;
+            F_XmlTreeView.DrawMode = TreeViewDrawMode.OwnerDrawText;
             F_XmlTreeView.Location = new Point(3, 53);
             F_XmlTreeView.Name = "F_XmlTreeView";
             F_XmlTreeView.Size = new Size(808, 673);
             F_XmlTreeView.TabIndex = 0;
+            F_XmlTreeView.DrawNode += F_XmlTreeView_DrawNode;
             // 
             // F_XmlViewLabel
             // 
