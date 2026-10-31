@@ -1,9 +1,9 @@
-# Pacioli
+# Pacioli RELEASE NOTES
+
+## 14.08.2026
+- New XML styling for better readability
 
 ## 09.08.2026
-
-### What is new
-
 - New column layout for improved aesthetics
 - Single tabs can now be closed
 - More data points from the XML file are now visualized
