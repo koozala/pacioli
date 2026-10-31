@@ -1074,6 +1074,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to bis.
+        /// </summary>
+        public static string until {
+            get {
+                return ResourceManager.GetString("until", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skonto.
         /// </summary>
         public static string Skonto {

@@ -129,8 +129,13 @@ public sealed class PaymentTerm
     /// <summary>The reference of a SEPA mandate.</summary>
     public string? DirectDebitMandateReference { get; set; }
 
-    /// <summary>What the buyer takes off for an early payment (Skonto).</summary>
-    public PaymentTermCondition? Discount { get; set; }
+    /// <summary>
+    /// What the buyer takes off for an early payment (Skonto). A term can give more than
+    /// one discount, for example 3 % in 7 days and 2 % in 14 days. CII EXTENDED and UBL
+    /// give one discount for each term. XRechnung gives each discount as one line in the
+    /// text of the term (see <c>XRechnungDiscounts</c>).
+    /// </summary>
+    public List<PaymentTermCondition> Discounts { get; } = [];
 
     /// <summary>What the buyer pays for a late payment (Verzugszinsen).</summary>
     public PaymentTermCondition? Penalty { get; set; }
@@ -154,7 +159,10 @@ public sealed class PaymentTermCondition
     /// <summary>The number of days.</summary>
     public decimal? BasisPeriodDays { get; set; }
 
-    /// <summary>The day from which the days count.</summary>
+    /// <summary>
+    /// The day from which the days count. If a discount has no day, the days count from
+    /// the invoice date (BT-2). XRechnung gives no day for a discount.
+    /// </summary>
     public DateOnly? BasisDate { get; set; }
 }
 

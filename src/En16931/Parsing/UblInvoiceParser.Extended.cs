@@ -98,7 +98,7 @@ public sealed partial class UblInvoiceParser
             var discount = term.El(Cbc + "SettlementDiscountPercent").Dec();
             var penalty = term.El(Cbc + "PenaltySurchargePercent").Dec();
 
-            extensions.PaymentTerms.Add(new PaymentTerm
+            var paymentTerm = new PaymentTerm
             {
                 Description = term.El(Cbc + "Note").Text(),
 
@@ -106,16 +106,22 @@ public sealed partial class UblInvoiceParser
                 DueDate = first ? invoice.PaymentDueDate : null,
                 DirectDebitMandateReference = first ? mandate : null,
 
-                Discount = discount is null ? null : new PaymentTermCondition
-                {
-                    Percentage = discount,
-                    Amount = ReadAmount(term.El(Cbc + "Amount"))
-                },
                 Penalty = penalty is null ? null : new PaymentTermCondition
                 {
                     Percentage = penalty
                 }
-            });
+            };
+
+            if (discount is not null)
+            {
+                paymentTerm.Discounts.Add(new PaymentTermCondition
+                {
+                    Percentage = discount,
+                    Amount = ReadAmount(term.El(Cbc + "Amount"))
+                });
+            }
+
+            extensions.PaymentTerms.Add(paymentTerm);
 
             first = false;
         }

@@ -45,6 +45,8 @@ public sealed partial class UblInvoiceParser : IInvoiceParser
         foreach (var line in root.Els(Cac + lineName))
             invoice.Lines.Add(ReadLine(line, isCreditNote));
 
+        XRechnungDiscounts.Apply(invoice);
+
         return invoice;
     }
 

@@ -599,6 +599,9 @@ More information on the Internet: https://github.com/koozala/pacioli</value>
   <data name="Verzugszinsen" xml:space="preserve">
     <value>Late payment interest</value>
   </data>
+  <data name="until" xml:space="preserve">
+    <value>until</value>
+  </data>
   <data name="Skonto" xml:space="preserve">
     <value>Discount</value>
   </data>

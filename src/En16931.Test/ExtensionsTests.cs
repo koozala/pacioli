@@ -239,8 +239,9 @@ public class ExtensionsTests
         var terms = Invoice.Extensions?.PaymentTerms;
 
         Assert.That(terms, Has.Count.EqualTo(2));
-        Assert.That(terms![0].Discount?.Percentage, Is.EqualTo(2.00m));
-        Assert.That(terms[0].Discount?.BasisPeriodDays, Is.EqualTo(14m));
+        Assert.That(terms![0].Discounts, Has.Count.EqualTo(1));
+        Assert.That(terms[0].Discounts[0].Percentage, Is.EqualTo(2.00m));
+        Assert.That(terms[0].Discounts[0].BasisPeriodDays, Is.EqualTo(14m));
         Assert.That(terms[0].Penalty?.Percentage, Is.EqualTo(5.00m));
         Assert.That(terms[1].Description, Is.EqualTo("Ein zweiter Zahlungsbedingungssatz."));
 

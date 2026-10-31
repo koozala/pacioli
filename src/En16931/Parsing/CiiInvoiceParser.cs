@@ -40,6 +40,8 @@ public sealed partial class CiiInvoiceParser : IInvoiceParser
         foreach (var line in transaction.Els(Ram + "IncludedSupplyChainTradeLineItem"))
             invoice.Lines.Add(ReadLine(line));
 
+        XRechnungDiscounts.Apply(invoice);
+
         return invoice;
     }
 

@@ -122,16 +122,20 @@ public sealed partial class CiiInvoiceParser
 
     private static PaymentTerm ReadPaymentTerm(XElement terms)
     {
-        return new PaymentTerm
+        var term = new PaymentTerm
         {
             Description = terms.El(Ram + "Description").Text(),
             DueDate = terms.Path(Ram + "DueDateDateTime", Udt + "DateTimeString").CiiDate(),
             DirectDebitMandateReference = terms.El(Ram + "DirectDebitMandateID").Text(),
-            Discount = ReadCondition(terms.El(Ram + "ApplicableTradePaymentDiscountTerms"),
-                Ram + "ActualDiscountAmount"),
             Penalty = ReadCondition(terms.El(Ram + "ApplicableTradePaymentPenaltyTerms"),
                 Ram + "ActualPenaltyAmount")
         };
+
+        var discount = ReadCondition(terms.El(Ram + "ApplicableTradePaymentDiscountTerms"),
+            Ram + "ActualDiscountAmount");
+        if (discount is not null) term.Discounts.Add(discount);
+
+        return term;
     }
 
     /*

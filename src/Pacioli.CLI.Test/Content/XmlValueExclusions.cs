@@ -120,6 +120,20 @@ namespace Pacioli.CLI.Test.Content
             new("DocumentTypeCode", ExclusionKind.NotRendered,
                 "A code of a document type. The page shows the text of the code."),
 
+            /*
+             * XRechnung puts each discount (Skonto) into the text of the payment terms, in
+             * the form "#SKONTO#TAGE=7#PROZENT=3.00#". The page shows the discount as a
+             * line with the percentage, the days, and the last day. The other text of the
+             * term is on the page, but the full value of the element is not.
+             */
+            new("/SpecifiedTradePaymentTerms/Description", ExclusionKind.NotRendered,
+                "The text of a payment term with a discount of XRechnung (#SKONTO#).",
+                value => value.Contains("#SKONTO#", StringComparison.Ordinal)),
+
+            new("/PaymentTerms/Note", ExclusionKind.NotRendered,
+                "The text of a UBL payment term with a discount of XRechnung (#SKONTO#).",
+                value => value.Contains("#SKONTO#", StringComparison.Ordinal)),
+
             /* ---------------------------------------------------------------
              * Kind 2: the renderer does not show these values yet.
              * Each entry is a task for the renderer.

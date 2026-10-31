@@ -599,6 +599,9 @@ Mehr Informationen im Internet: https://github.com/koozala/pacioli</value>
   <data name="Verzugszinsen" xml:space="preserve">
     <value>Verzugszinsen</value>
   </data>
+  <data name="until" xml:space="preserve">
+    <value>bis</value>
+  </data>
   <data name="Skonto" xml:space="preserve">
     <value>Skonto</value>
   </data>

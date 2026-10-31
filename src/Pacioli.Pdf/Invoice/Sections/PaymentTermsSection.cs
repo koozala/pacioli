@@ -1,6 +1,7 @@
 using En16931.Model.Extended;
 using iText.Layout;
 using Pacioli.Language.Resources;
+using System;
 using System.Text;
 
 namespace Pacioli.Pdf.Invoice.Sections
@@ -19,22 +20,32 @@ namespace Pacioli.Pdf.Invoice.Sections
             {
                 StringBuilder sb = new StringBuilder();
 
-                if (!string.IsNullOrWhiteSpace(term.Description)) sb.Append(term.Description);
+                void AddLine(string line)
+                {
+                    if (sb.Length > 0) sb.Append('\n');
+                    sb.Append(line);
+                }
+
+                if (!string.IsNullOrWhiteSpace(term.Description)) AddLine(term.Description);
 
                 if (term.DueDate != null)
                 {
-                    sb.Append($"\n{Resources.dueDate}: {term.DueDate.Value.ToString("d")}");
+                    AddLine($"{Resources.dueDate}: {term.DueDate.Value.ToString("d")}");
                 }
 
                 /*
                  * The discount terms (Skonto): the percentage, the amount of the
                  * discount, the amount that it applies to, the number of days, and the
-                 * day from which the days count.
+                 * day from which the days count. A term can give more than one discount,
+                 * each discount gets its own line.
                  */
-                string terms = FormatCondition(term.Discount);
-                if (terms.Length > 0)
+                foreach (PaymentTermCondition discount in term.Discounts)
                 {
-                    sb.Append($"\n{Resources.Skonto}: {terms}");
+                    string terms = FormatDiscount(discount, context.Core.IssueDate);
+                    if (terms.Length > 0)
+                    {
+                        AddLine($"{Resources.Skonto}: {terms}");
+                    }
                 }
 
                 if (sb.Length > 0)
@@ -42,6 +53,26 @@ namespace Pacioli.Pdf.Invoice.Sections
                     doc.Add(new PartyBox($"{Resources.dueDate}", sb.ToString()));
                 }
             }
+        }
+
+        /*
+         * A discount, and the last day on which the buyer can take it off. The days count
+         * from the day of the discount. If the discount has no day, they count from the
+         * invoice date (BT-2), as XRechnung specifies.
+         */
+        internal static string FormatDiscount(PaymentTermCondition discount, DateOnly? issueDate)
+        {
+            string text = FormatCondition(discount);
+            DateOnly? start = discount.BasisDate ?? issueDate;
+
+            if (text.Length == 0 || start == null || discount.BasisPeriodDays is not decimal days ||
+                days != decimal.Truncate(days) || days < 0 || days > 3650)
+            {
+                return text;
+            }
+
+            DateOnly lastDay = start.Value.AddDays((int)days);
+            return CoreText.FormatGroup(text, $"({Resources.until} {lastDay.ToString("d")})");
         }
 
         /* A discount or a penalty of a payment term. A part that the document does not give makes no text. */
