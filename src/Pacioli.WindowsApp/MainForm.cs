@@ -236,6 +236,47 @@ namespace Pacioli.WindowsApp
         }
 
         /*
+         * The keyboard shortcuts of the main window.
+         *
+         * Ctrl+W closes the document that the user sees. The form gets the key also if the
+         * focus is in the browser of the PDF, because the WebView2 control gives its
+         * accelerator keys to ProcessCmdKey of its parents.
+         */
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.W))
+            {
+                CloseSelectedDocument();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        /*
+         * Closes the document of the selected tab. If no document is open, nothing occurs.
+         *
+         * The close waits for the end of the key event. The event can come from the browser
+         * of the document, and the close removes that browser.
+         */
+        private void CloseSelectedDocument()
+        {
+            TabPage? page = F_TabControl.SelectedTab;
+            if (page == null)
+            {
+                return;
+            }
+
+            BeginInvoke(new Action(() =>
+            {
+                if (!page.IsDisposed && F_TabControl.TabPages.Contains(page))
+                {
+                    CloseDocument(page);
+                }
+            }));
+        }
+
+        /*
          * Gives the temporary file of a rendered document free.
          *
          * The application writes the PDF of each document into a file of the temporary
