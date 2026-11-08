@@ -35,6 +35,15 @@ namespace Pacioli.Pdf.Invoice
 
         public bool IsZugferd { get; private set; }
 
+        /* The invoice as the parser read it. */
+        public En16931.Model.Invoice Invoice => invoice;
+
+        /* The name of the embedded XML file of a PDF file, for example "factur-x.xml", or null. */
+        public string? EmbeddedXmlName { get; private set; }
+
+        /* The XMP metadata of a PDF file with an invoice, or null for an XML file. */
+        public PdfInvoiceMetadata? PdfMetadata { get; private set; }
+
         /*
          * The parts of the page, in the order of the page.
          * You can add a part, remove a part, or move a part, before you call Write.
@@ -51,6 +60,9 @@ namespace Pacioli.Pdf.Invoice
 
             if (IsZugferd)
             {
+                EmbeddedXmlName = extractor.AttachmentName;
+                PdfMetadata = extractor.Metadata;
+
                 using Stream data = extractor.XmlDataStream!;
                 data.CopyTo(XmlData);
             }

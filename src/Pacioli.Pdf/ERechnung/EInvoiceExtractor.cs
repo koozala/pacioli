@@ -63,6 +63,7 @@ namespace Pacioli.Pdf.ERechnung
                 XmlDataStream = null;
                 AttachmentName = null;
                 Syntax = InvoiceSyntax.Unknown;
+                Metadata = null;
             }
         }
 
@@ -91,10 +92,19 @@ namespace Pacioli.Pdf.ERechnung
          */
         public IReadOnlyList<EmbeddedFile> EmbeddedFiles { get; private set; } = Array.Empty<EmbeddedFile>();
 
+        /*
+         * The XMP metadata and the PDF/A identification of the PDF file, or null if the
+         * file is not a PDF file. See PdfInvoiceMetadata.
+         */
+        public PdfInvoiceMetadata? Metadata { get; private set; }
+
         private void Read(string fileName)
         {
             using var reader = new PdfReader(fileName);
             using var document = new PdfDocument(reader);
+
+            /* The metadata come first. Their reader raises no exception. */
+            Metadata = PdfInvoiceMetadata.Read(document);
 
             var others = new List<EmbeddedFile>();
             bool found = false;

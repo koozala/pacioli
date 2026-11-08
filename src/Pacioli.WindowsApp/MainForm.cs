@@ -7,6 +7,7 @@ using Pacioli.Preview.ImageGeneration;
 using Pacioli.Updater.AutoUpdate;
 using Pacioli.WindowsApp.Controls;
 using Pacioli.WindowsApp.Util;
+using Pacioli.WindowsApp.Validation;
 using System.Diagnostics;
 using System.Drawing.Printing;
 using System.Globalization;
@@ -83,6 +84,94 @@ namespace Pacioli.WindowsApp
             closeIcons.CloseRequested += (sender, page) => CloseDocument(page);
 
             InitializeStartScreen();
+            InitializeValidationMenu();
+            InitializeDocumentInformationMenu();
+        }
+
+        private readonly ToolStripMenuItem documentInformationMenuItem = new ToolStripMenuItem();
+
+        /*
+         * "Datei > Dokumentinformationen" (Ctrl+I) shows the meta information of the
+         * document in the selected tab: the declared standard and profile, the XML, the
+         * file, and for a PDF file the XMP metadata.
+         *
+         * The entry stays enabled, as "Speichern" does, because a disabled entry does not
+         * take its shortcut. Without a document, the entry gives a message.
+         */
+        private void InitializeDocumentInformationMenu()
+        {
+            documentInformationMenuItem.Text = Resources.menuDokumentinformationen;
+            documentInformationMenuItem.ShortcutKeys = Keys.Control | Keys.I;
+            documentInformationMenuItem.Click += (sender, e) =>
+            {
+                RecordPanel? rp = SelectedRecordPanel();
+                if (rp == null)
+                {
+                    MessageBox.Show(Resources.msgNoActiveDocument);
+                    return;
+                }
+                rp.ShowDocumentInformation();
+            };
+
+            int position = dateiToolStripMenuItem.DropDownItems.IndexOf(speichernToolStripMenuItem) + 1;
+            dateiToolStripMenuItem.DropDownItems.Insert(position, documentInformationMenuItem);
+        }
+
+        private readonly ToolStripMenuItem validationMenuItem = new ToolStripMenuItem();
+        private readonly ToolStripMenuItem validateOnlineMenuItem = new ToolStripMenuItem();
+        private readonly ToolStripMenuItem showValidationMenuItem = new ToolStripMenuItem();
+        private readonly ToolStripMenuItem apiKeyMenuItem = new ToolStripMenuItem();
+
+        /*
+         * The menu of the online validation (W System), between "Datei" and the menu of
+         * the program. The program makes the menu in code, because its texts come from
+         * the resources of Pacioli.Language, as the texts of RecordPanel do.
+         *
+         * Each entry works on the document of the selected tab. The menu sets the state
+         * of its entries each time it opens.
+         */
+        private void InitializeValidationMenu()
+        {
+            validationMenuItem.Text = Resources.menuPruefung;
+
+            validateOnlineMenuItem.Text = Resources.menuPruefenOnline;
+            validateOnlineMenuItem.Click += async (sender, e) =>
+            {
+                RecordPanel? rp = SelectedRecordPanel();
+                if (rp != null)
+                {
+                    await rp.ValidateOnlineAsync();
+                }
+            };
+
+            showValidationMenuItem.Text = Resources.menuPruefergebnisAnzeigen;
+            showValidationMenuItem.Click += (sender, e) => SelectedRecordPanel()?.ShowValidationResult();
+
+            apiKeyMenuItem.Text = Resources.menuApiKey;
+            apiKeyMenuItem.Click += (sender, e) => ApiKeyForm.Edit(this);
+
+            validationMenuItem.DropDownItems.AddRange(new ToolStripItem[]
+            {
+                validateOnlineMenuItem,
+                showValidationMenuItem,
+                new ToolStripSeparator(),
+                apiKeyMenuItem
+            });
+
+            validationMenuItem.DropDownOpening += (sender, e) =>
+            {
+                RecordPanel? rp = SelectedRecordPanel();
+                validateOnlineMenuItem.Enabled = rp != null && !rp.IsValidating;
+                showValidationMenuItem.Enabled = rp?.LastValidation != null;
+            };
+
+            menuStrip1.Items.Insert(menuStrip1.Items.IndexOf(aboutToolStripMenuItem), validationMenuItem);
+        }
+
+        /* The panel of the document in the selected tab, or null if no document is open. */
+        private RecordPanel? SelectedRecordPanel()
+        {
+            return F_TabControl.SelectedTab?.Controls.OfType<RecordPanel>().FirstOrDefault();
         }
 
         /*

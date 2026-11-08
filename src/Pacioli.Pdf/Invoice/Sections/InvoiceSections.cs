@@ -28,6 +28,7 @@ namespace Pacioli.Pdf.Invoice.Sections
             new HeaderSection(),
             new PartiesSection(),
             new ReferencesSection(),
+            new ServiceDateSection(),
             new TradeAgreementSection(),
             //new BuyerElectronicAddressSection(),
             new LineItemsSection(),

@@ -189,6 +189,55 @@ namespace Pacioli.Config.Persistence.Test
             Assert.That(db.TrySavePreferences(preferences), Is.True);
         }
 
+        [Test]
+        public void ANewDatabaseHasNoApiKey()
+        {
+            var db = new ConfigDb(databasePath);
+
+            Assert.That(db.ReadApiKey("wsystem"), Is.Null);
+        }
+
+        [Test]
+        public void AnApiKeyComesBackAfterASave()
+        {
+            var db = new ConfigDb(databasePath);
+
+            db.SaveApiKey("wsystem", "first");
+            db.SaveApiKey("wsystem", "second");
+            db.SaveApiKey("other", "third");
+
+            var again = new ConfigDb(databasePath);
+            Assert.That(again.ReadApiKey("wsystem"), Is.EqualTo("second"));
+            Assert.That(again.ReadApiKey("other"), Is.EqualTo("third"));
+        }
+
+        [Test]
+        public void AnEmptyApiKeyRemovesTheKey()
+        {
+            var db = new ConfigDb(databasePath);
+
+            db.SaveApiKey("wsystem", "a key");
+            db.SaveApiKey("wsystem", "");
+
+            Assert.That(db.ReadApiKey("wsystem"), Is.Null);
+        }
+
+        /* The key is in a table of its own, thus the preferences of the user stay. */
+        [Test]
+        public void AnApiKeyDoesNotTouchThePreferences()
+        {
+            var db = new ConfigDb(databasePath);
+            var preferences = db.ReadPreferences();
+            preferences.OpenAfterSave = false;
+            db.SavePreferences(preferences);
+
+            db.SaveApiKey("wsystem", "a key");
+
+            var again = new ConfigDb(databasePath);
+            Assert.That(again.ReadPreferences().OpenAfterSave, Is.False);
+            Assert.That(again.ReadApiKey("wsystem"), Is.EqualTo("a key"));
+        }
+
         static void Execute(string databasePath, string sql)
         {
             using var connection = new SqliteConnection($"Data Source={databasePath}");

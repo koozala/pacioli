@@ -251,6 +251,84 @@ VALUES ($name)
             }
         }
 
+        /*
+         * The API key of an external service, for example "wsystem".
+         *
+         * The keys are in a table of their own, and not in the table UserPreferences. A
+         * new column there would give an older file the error "no such column", and
+         * RepairAnOldTable would then remove the other settings of the user.
+         *
+         * The database keeps the text as the caller gives it. The caller can encrypt the
+         * key before it calls SaveApiKey.
+         *
+         * READING NEVER FAILS: the method gives null if no key is there, or if the
+         * database does not answer.
+         */
+        public string? ReadApiKey(string service)
+        {
+            try
+            {
+                CreateTable_ApiKeys();
+                using (var connection = new SqliteConnection(connectionString))
+                {
+                    connection.Open();
+                    var command = connection.CreateCommand();
+                    command.CommandText = @"SELECT ApiKey FROM ApiKeys WHERE Service = $service";
+                    command.Parameters.AddWithValue("$service", service);
+                    object? value = command.ExecuteScalar();
+                    string? key = value as string;
+                    return string.IsNullOrWhiteSpace(key) ? null : key;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /*
+         * Keeps the API key of a service. An empty key removes the key of that service.
+         * WRITING FAILS LOUDLY, because the user asked for the step.
+         */
+        public void SaveApiKey(string service, string? apiKey)
+        {
+            CreateTable_ApiKeys();
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                if (string.IsNullOrWhiteSpace(apiKey))
+                {
+                    command.CommandText = @"DELETE FROM ApiKeys WHERE Service = $service";
+                }
+                else
+                {
+                    command.CommandText =
+                        @"
+INSERT INTO ApiKeys (Service, ApiKey) VALUES ($service, $key)
+ON CONFLICT(Service) DO UPDATE SET ApiKey = excluded.ApiKey
+";
+                    command.Parameters.AddWithValue("$key", apiKey);
+                }
+                command.Parameters.AddWithValue("$service", service);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        void CreateTable_ApiKeys()
+        {
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText =
+                    @"
+CREATE TABLE IF NOT EXISTS ApiKeys (Service TEXT PRIMARY KEY, ApiKey TEXT)
+";
+                command.ExecuteNonQuery();
+            }
+        }
+
         /* The text of a column, or the given value if the column is empty or of an other type. */
         static string Text(SqliteDataReader reader, string column, string fallback)
         {

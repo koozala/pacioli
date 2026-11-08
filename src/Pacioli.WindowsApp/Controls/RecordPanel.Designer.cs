@@ -36,11 +36,16 @@
             F_DragDropLabel = new Label();
             FF_ButtonPanel = new FlowLayoutPanel();
             FF_ShowXmlButton = new Button();
+            FF_ValidateButton = new Button();
+            FF_ShowValidationButton = new Button();
             FF_CloseButton = new Button();
+            F_ButtonRow = new TableLayoutPanel();
+            FF_UsageLabel = new Label();
             F_TablePanel.SuspendLayout();
             F_AttachmentsPanel.SuspendLayout();
             F_DragDropPanel.SuspendLayout();
             FF_ButtonPanel.SuspendLayout();
+            F_ButtonRow.SuspendLayout();
             SuspendLayout();
             // 
             // F_TablePanel
@@ -56,7 +61,7 @@
             F_TablePanel.Controls.Add(F_FileNameTb, 1, 3);
             F_TablePanel.Controls.Add(F_AttachmentsPanel, 4, 1);
             F_TablePanel.Controls.Add(F_DragDropPanel, 4, 2);
-            F_TablePanel.Controls.Add(FF_ButtonPanel, 1, 0);
+            F_TablePanel.Controls.Add(F_ButtonRow, 1, 0);
             F_TablePanel.Dock = DockStyle.Fill;
             F_TablePanel.Location = new Point(0, 0);
             F_TablePanel.Margin = new Padding(3, 4, 3, 4);
@@ -125,14 +130,44 @@
             F_DragDropLabel.TabIndex = 0;
             F_DragDropLabel.Text = "Drag && Drop Here";
             // 
+            // F_ButtonRow
+            // 
+            F_ButtonRow.ColumnCount = 2;
+            F_ButtonRow.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            F_ButtonRow.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            F_ButtonRow.Controls.Add(FF_ButtonPanel, 0, 0);
+            F_ButtonRow.Controls.Add(FF_UsageLabel, 1, 0);
+            F_TablePanel.SetColumnSpan(F_ButtonRow, 4);
+            F_ButtonRow.Dock = DockStyle.Fill;
+            F_ButtonRow.Location = new Point(47, 3);
+            F_ButtonRow.Margin = new Padding(0);
+            F_ButtonRow.Name = "F_ButtonRow";
+            F_ButtonRow.RowCount = 1;
+            F_ButtonRow.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            F_ButtonRow.Size = new Size(1611, 55);
+            F_ButtonRow.TabIndex = 10;
+            // 
+            // FF_UsageLabel
+            // 
+            FF_UsageLabel.Anchor = AnchorStyles.Right;
+            FF_UsageLabel.AutoSize = true;
+            FF_UsageLabel.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            FF_UsageLabel.ForeColor = SystemColors.GrayText;
+            FF_UsageLabel.Location = new Point(1608, 15);
+            FF_UsageLabel.Name = "FF_UsageLabel";
+            FF_UsageLabel.Size = new Size(0, 25);
+            FF_UsageLabel.TabIndex = 1;
+            // 
             // FF_ButtonPanel
             // 
             FF_ButtonPanel.Controls.Add(FF_ShowXmlButton);
+            FF_ButtonPanel.Controls.Add(FF_ValidateButton);
+            FF_ButtonPanel.Controls.Add(FF_ShowValidationButton);
             FF_ButtonPanel.Controls.Add(FF_CloseButton);
             FF_ButtonPanel.Dock = DockStyle.Fill;
-            FF_ButtonPanel.Location = new Point(47, 3);
+            FF_ButtonPanel.Location = new Point(3, 3);
             FF_ButtonPanel.Name = "FF_ButtonPanel";
-            FF_ButtonPanel.Size = new Size(479, 49);
+            FF_ButtonPanel.Size = new Size(1600, 49);
             FF_ButtonPanel.TabIndex = 10;
             // 
             // FF_ShowXmlButton
@@ -147,17 +182,46 @@
             FF_ShowXmlButton.UseVisualStyleBackColor = false;
             FF_ShowXmlButton.Click += FF_ShowXmlButton_Click;
             // 
+            // FF_ValidateButton
+            // 
+            FF_ValidateButton.AutoSize = true;
+            FF_ValidateButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            FF_ValidateButton.BackColor = Color.Teal;
+            FF_ValidateButton.ForeColor = Color.White;
+            FF_ValidateButton.Location = new Point(121, 3);
+            FF_ValidateButton.MinimumSize = new Size(112, 46);
+            FF_ValidateButton.Name = "FF_ValidateButton";
+            FF_ValidateButton.Size = new Size(112, 46);
+            FF_ValidateButton.TabIndex = 1;
+            FF_ValidateButton.UseVisualStyleBackColor = false;
+            FF_ValidateButton.Click += FF_ValidateButton_Click;
+            // 
+            // FF_ShowValidationButton
+            // 
+            FF_ShowValidationButton.AutoSize = true;
+            FF_ShowValidationButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            FF_ShowValidationButton.BackColor = Color.SlateGray;
+            FF_ShowValidationButton.Enabled = false;
+            FF_ShowValidationButton.ForeColor = Color.White;
+            FF_ShowValidationButton.Location = new Point(239, 3);
+            FF_ShowValidationButton.MinimumSize = new Size(112, 46);
+            FF_ShowValidationButton.Name = "FF_ShowValidationButton";
+            FF_ShowValidationButton.Size = new Size(112, 46);
+            FF_ShowValidationButton.TabIndex = 2;
+            FF_ShowValidationButton.UseVisualStyleBackColor = false;
+            FF_ShowValidationButton.Click += FF_ShowValidationButton_Click;
+            // 
             // FF_CloseButton
             // 
             FF_CloseButton.AutoSize = true;
             FF_CloseButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             FF_CloseButton.BackColor = Color.SlateGray;
             FF_CloseButton.ForeColor = Color.White;
-            FF_CloseButton.Location = new Point(121, 3);
+            FF_CloseButton.Location = new Point(357, 3);
             FF_CloseButton.MinimumSize = new Size(112, 46);
             FF_CloseButton.Name = "FF_CloseButton";
             FF_CloseButton.Size = new Size(112, 46);
-            FF_CloseButton.TabIndex = 1;
+            FF_CloseButton.TabIndex = 3;
             FF_CloseButton.UseVisualStyleBackColor = false;
             FF_CloseButton.Click += FF_CloseButton_Click;
             // 
@@ -176,6 +240,8 @@
             F_DragDropPanel.PerformLayout();
             FF_ButtonPanel.ResumeLayout(false);
             FF_ButtonPanel.PerformLayout();
+            F_ButtonRow.ResumeLayout(false);
+            F_ButtonRow.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -191,5 +257,9 @@
         private FlowLayoutPanel FF_ButtonPanel;
         private Button FF_ShowXmlButton;
         private Button FF_CloseButton;
+        private Button FF_ValidateButton;
+        private Button FF_ShowValidationButton;
+        private TableLayoutPanel F_ButtonRow;
+        private Label FF_UsageLabel;
     }
 }

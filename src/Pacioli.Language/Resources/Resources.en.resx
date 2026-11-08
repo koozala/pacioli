@@ -866,4 +866,268 @@ More information on the Internet: https://github.com/koozala/pacioli</value>
   <data name="buyerElectronicAddress" xml:space="preserve">
     <value>Buyer</value>
   </data>
+  <data name="PruefenOnline" xml:space="preserve">
+    <value>Validate online</value>
+  </data>
+  <data name="PruefenOnlineTip" xml:space="preserve">
+    <value>Validates the invoice with the W System service against EN 16931 and XRechnung. To do this, Pacioli sends the file to api.wsystem.dev.</value>
+  </data>
+  <data name="PruefenLaeuft" xml:space="preserve">
+    <value>Validating …</value>
+  </data>
+  <data name="Pruefergebnis" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="PruefergebnisTip" xml:space="preserve">
+    <value>Shows the result of the last online validation of this document.</value>
+  </data>
+  <data name="menuPruefung" xml:space="preserve">
+    <value>Validation</value>
+  </data>
+  <data name="menuPruefenOnline" xml:space="preserve">
+    <value>Validate online (W System)</value>
+  </data>
+  <data name="menuPruefergebnisAnzeigen" xml:space="preserve">
+    <value>Show validation result</value>
+  </data>
+  <data name="menuApiKey" xml:space="preserve">
+    <value>API key for W System …</value>
+  </data>
+  <data name="ApiKeyTitle" xml:space="preserve">
+    <value>API key for W System</value>
+  </data>
+  <data name="ApiKeyPrompt" xml:space="preserve">
+    <value>Enter the API key for the W System service. Pacioli keeps the key encrypted in the file pacioli.db.</value>
+  </data>
+  <data name="ApiKeyPrivacy" xml:space="preserve">
+    <value>Note: For each online validation, Pacioli sends the full invoice file to api.wsystem.dev.</value>
+  </data>
+  <data name="ApiKeyShow" xml:space="preserve">
+    <value>Show the key</value>
+  </data>
+  <data name="ApiKeyRemove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Speichern" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Abbrechen" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="msgApiKeyNotSaved" xml:space="preserve">
+    <value>The program could not save the API key:{0}{0}{1}</value>
+  </data>
+  <data name="msgValidationKeyRejected" xml:space="preserve">
+    <value>W System did not accept the API key. Make sure that the key is correct (menu "Validation &gt; API key for W System").</value>
+  </data>
+  <data name="msgValidationQuota" xml:space="preserve">
+    <value>The quota for the online validation is used up.</value>
+  </data>
+  <data name="msgValidationFailed" xml:space="preserve">
+    <value>The online validation did not succeed:{0}{0}{1}</value>
+  </data>
+  <data name="msgValidationNoNetwork" xml:space="preserve">
+    <value>The program cannot connect to W System. Make sure that the computer has a connection to the internet.{0}{0}{1}</value>
+  </data>
+  <data name="msgValidationFileNotRead" xml:space="preserve">
+    <value>The program cannot read the file:{0}{0}{1}</value>
+  </data>
+  <data name="UsageRemaining" xml:space="preserve">
+    <value>W System: {0} of {1} units available</value>
+  </data>
+  <data name="UsageTip" xml:space="preserve">
+    <value>Plan: {0}. Period: {1}. One validation uses {2} units.</value>
+  </data>
+  <data name="UsageUnknown" xml:space="preserve">
+    <value>W System: quota unknown</value>
+  </data>
+  <data name="vrTitle" xml:space="preserve">
+    <value>Validation result – {0}</value>
+  </data>
+  <data name="vrValid" xml:space="preserve">
+    <value>Valid</value>
+  </data>
+  <data name="vrInvalid" xml:space="preserve">
+    <value>Not valid</value>
+  </data>
+  <data name="vrErrors" xml:space="preserve">
+    <value>Errors</value>
+  </data>
+  <data name="vrWarnings" xml:space="preserve">
+    <value>Warnings</value>
+  </data>
+  <data name="vrFormatErrors" xml:space="preserve">
+    <value>Format errors (XML Schema)</value>
+  </data>
+  <data name="vrBusinessRuleErrors" xml:space="preserve">
+    <value>Business rule errors (Schematron)</value>
+  </data>
+  <data name="vrSyntax" xml:space="preserve">
+    <value>Syntax</value>
+  </data>
+  <data name="vrProfile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="vrChecked" xml:space="preserve">
+    <value>Checked rule sets</value>
+  </data>
+  <data name="vrRuleVersions" xml:space="preserve">
+    <value>Versions of the rules</value>
+  </data>
+  <data name="vrRule" xml:space="preserve">
+    <value>Rule</value>
+  </data>
+  <data name="vrMessage" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="vrLocation" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="vrBusinessTerms" xml:space="preserve">
+    <value>Business terms</value>
+  </data>
+  <data name="vrFix" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="vrGermany" xml:space="preserve">
+    <value>VAT (Germany)</value>
+  </data>
+  <data name="vrNoErrors" xml:space="preserve">
+    <value>No errors.</value>
+  </data>
+  <data name="vrNoWarnings" xml:space="preserve">
+    <value>No warnings.</value>
+  </data>
+  <data name="vrCheckedAt" xml:space="preserve">
+    <value>Checked at {0} with W System</value>
+  </data>
+  <data name="vrFile" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="vrNotes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="menuDokumentinformationen" xml:space="preserve">
+    <value>Document information …</value>
+  </data>
+  <data name="diTitle" xml:space="preserve">
+    <value>Document information – {0}</value>
+  </data>
+  <data name="diDeclaredNote" xml:space="preserve">
+    <value>These values show what the document declares. Only a validation tells if the document keeps the rules (menu "Validation").</value>
+  </data>
+  <data name="diIssuesTitle" xml:space="preserve">
+    <value>Disagreements in the declarations</value>
+  </data>
+  <data name="diNoIssues" xml:space="preserve">
+    <value>The declarations in the XML and in the PDF metadata agree.</value>
+  </data>
+  <data name="diIssueConformanceLevel" xml:space="preserve">
+    <value>The XMP metadata give the profile "{1}". The identifier in BT-24 needs "{0}".</value>
+  </data>
+  <data name="diIssueDocumentFileName" xml:space="preserve">
+    <value>The XMP metadata give the file name "{1}". The name of the embedded XML file is "{0}".</value>
+  </data>
+  <data name="diIssueXmpFamily" xml:space="preserve">
+    <value>The namespace of the XMP metadata does not agree with the XML syntax. Expected: {0}. Found: {1}.</value>
+  </data>
+  <data name="diIssuePdfAPart" xml:space="preserve">
+    <value>The PDF file is not PDF/A-3 (pdfaid:part = {1}).</value>
+  </data>
+  <data name="diSpecification" xml:space="preserve">
+    <value>Standard and profile</value>
+  </data>
+  <data name="diStandard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="diProfile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="diVersion" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="diBt24" xml:space="preserve">
+    <value>Specification identifier (BT-24)</value>
+  </data>
+  <data name="diBt23" xml:space="preserve">
+    <value>Business process type (BT-23)</value>
+  </data>
+  <data name="diNotRecognized" xml:space="preserve">
+    <value>not recognized</value>
+  </data>
+  <data name="diNotGiven" xml:space="preserve">
+    <value>not given</value>
+  </data>
+  <data name="diEn16931Hint" xml:space="preserve">
+    <value>The profile EN 16931 (COMFORT) of ZUGFeRD 2.x and Factur-X also uses this identifier.</value>
+  </data>
+  <data name="diXml" xml:space="preserve">
+    <value>XML</value>
+  </data>
+  <data name="diSyntax" xml:space="preserve">
+    <value>Syntax</value>
+  </data>
+  <data name="diRootElement" xml:space="preserve">
+    <value>Root element</value>
+  </data>
+  <data name="diNamespaces" xml:space="preserve">
+    <value>Namespaces</value>
+  </data>
+  <data name="diPrefix" xml:space="preserve">
+    <value>Prefix</value>
+  </data>
+  <data name="diNamespace" xml:space="preserve">
+    <value>Namespace</value>
+  </data>
+  <data name="diFile" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="diPath" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="diSize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="diContainer" xml:space="preserve">
+    <value>Container</value>
+  </data>
+  <data name="diContainerXml" xml:space="preserve">
+    <value>XML file</value>
+  </data>
+  <data name="diContainerPdf" xml:space="preserve">
+    <value>PDF file with an embedded invoice</value>
+  </data>
+  <data name="diEmbeddedName" xml:space="preserve">
+    <value>Embedded XML file</value>
+  </data>
+  <data name="diXmp" xml:space="preserve">
+    <value>PDF metadata (XMP)</value>
+  </data>
+  <data name="diXmpSchema" xml:space="preserve">
+    <value>Schema of the invoice properties</value>
+  </data>
+  <data name="diProducer" xml:space="preserve">
+    <value>Producer</value>
+  </data>
+  <data name="diCreationDate" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="diNoXmp" xml:space="preserve">
+    <value>The PDF file has no XMP metadata.</value>
+  </data>
+  <data name="diNoInvoiceXmp" xml:space="preserve">
+    <value>The XMP metadata contain no properties of ZUGFeRD or Factur-X.</value>
+  </data>
+  <data name="diNoPdfA" xml:space="preserve">
+    <value>no PDF/A identification</value>
+  </data>
+  <data name="LieferLeistungsdatum" xml:space="preserve">
+    <value>Date of delivery or service</value>
+  </data>
+  <data name="LeistungsdatumInPositionen" xml:space="preserve">
+    <value>The document gives the date in the positions only.</value>
+  </data>
+  <data name="LeistungsdatumNichtAngegeben" xml:space="preserve">
+    <value>The document contains no date of delivery or service.</value>
+  </data>
 </root>

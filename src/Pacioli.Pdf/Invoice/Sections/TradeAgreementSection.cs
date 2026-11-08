@@ -17,6 +17,9 @@ namespace Pacioli.Pdf.Invoice.Sections
     /*
      * The three groups of the head of the transaction, each one in a frame:
      * the agreement, the settlement, and the delivery.
+     *
+     * The delivery date (BT-72) and the invoicing period (BG-14) are not in these
+     * frames. ServiceDateSection shows them in a frame of their own.
      */
     internal sealed class TradeAgreementSection : IInvoiceSection
     {
@@ -53,10 +56,7 @@ namespace Pacioli.Pdf.Invoice.Sections
                     note.Reference, note.Name, note.Uri, note.IssueDate.ToString())}");
             }
 
-            if (invoice.Delivery?.ActualDeliveryDate != null)
-            {
-                AddItem($"{Resources.Lieferdatum}: {invoice.Delivery.ActualDeliveryDate}");
-            }
+            /* The delivery date (BT-72) stands in ServiceDateSection. */
 
             foreach (string mode in extensions?.TransportModeCodes ?? [])
             {
@@ -224,13 +224,7 @@ namespace Pacioli.Pdf.Invoice.Sections
                 count++;
             }
 
-            Period? period = invoice.InvoicingPeriod;
-            if (period != null)
-            {
-                string startDate = period.StartDate?.ToString("d") ?? "";
-                string endDate = period.EndDate?.ToString("d") ?? "";
-                AddItem($"{Resources.billingPeriod}: {startDate} - {endDate}");
-            }
+            /* The invoicing period (BG-14) stands in ServiceDateSection. */
 
             if (invoice.PaymentInstructions?.RemittanceInformation != null)
             {

@@ -61,6 +61,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abbrechen.
+        /// </summary>
+        public static string Abbrechen {
+            get {
+                return ResourceManager.GetString("Abbrechen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Abschlag.
         /// </summary>
         public static string Abschlag {
@@ -165,6 +174,51 @@ namespace Pacioli.Language.Resources {
         public static string Anzahlung {
             get {
                 return ResourceManager.GetString("Anzahlung", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hinweis: Bei jeder Online-Prüfung sendet Pacioli die vollständige Rechnungsdatei an api.wsystem.dev..
+        /// </summary>
+        public static string ApiKeyPrivacy {
+            get {
+                return ResourceManager.GetString("ApiKeyPrivacy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geben Sie den API-Schlüssel für den Dienst W System ein. Pacioli speichert den Schlüssel verschlüsselt in der Datei pacioli.db..
+        /// </summary>
+        public static string ApiKeyPrompt {
+            get {
+                return ResourceManager.GetString("ApiKeyPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entfernen.
+        /// </summary>
+        public static string ApiKeyRemove {
+            get {
+                return ResourceManager.GetString("ApiKeyRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schlüssel anzeigen.
+        /// </summary>
+        public static string ApiKeyShow {
+            get {
+                return ResourceManager.GetString("ApiKeyShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API-Schlüssel für W System.
+        /// </summary>
+        public static string ApiKeyTitle {
+            get {
+                return ResourceManager.GetString("ApiKeyTitle", resourceCulture);
             }
         }
         
@@ -412,6 +466,339 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Geschäftsprozess (BT-23).
+        /// </summary>
+        public static string diBt23 {
+            get {
+                return ResourceManager.GetString("diBt23", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spezifikationskennung (BT-24).
+        /// </summary>
+        public static string diBt24 {
+            get {
+                return ResourceManager.GetString("diBt24", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Container.
+        /// </summary>
+        public static string diContainer {
+            get {
+                return ResourceManager.GetString("diContainer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PDF-Datei mit eingebetteter Rechnung.
+        /// </summary>
+        public static string diContainerPdf {
+            get {
+                return ResourceManager.GetString("diContainerPdf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XML-Datei.
+        /// </summary>
+        public static string diContainerXml {
+            get {
+                return ResourceManager.GetString("diContainerXml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erstellt am.
+        /// </summary>
+        public static string diCreationDate {
+            get {
+                return ResourceManager.GetString("diCreationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die Angaben zeigen, was das Dokument erklärt. Ob das Dokument die Regeln einhält, zeigt nur eine Prüfung (Menü „Prüfung“)..
+        /// </summary>
+        public static string diDeclaredNote {
+            get {
+                return ResourceManager.GetString("diDeclaredNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eingebettete XML-Datei.
+        /// </summary>
+        public static string diEmbeddedName {
+            get {
+                return ResourceManager.GetString("diEmbeddedName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diese Kennung nutzt auch das Profil EN 16931 (COMFORT) von ZUGFeRD 2.x und Factur-X..
+        /// </summary>
+        public static string diEn16931Hint {
+            get {
+                return ResourceManager.GetString("diEn16931Hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datei.
+        /// </summary>
+        public static string diFile {
+            get {
+                return ResourceManager.GetString("diFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die XMP-Metadaten nennen das Profil „{1}“. Zur Kennung in BT-24 gehört „{0}“..
+        /// </summary>
+        public static string diIssueConformanceLevel {
+            get {
+                return ResourceManager.GetString("diIssueConformanceLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die XMP-Metadaten nennen die Datei „{1}“. Die eingebettete XML-Datei heißt „{0}“..
+        /// </summary>
+        public static string diIssueDocumentFileName {
+            get {
+                return ResourceManager.GetString("diIssueDocumentFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die PDF-Datei ist nicht PDF/A-3 (pdfaid:part = {1})..
+        /// </summary>
+        public static string diIssuePdfAPart {
+            get {
+                return ResourceManager.GetString("diIssuePdfAPart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Widersprüche in den Angaben.
+        /// </summary>
+        public static string diIssuesTitle {
+            get {
+                return ResourceManager.GetString("diIssuesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Der Namensraum der XMP-Metadaten passt nicht zur XML-Syntax. Erwartet: {0}. Gefunden: {1}..
+        /// </summary>
+        public static string diIssueXmpFamily {
+            get {
+                return ResourceManager.GetString("diIssueXmpFamily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Namensraum.
+        /// </summary>
+        public static string diNamespace {
+            get {
+                return ResourceManager.GetString("diNamespace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Namensräume.
+        /// </summary>
+        public static string diNamespaces {
+            get {
+                return ResourceManager.GetString("diNamespaces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die XMP-Metadaten enthalten keine Angaben von ZUGFeRD oder Factur-X..
+        /// </summary>
+        public static string diNoInvoiceXmp {
+            get {
+                return ResourceManager.GetString("diNoInvoiceXmp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die Angaben in XML und PDF-Metadaten widersprechen sich nicht..
+        /// </summary>
+        public static string diNoIssues {
+            get {
+                return ResourceManager.GetString("diNoIssues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to keine PDF/A-Kennung.
+        /// </summary>
+        public static string diNoPdfA {
+            get {
+                return ResourceManager.GetString("diNoPdfA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nicht angegeben.
+        /// </summary>
+        public static string diNotGiven {
+            get {
+                return ResourceManager.GetString("diNotGiven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to nicht erkannt.
+        /// </summary>
+        public static string diNotRecognized {
+            get {
+                return ResourceManager.GetString("diNotRecognized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die PDF-Datei hat keine XMP-Metadaten..
+        /// </summary>
+        public static string diNoXmp {
+            get {
+                return ResourceManager.GetString("diNoXmp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pfad.
+        /// </summary>
+        public static string diPath {
+            get {
+                return ResourceManager.GetString("diPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Präfix.
+        /// </summary>
+        public static string diPrefix {
+            get {
+                return ResourceManager.GetString("diPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Erzeugt mit.
+        /// </summary>
+        public static string diProducer {
+            get {
+                return ResourceManager.GetString("diProducer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profil.
+        /// </summary>
+        public static string diProfile {
+            get {
+                return ResourceManager.GetString("diProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wurzelelement.
+        /// </summary>
+        public static string diRootElement {
+            get {
+                return ResourceManager.GetString("diRootElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Größe.
+        /// </summary>
+        public static string diSize {
+            get {
+                return ResourceManager.GetString("diSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard und Profil.
+        /// </summary>
+        public static string diSpecification {
+            get {
+                return ResourceManager.GetString("diSpecification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard.
+        /// </summary>
+        public static string diStandard {
+            get {
+                return ResourceManager.GetString("diStandard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax.
+        /// </summary>
+        public static string diSyntax {
+            get {
+                return ResourceManager.GetString("diSyntax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dokumentinformationen – {0}.
+        /// </summary>
+        public static string diTitle {
+            get {
+                return ResourceManager.GetString("diTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        public static string diVersion {
+            get {
+                return ResourceManager.GetString("diVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XML.
+        /// </summary>
+        public static string diXml {
+            get {
+                return ResourceManager.GetString("diXml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PDF-Metadaten (XMP).
+        /// </summary>
+        public static string diXmp {
+            get {
+                return ResourceManager.GetString("diXmp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schema der Rechnungsangaben.
+        /// </summary>
+        public static string diXmpSchema {
+            get {
+                return ResourceManager.GetString("diXmpSchema", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Datum.
         /// </summary>
         public static string docDate {
@@ -610,11 +997,38 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Das Dokument nennt das Datum nur in den Positionen..
+        /// </summary>
+        public static string LeistungsdatumInPositionen {
+            get {
+                return ResourceManager.GetString("LeistungsdatumInPositionen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Das Dokument enthält kein Liefer- oder Leistungsdatum..
+        /// </summary>
+        public static string LeistungsdatumNichtAngegeben {
+            get {
+                return ResourceManager.GetString("LeistungsdatumNichtAngegeben", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lieferdatum.
         /// </summary>
         public static string Lieferdatum {
             get {
                 return ResourceManager.GetString("Lieferdatum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Liefer-/Leistungsdatum.
+        /// </summary>
+        public static string LieferLeistungsdatum {
+            get {
+                return ResourceManager.GetString("LieferLeistungsdatum", resourceCulture);
             }
         }
         
@@ -637,11 +1051,65 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to API-Schlüssel für W System ….
+        /// </summary>
+        public static string menuApiKey {
+            get {
+                return ResourceManager.GetString("menuApiKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dokumentinformationen ….
+        /// </summary>
+        public static string menuDokumentinformationen {
+            get {
+                return ResourceManager.GetString("menuDokumentinformationen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online prüfen (W System).
+        /// </summary>
+        public static string menuPruefenOnline {
+            get {
+                return ResourceManager.GetString("menuPruefenOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prüfergebnis anzeigen.
+        /// </summary>
+        public static string menuPruefergebnisAnzeigen {
+            get {
+                return ResourceManager.GetString("menuPruefergebnisAnzeigen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prüfung.
+        /// </summary>
+        public static string menuPruefung {
+            get {
+                return ResourceManager.GetString("menuPruefung", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Betrag.
         /// </summary>
         public static string money {
             get {
                 return ResourceManager.GetString("money", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Der API-Schlüssel konnte nicht gespeichert werden:{0}{0}{1}.
+        /// </summary>
+        public static string msgApiKeyNotSaved {
+            get {
+                return ResourceManager.GetString("msgApiKeyNotSaved", resourceCulture);
             }
         }
         
@@ -728,6 +1196,51 @@ namespace Pacioli.Language.Resources {
         public static string msgUpdateAsk {
             get {
                 return ResourceManager.GetString("msgUpdateAsk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die Online-Prüfung ist fehlgeschlagen:{0}{0}{1}.
+        /// </summary>
+        public static string msgValidationFailed {
+            get {
+                return ResourceManager.GetString("msgValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die Datei konnte nicht gelesen werden:{0}{0}{1}.
+        /// </summary>
+        public static string msgValidationFileNotRead {
+            get {
+                return ResourceManager.GetString("msgValidationFileNotRead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to W System hat den API-Schlüssel abgelehnt. Prüfen Sie den Schlüssel im Menü „Prüfung &gt; API-Schlüssel für W System“..
+        /// </summary>
+        public static string msgValidationKeyRejected {
+            get {
+                return ResourceManager.GetString("msgValidationKeyRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to W System ist nicht erreichbar. Prüfen Sie die Verbindung zum Internet.{0}{0}{1}.
+        /// </summary>
+        public static string msgValidationNoNetwork {
+            get {
+                return ResourceManager.GetString("msgValidationNoNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Das Kontingent für die Online-Prüfung ist aufgebraucht..
+        /// </summary>
+        public static string msgValidationQuota {
+            get {
+                return ResourceManager.GetString("msgValidationQuota", resourceCulture);
             }
         }
         
@@ -903,6 +1416,51 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prüfung läuft ….
+        /// </summary>
+        public static string PruefenLaeuft {
+            get {
+                return ResourceManager.GetString("PruefenLaeuft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online prüfen.
+        /// </summary>
+        public static string PruefenOnline {
+            get {
+                return ResourceManager.GetString("PruefenOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prüft die Rechnung mit dem Dienst W System nach EN 16931 und XRechnung. Pacioli sendet die Datei dazu an api.wsystem.dev..
+        /// </summary>
+        public static string PruefenOnlineTip {
+            get {
+                return ResourceManager.GetString("PruefenOnlineTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prüfergebnis.
+        /// </summary>
+        public static string Pruefergebnis {
+            get {
+                return ResourceManager.GetString("Pruefergebnis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zeigt das Ergebnis der letzten Online-Prüfung dieses Dokuments..
+        /// </summary>
+        public static string PruefergebnisTip {
+            get {
+                return ResourceManager.GetString("PruefergebnisTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rabatte und Zuschläge.
         /// </summary>
         public static string RabatteUndZuschlaege {
@@ -1074,20 +1632,20 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to bis.
-        /// </summary>
-        public static string until {
-            get {
-                return ResourceManager.GetString("until", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Skonto.
         /// </summary>
         public static string Skonto {
             get {
                 return ResourceManager.GetString("Skonto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speichern.
+        /// </summary>
+        public static string Speichern {
+            get {
+                return ResourceManager.GetString("Speichern", resourceCulture);
             }
         }
         
@@ -2226,6 +2784,42 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to bis.
+        /// </summary>
+        public static string until {
+            get {
+                return ResourceManager.GetString("until", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to W System: {0} von {1} Einheiten frei.
+        /// </summary>
+        public static string UsageRemaining {
+            get {
+                return ResourceManager.GetString("UsageRemaining", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tarif: {0}. Zeitraum: {1}. Eine Prüfung kostet {2} Einheiten..
+        /// </summary>
+        public static string UsageTip {
+            get {
+                return ResourceManager.GetString("UsageTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to W System: Kontingent unbekannt.
+        /// </summary>
+        public static string UsageUnknown {
+            get {
+                return ResourceManager.GetString("UsageUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Versandhinweis.
         /// </summary>
         public static string Versandhinweis {
@@ -2258,6 +2852,204 @@ namespace Pacioli.Language.Resources {
         public static string Verzugszinsen {
             get {
                 return ResourceManager.GetString("Verzugszinsen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fehler der Geschäftsregeln (Schematron).
+        /// </summary>
+        public static string vrBusinessRuleErrors {
+            get {
+                return ResourceManager.GetString("vrBusinessRuleErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geschäftsbegriffe.
+        /// </summary>
+        public static string vrBusinessTerms {
+            get {
+                return ResourceManager.GetString("vrBusinessTerms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geprüfte Regelwerke.
+        /// </summary>
+        public static string vrChecked {
+            get {
+                return ResourceManager.GetString("vrChecked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geprüft am {0} mit W System.
+        /// </summary>
+        public static string vrCheckedAt {
+            get {
+                return ResourceManager.GetString("vrCheckedAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fehler.
+        /// </summary>
+        public static string vrErrors {
+            get {
+                return ResourceManager.GetString("vrErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datei.
+        /// </summary>
+        public static string vrFile {
+            get {
+                return ResourceManager.GetString("vrFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Korrektur.
+        /// </summary>
+        public static string vrFix {
+            get {
+                return ResourceManager.GetString("vrFix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Formatfehler (XML-Schema).
+        /// </summary>
+        public static string vrFormatErrors {
+            get {
+                return ResourceManager.GetString("vrFormatErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Umsatzsteuer (Deutschland).
+        /// </summary>
+        public static string vrGermany {
+            get {
+                return ResourceManager.GetString("vrGermany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nicht gültig.
+        /// </summary>
+        public static string vrInvalid {
+            get {
+                return ResourceManager.GetString("vrInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ort.
+        /// </summary>
+        public static string vrLocation {
+            get {
+                return ResourceManager.GetString("vrLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Meldung.
+        /// </summary>
+        public static string vrMessage {
+            get {
+                return ResourceManager.GetString("vrMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keine Fehler..
+        /// </summary>
+        public static string vrNoErrors {
+            get {
+                return ResourceManager.GetString("vrNoErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hinweise.
+        /// </summary>
+        public static string vrNotes {
+            get {
+                return ResourceManager.GetString("vrNotes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keine Warnungen..
+        /// </summary>
+        public static string vrNoWarnings {
+            get {
+                return ResourceManager.GetString("vrNoWarnings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profil.
+        /// </summary>
+        public static string vrProfile {
+            get {
+                return ResourceManager.GetString("vrProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Regel.
+        /// </summary>
+        public static string vrRule {
+            get {
+                return ResourceManager.GetString("vrRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Versionen der Regeln.
+        /// </summary>
+        public static string vrRuleVersions {
+            get {
+                return ResourceManager.GetString("vrRuleVersions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax.
+        /// </summary>
+        public static string vrSyntax {
+            get {
+                return ResourceManager.GetString("vrSyntax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prüfergebnis – {0}.
+        /// </summary>
+        public static string vrTitle {
+            get {
+                return ResourceManager.GetString("vrTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gültig.
+        /// </summary>
+        public static string vrValid {
+            get {
+                return ResourceManager.GetString("vrValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warnungen.
+        /// </summary>
+        public static string vrWarnings {
+            get {
+                return ResourceManager.GetString("vrWarnings", resourceCulture);
             }
         }
         
