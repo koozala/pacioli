@@ -857,6 +857,9 @@ Mehr Informationen im Internet: https://github.com/koozala/pacioli</value>
   <data name="DateiHierAblegen" xml:space="preserve">
     <value>Datei zum Anzeigen hier ablegen</value>
   </data>
+  <data name="customsTariffNumber" xml:space="preserve">
+    <value>Zolltarifnr.</value>
+  </data>
   <data name="countryOfOrigin" xml:space="preserve">
     <value>Herkunftsland</value>
   </data>

@@ -3,6 +3,7 @@ using En16931.Model.Extended;
 using iText.Layout;
 using iText.Layout.Element;
 using Pacioli.Language.Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -141,7 +142,13 @@ namespace Pacioli.Pdf.Invoice.Sections
                     ? itemExtensions.ClassificationNames[index]
                     : null;
 
-                string text = CoreText.FormatGroup(className, item.ClassificationIdentifiers[index].Value);
+                Identifier classification = item.ClassificationIdentifiers[index];
+
+                /* A customs tariff number (scheme "HS", UNTDID 7143) gets a fixed label.
+                 * The label replaces the class name, which is usually "Zolltarifnummer". */
+                string text = string.Equals(classification.SchemeId, "HS", StringComparison.OrdinalIgnoreCase)
+                    ? $"{Resources.customsTariffNumber}: {classification.Value}"
+                    : CoreText.FormatGroup(className, classification.Value);
                 if (text.Length > 0)
                 {
                     s1.AppendLine(text);

@@ -358,6 +358,15 @@ namespace Pacioli.Language.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Zolltarifnr..
+        /// </summary>
+        public static string customsTariffNumber {
+            get {
+                return ResourceManager.GetString("customsTariffNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alle Beträge in.
         /// </summary>
         public static string currencyNote {

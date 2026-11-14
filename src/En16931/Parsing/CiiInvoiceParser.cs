@@ -404,7 +404,7 @@ public sealed partial class CiiInvoiceParser : IInvoiceParser
 
         foreach (var classification in product.Els(Ram + "DesignatedProductClassification"))
         {
-            var code = ReadIdentifier(classification.El(Ram + "ClassCode"));
+            var code = ReadClassification(classification.El(Ram + "ClassCode"));
             if (code is not null) item.ClassificationIdentifiers.Add(code);
         }
 
@@ -511,6 +511,14 @@ public sealed partial class CiiInvoiceParser : IInvoiceParser
         var value = element.Text();
         return value is null ? null
             : new Identifier(value, element.Attr("schemeID"), element.Attr("schemeVersionID"));
+    }
+
+    /* The scheme of an item classification (BT-158-1) is in "listID", not in "schemeID". */
+    private static Identifier? ReadClassification(XElement? element)
+    {
+        var value = element.Text();
+        return value is null ? null
+            : new Identifier(value, element.Attr("listID"), element.Attr("listVersionID"));
     }
 
     private static byte[]? TryDecodeBase64(string? value)

@@ -355,7 +355,7 @@ public sealed partial class UblInvoiceParser : IInvoiceParser
 
         foreach (var classification in item.Els(Cac + "CommodityClassification"))
         {
-            var code = ReadIdentifier(classification.El(Cbc + "ItemClassificationCode"));
+            var code = ReadClassification(classification.El(Cbc + "ItemClassificationCode"));
             if (code is not null) result.ClassificationIdentifiers.Add(code);
         }
 
@@ -469,6 +469,14 @@ public sealed partial class UblInvoiceParser : IInvoiceParser
     {
         var value = element.Dec();
         return value is null ? null : new Quantity(value.Value, element.Attr("unitCode"));
+    }
+
+    /* The scheme of an item classification (BT-158-1) is in "listID", not in "schemeID". */
+    private static Identifier? ReadClassification(XElement? element)
+    {
+        var value = element.Text();
+        return value is null ? null
+            : new Identifier(value, element.Attr("listID"), element.Attr("listVersionID"));
     }
 
     private static Identifier? ReadIdentifier(XElement? element)
